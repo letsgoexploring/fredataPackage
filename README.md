@@ -1,0 +1,2 @@
+# fredata
+fredata Python package
