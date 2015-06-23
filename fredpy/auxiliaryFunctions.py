@@ -23,7 +23,7 @@ def quickplot(x,year_mult=10,show=True,recess=False,save=False,name='file',width
         fullname = name+'.png'
         fig.savefig(fullname,bbox_inches='tight')
 
-def window_equalize(series_list):
+def window_equalize(fred_list):
 
     '''Takes a list of FRED objects and adjusts the date windows for each to the smallest common window.'''
 
