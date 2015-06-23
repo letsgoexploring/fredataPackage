@@ -9,15 +9,14 @@ This repository contains:
 
 1. **fredpy.py**: The module file
 2. **fredpy_documentation.pdf**: Documentation with examples
-3. **Example Lecture Slides**: Files for producing example lecture slides
-4. **Example Scripts**:
+3. **Example Scripts**:
 * **fredpy_example1.py**: Program for example 1 in documentation
 * **fredpy_example2.py**: Program for example 2 in documentation
 * **fredpy_example3.py**: Program for example 3 in documentation
-5. **Yield Curve Animation**:
+4. **Yield Curve Animation**:
 * **yield_curve.py**: Program for collecting yield curve data from FRED
 * **US_Treasury_Yield_Curve_With_Macro_Data.py**: Program for creating a yield curve [animation](http://youtu.be/34bIQGrndao)
-6. **documentation**: Files used to create fredpy_documentation.pdf.
+5. **documentation**: Files used to create fredpy_documentation.pdf.
 
 Free use of this code is welcome. Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
 
