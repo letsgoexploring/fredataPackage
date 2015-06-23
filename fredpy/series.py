@@ -154,7 +154,7 @@ class series:
             win_min is the date of the minimum date
             win_max is the date of the maximum date
         
-        both are strings in 'yyyy-mm-dd' format'''
+        both are strings in either 'yyyy-mm-dd' or 'mm-dd-yyyy' format'''
 
         T = len(self.data)
         win_min = win[0]

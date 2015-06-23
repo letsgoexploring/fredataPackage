@@ -182,7 +182,7 @@ Each \ttt{fredpy.series} instance has the following methods:
 	
 	\itemb \ttt{ma2side(length)}
 		\IZ
-		\itemb COnstructs a two-sided moving average with window of size $2\times\ttt{length}+1$. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma1side} \emph{method}. Adds attributes \ttt{ma2data}, \ttt{ma2dates}, \ttt{ma2datenumbers}, and \ttt{ma2daterange}.
+		\itemb Constructs a two-sided moving average with window of size $2\times\ttt{length}+1$. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma1side} \emph{method}. Adds attributes \ttt{ma2data}, \ttt{ma2dates}, \ttt{ma2datenumbers}, and \ttt{ma2daterange}.
 		\ZI
 		
 	\itemb \ttt{ma1side(length)}
@@ -197,9 +197,9 @@ Each \ttt{fredpy.series} instance has the following methods:
 		
 	\itemb \ttt{window(win)}
 		\IZ
-		\itemb Constrains data series to a specified window. \ttt{win} is a list specifying the minimum and maximum dates to be included. Dates must be in yyyy-mm-dd format. For example, to restrict observations to those between January 1, 1980 to December 31, 1999:
+		\itemb Constrains data series to a specified window. \ttt{win} is a list specifying the minimum and maximum dates to be included. Dates must be in either mm-dd-yyyy or yyyy-mm-dd format. For example, to restrict observations to those between January 1, 1980 to December 31, 1999:
 			\EE
-			\verb!win=['1980-01-01','1999-12-31']!.
+			\verb!win=['01-01-1980','12-31-1999']!.
 			\FF
 		Other attributes modified: \ttt{daterange}
 		\ZI
