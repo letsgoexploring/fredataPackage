@@ -30,8 +30,13 @@ class series:
         # download fred series from FRED and save information about the series
         series_url = "http://research.stlouisfed.org/fred2/data/"
         series_url = series_url + series_id + '.txt'
-        # webs = urllib.request.urlopen(series_url)
-        webs = urllib.urlopen(series_url)
+
+        # Compensate for urllib differences in Python 2 and 3
+        try:
+            webs = urllib.request.urlopen(series_url)
+        except:
+            webs = urllib.urlopen(series_url)
+        
         raw = [line.decode('utf-8') for line in webs]
 
         for k, val in enumerate(raw):
@@ -150,15 +155,18 @@ class series:
         self.ma1daterange = self.ma1dates[0]+' to '+self.ma1dates[-1]
 
 
-    def recent(self,lag=10):
+    def recent(self,N=10):
+
         '''lag is the number of obs to include in the window'''
+
         t = self.t
-        self.data  =self.data[-lag * t:]
-        self.dates =self.dates[-lag * t:]
+        self.data  =self.data[-N:]
+        self.dates =self.dates[-N:]
         self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
         self.daterange = self.dates[0]+' to '+self.dates[-1]
 
     def window(self,win):
+
         '''Constrains the data to a specified date window.
 
         win is an ordered pair: win = [win_min, win_max]
@@ -256,7 +264,7 @@ class series:
             print('Warning: data frequency is not quarterly!')
         elif low==1.5 and high==8 and self.t !=4:
             print('Warning: data frequency is not quarterly!')
-        self.cffcycle, self.cfftrend = tsa.filters.cffilter(self.data,low=low, high=high, drift=drift)
+        self.cfcycle, self.cftrend = tsa.filters.cffilter(self.data,low=low, high=high, drift=drift)
 
     def lintrend(self):
 
@@ -267,14 +275,14 @@ class series:
 
         '''
 
-        Y     = self.data
-        time  = np.arange(len(self.data))
-        ones  = np.ones(len(self.data))
-        X     = np.column_stack([ones,time])
-        model = sm.OLS(Y, X)
+        y = self.data
+        time = np.arange(len(self.data))
+        x = np.column_stack([time])
+        x = sm.add_constant(x)
+        model = sm.OLS(y,x)
         result= model.fit()
-        pred  = model.predict(X)
-        self.lincycle= [y-p for y,p in zip(Y,pred)]
+        pred  = result.predict(x)
+        self.lincycle= y-pred
         self.lintrend= pred
 
     def firstdiff(self):
@@ -360,7 +368,7 @@ class series:
                 if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>3):
                     temp_data = np.append(temp_data,self.data[k]+self.data[k+1]+self.data[k+2]+self.data[k+3])
                     temp_dates.append(self.dates[k])
-        else:
+        elif method == 'end':
             for k in range(0,T):
                 if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>3):
                     '''Annual data is the end of month value'''
@@ -400,7 +408,7 @@ class series:
                     temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+ self.data[k+3] + self.data[k+4] + self.data[k+5]
                         + self.data[k+6] + self.data[k+7] + self.data[k+8] + self.data[k+9] + self.data[k+10] + self.data[k+11]))
                     temp_dates.append(self.dates[k])
-        else:
+        elif method=='end':
             for k in range(0,T):
                 '''Annual data is the end of year value'''
                 if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>11):
@@ -412,13 +420,13 @@ class series:
         self.t = 1
 
 
-    def percapita(self,total_pop = False):
+    def percapita(self,total_pop = True):
 
         '''Converts data to per capita (US) using one of two methods:
 
-            total_pop == False : Civilian noninstitutional population is defined as persons 16 years of
+            total_pop == True : Civilian noninstitutional population is defined as persons 16 years of
                                     age and older (default)
-            total_pop =! False : Total population US population
+            total_pop =! True : Total population US population
 
         '''
 
@@ -474,13 +482,12 @@ class series:
 
         populate.window(windo)
         self.window(windo)
-        self.data = [a/b for a,b in zip(self.data,populate.data)]
-        # self.dates = temp_dates
-        # self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.data = self.data/populate.data
         self.title = self.title+' Per Capita'
-        self.unit = self.units+' Per Thousand People'
+        self.units = self.units+' Per Thousand People'
 
     def recessions(self):
+        
         '''Method creates gray recession bars for plots. Should be used after a plot has been made but
             before either (1) a new plot is created or (2) a show command is issued.'''
 
@@ -653,8 +660,7 @@ class series:
         
         for k in range(len(peaks2)):
             pylab.axvspan(peaks2num[k], troughs2num[k], edgecolor= '0.5', facecolor='0.5', alpha=0.5)
-
-
+            
 def quickplot(x,year_mult=10,show=True,recess=False,save=False,name='file',width=2):
 
     '''Create a plot of a FRED data series'''
@@ -695,7 +701,7 @@ def date_numbers(date_strings):
     datenumbers = [dateutil.parser.parse(s) for s in date_strings]
     return datenumbers
 
-def toFred(data,dates,pandasDates=False,title=None,t=None,season=None,freq=None,source=None,units=None,daterange=None, idCode=None,updated=None):
+def toFredSeries(data,dates,pandasDates=False,title=None,t=None,season=None,freq=None,source=None,units=None,daterange=None, idCode=None,updated=None):
     '''function for creating a FRED object from a set of data.'''
     f = series('UNRATE')
     f.data = data
