@@ -1,4 +1,4 @@
-import fredclass, urllib, dateutil
+import fredpy, dateutil
 import matplotlib.pyplot as plt
 import matplotlib.dates as dts
 import numpy as np
@@ -9,14 +9,14 @@ def yc(date,all_yields=None):
 
 	yields=[]
 	if all_yields == None:
-		y1m= fredclass.fred('DTB4WK')
-		y3m= fredclass.fred('DTB3')
-		y6m= fredclass.fred('DTB6')
-		y1 = fredclass.fred('DGS1')
-		y5 = fredclass.fred('DGS5')
-		y10= fredclass.fred('DGS10')
-		y20= fredclass.fred('DGS20')
-		y30= fredclass.fred('DGS30')
+		y1m= fredpy.series('DTB4WK')
+		y3m= fredpy.series('DTB3')
+		y6m= fredpy.series('DTB6')
+		y1 = fredpy.series('DGS1')
+		y5 = fredpy.series('DGS5')
+		y10= fredpy.series('DGS10')
+		y20= fredpy.series('DGS20')
+		y30= fredpy.series('DGS30')
 
 		all_yields = [y1m,y3m,y6m,y1,y5,y10,y20,y30] 
 

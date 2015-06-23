@@ -3,7 +3,7 @@
 from __future__ import division
 import matplotlib
 matplotlib.use("Agg")
-import fredclass, urllib, dateutil, datetime
+import fredpy, dateutil, datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -21,14 +21,14 @@ day        = datetime.timedelta(days =1)
 dates, date_strs, maturities, yield_curves,masks = [],[],[],[],[]
 
 # Create Fred objects
-y1m= fredclass.fred('DTB4WK')
-y3m= fredclass.fred('DTB3')
-y6m= fredclass.fred('DTB6')
-y1 = fredclass.fred('DGS1')
-y5 = fredclass.fred('DGS5')
-y10= fredclass.fred('DGS10')
-y20= fredclass.fred('DGS20')
-y30= fredclass.fred('DGS30')
+y1m= fredpy.series('DTB4WK')
+y3m= fredpy.series('DTB3')
+y6m= fredpy.series('DTB6')
+y1 = fredpy.series('DGS1')
+y5 = fredpy.series('DGS5')
+y10= fredpy.series('DGS10')
+y20= fredpy.series('DGS20')
+y30= fredpy.series('DGS30')
 
 # Limit all data series to the same date windows
 y1m.window(win)
@@ -95,15 +95,15 @@ while t <= dateT:
 
 k=0
 def run(*args):
-	global dates, date_strs,maturities, yield_curves,masks,k
-	# print k
-	maturity = maturities[k]
-	yield_curve = yield_curves[k]
-	ymask = masks[k]
-   	line1.set_data(maturity[ymask], yield_curve[ymask])
-	date_text.set_text(date_strs[k])
-	k +=1
-	return line1, date_text
+    global dates, date_strs,maturities, yield_curves,masks,k
+    # print k
+    maturity = maturities[k]
+    yield_curve = yield_curves[k]
+    ymask = masks[k]
+    line1.set_data(maturity[ymask], yield_curve[ymask])
+    date_text.set_text(date_strs[k])
+    k +=1
+    return line1, date_text
 
 
 ani = animation.FuncAnimation(fig, run, N-1, blit=False,repeat=False,interval=1)
