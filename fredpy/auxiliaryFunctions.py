@@ -1,5 +1,6 @@
 import dateutil, pylab, datetime
 import numpy as np
+import series
 
 def quickplot(x,year_mult=10,show=True,recess=False,save=False,name='file',width=2):
 
