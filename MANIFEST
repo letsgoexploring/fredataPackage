@@ -2,5 +2,3 @@
 setup.cfg
 setup.py
 fredpy/__init__.py
-fredpy/auxiliaryFunctions.py
-fredpy/series.py

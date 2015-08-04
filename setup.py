@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name = 'fredpy',
   packages = ['fredpy'],
-  version = '0.1.3a',
+  version = '0.4.1',
   description = 'A package for downloading and working with data from Federal Reserve Economic Data',
   author = 'Brian C. Jenkins',
   author_email = 'bcjenkin@uci.edu',
