@@ -51,13 +51,13 @@ class series:
         date=list(range(len(raw2)))
         data=list(range(len(raw2)))
 
-        # Create data for FRED object. Replace missing values with NaN string
+        # Create data for FRED object. Replace missing values with np.nan
         for k,n in enumerate(raw2):
             date[k] = raw2[k].split()[0]
             if raw2[k].split()[1] != '.':
                 data[k] = float(raw2[k].split()[1])
             else:
-                data[k] = 'NaN'
+                data[k] = np.nan
 
         self.idCode    = series_id
         self.data  = np.array(data)
