@@ -183,7 +183,10 @@ class series:
         self.data = self.data[min0:max0]
         self.dates = self.dates[min0:max0]
         self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
-        self.daterange = self.dates[0]+' to '+self.dates[-1]
+        if len(self.dates)>0:
+            self.daterange = self.dates[0]+' to '+self.dates[-1]
+        else:
+            self.daterange = 'Null'
 
     def log(self):
         
