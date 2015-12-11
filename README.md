@@ -21,4 +21,4 @@ This repository contains:
 
 Free use of this code is welcome. Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
 
-_Updated: June 23, 2015_
+_Updated: December 11, 2015_
