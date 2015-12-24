@@ -75,7 +75,7 @@ class series:
         else:
             pct = 100*(self.data[1:]/self.data[0:-1] - 1)
         if annualized==True:
-            pct = [t*x for x in pct]
+            pct = np.array([t*x for x in pct])
         if method=='backward':
             dte = self.dates[1:]
         elif method=='forward':
