@@ -62,7 +62,7 @@ class series:
         self.idCode    = series_id
         self.data  = np.array(data)
         self.dates = date
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
 
     def pc(self,log=True,method='backward',annualized=False):
 
@@ -82,7 +82,7 @@ class series:
             dte = self.dates[:-1]
         self.data  =pct
         self.dates =dte
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.units = 'Percent'
         self.title = 'Percentage Change in '+self.title
 
@@ -102,7 +102,7 @@ class series:
             dte = self.dates[:T-t]
         self.data  =pct
         self.dates =dte
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.units = 'Percent'
         self.title = 'Annual Percentage Change in '+self.title
 
@@ -117,7 +117,7 @@ class series:
         
         self.ma2data = z
         self.ma2dates =self.dates[length:-length]
-        self.ma2datenumbers = [dateutil.parser.parse(s) for s in self.ma2dates]
+        self.ma2datetimes = [dateutil.parser.parse(s) for s in self.ma2dates]
         self.ma2daterange = self.ma2dates[0]+' to '+self.ma2dates[-1]
 
     def ma1side(self,length):
@@ -131,7 +131,7 @@ class series:
 
         self.ma1data = z
         self.ma1dates =self.dates[length-1:]
-        self.ma1datenumbers = [dateutil.parser.parse(s) for s in self.ma1dates]
+        self.ma1datetimes = [dateutil.parser.parse(s) for s in self.ma1dates]
         self.ma1daterange = self.ma1dates[0]+' to '+self.ma1dates[-1]
 
 
@@ -142,7 +142,7 @@ class series:
         t = self.t
         self.data  =self.data[-N:]
         self.dates =self.dates[-N:]
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.daterange = self.dates[0]+' to '+self.dates[-1]
 
     def window(self,win):
@@ -182,7 +182,7 @@ class series:
 
         self.data = self.data[min0:max0]
         self.dates = self.dates[min0:max0]
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         if len(self.dates)>0:
             self.daterange = self.dates[0]+' to '+self.dates[-1]
         else:
@@ -202,7 +202,7 @@ class series:
 
             self.bpcycle : cyclical component of series
             self.bpdates : dates of bp filtered data
-            self.bpdatenumbers : date numbers of bp filtered data
+            self.bpdatetimes : date numbers of bp filtered data
             
             default is for quarterly data.
 
@@ -215,7 +215,7 @@ class series:
             
         self.bpcycle = tsa.filters.bkfilter(self.data,low=low,high=high,K=K)
         self.bpdates = self.dates[K:-K]
-        self.bpdatenumbers = [dateutil.parser.parse(s) for s in self.bpdates]
+        self.bpdatetimes = [dateutil.parser.parse(s) for s in self.bpdates]
         
     def hpfilter(self,lamb=1600):
 
@@ -275,7 +275,7 @@ class series:
             self.diffcycle : cyclical component of series
             self.difftrend :trend component of series
             self.diffdates : shorter date sequence
-            self.diffdatenumbers : shorter date numbers
+            self.diffdatetimes : shorter date numbers
             self.diffdata  : shorter data series
 
         '''
@@ -284,7 +284,7 @@ class series:
         gam   = np.mean(dy)
         self.diffcycle = dy - gam
         self.diffdates = self.dates[1:]
-        self.diffdatenumbers= self.datenumbers[1:]
+        self.diffdatetimes= self.datetimes[1:]
         self.diffdata  = self.data[1:]
         self.difftrend = self.data[0:-1]
 
@@ -303,25 +303,25 @@ class series:
             print('Warning: data frequency is not monthly!')
         T = len(self.data)
         temp_data = self.data[0:0]
-        temp_dates = self.datenumbers[0:0]
+        temp_dates = self.datetimes[0:0]
         if method == 'average':
             for k in range(1,T-1):
-                if (self.datenumbers[k].month == 2) or (self.datenumbers[k].month == 5) or (self.datenumbers[k].month == 8) or (self.datenumbers[k].month == 11):
+                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
                     temp_data = np.append(temp_data,(self.data[k-1]+self.data[k]+self.data[k+1])/3)
                     temp_dates.append(self.dates[k-1])
         elif method == 'sum':
             for k in range(1,T-1):
-                if (self.datenumbers[k].month == 2) or (self.datenumbers[k].month == 5) or (self.datenumbers[k].month == 8) or (self.datenumbers[k].month == 11):
+                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
                     temp_data = np.append(temp_data,(self.data[k-1]+self.data[k]+self.data[k+1]))
                     temp_dates.append(self.dates[k-1])
         elif method== 'end':
             for k in range(1,T-1):
-                if (self.datenumbers[k].month == 2) or (self.datenumbers[k].month == 5) or (self.datenumbers[k].month == 8) or (self.datenumbers[k].month == 11):
+                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
                     temp_data = np.append(temp_data,self.data[k+1])
                     temp_dates.append(self.dates[k-1])
         self.data = temp_data
         self.dates = temp_dates
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.t = 4
 
     def quartertoannual(self,method='average'):
@@ -338,28 +338,28 @@ class series:
             print('Warning: data frequency is not quarterly!')
         T = len(self.data)
         temp_data = self.data[0:0]
-        temp_dates = self.datenumbers[0:0]
+        temp_dates = self.datetimes[0:0]
         if method =='average':
             for k in range(0,T):
                 '''Annual data is the average of monthly data'''
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>3):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
                     temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+self.data[k+3])/4)
                     temp_dates.append(self.dates[k])
         elif method=='sum':
             for k in range(0,T):
                 '''Annual data is the sum of monthly data'''
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>3):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
                     temp_data = np.append(temp_data,self.data[k]+self.data[k+1]+self.data[k+2]+self.data[k+3])
                     temp_dates.append(self.dates[k])
         elif method == 'end':
             for k in range(0,T):
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>3):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
                     '''Annual data is the end of month value'''
                     temp_data = np.append(temp_data,self.data[k+3])
                     temp_dates.append(self.dates[k])
         self.data = temp_data
         self.dates = temp_dates
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.t = 1
 
     def monthtoannual(self,method='average'):
@@ -376,30 +376,30 @@ class series:
             print('Warning: data frequency is not monthly!')
         T = len(self.data)
         temp_data = self.data[0:0]
-        temp_dates = self.datenumbers[0:0]
+        temp_dates = self.datetimes[0:0]
         if method =='average':
             for k in range(0,T):
                 '''Annual data is the average of monthly data'''
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>11):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
                     temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+ self.data[k+3] + self.data[k+4] + self.data[k+5]
                         + self.data[k+6] + self.data[k+7] + self.data[k+8] + self.data[k+9] + self.data[k+10] + self.data[k+11])/12)  
                     temp_dates.append(self.dates[k])
         elif method =='sum':
             for k in range(0,T):
                 '''Annual data is the sum of monthly data'''
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>11):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
                     temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+ self.data[k+3] + self.data[k+4] + self.data[k+5]
                         + self.data[k+6] + self.data[k+7] + self.data[k+8] + self.data[k+9] + self.data[k+10] + self.data[k+11]))
                     temp_dates.append(self.dates[k])
         elif method=='end':
             for k in range(0,T):
                 '''Annual data is the end of year value'''
-                if (self.datenumbers[k].month == 1) and (len(self.datenumbers[k:])>11):
+                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
                     temp_data = np.append(temp_data,self.data[k+11])
                     temp_dates.append(self.dates[k])
         self.data = temp_data
         self.dates = temp_dates
-        self.datenumbers = [dateutil.parser.parse(s) for s in self.dates]
+        self.datetimes = [dateutil.parser.parse(s) for s in self.dates]
         self.t = 1
 
 
@@ -425,15 +425,15 @@ class series:
         # Generate quarterly population data.
         if self.t == 4:
             for k in range(1,T2-1):
-                if (populate.datenumbers[k].month == 2) or (populate.datenumbers[k].month == 5) or (populate.datenumbers[k].month == 8) or \
-                (populate.datenumbers[k].month == 11):
+                if (populate.datetimes[k].month == 2) or (populate.datetimes[k].month == 5) or (populate.datetimes[k].month == 8) or \
+                (populate.datetimes[k].month == 11):
                     temp_data = np.append(temp_data,(populate.data[k-1]+populate.data[k]+populate.data[k+1])/3)
                     temp_dates.append(populate.dates[k])
 
         # Generate annual population data.
         if self.t == 1:
             for k in range(0,T2):
-                if (populate.datenumbers[k].month == 1) and (len(populate.datenumbers[k:])>11):
+                if (populate.datetimes[k].month == 1) and (len(populate.datetimes[k:])>11):
                     temp_data = np.append(temp_data,(populate.data[k]+populate.data[k+1]+populate.data[k+2]+populate.data[k+3]+populate.data[k+4]+populate.data[k+5] \
                         +populate.data[k+6]+populate.data[k+7]+populate.data[k+8]+populate.data[k+9]+populate.data[k+10]+populate.data[k+11])/12) 
                     temp_dates.append(populate.dates[k])
@@ -445,20 +445,20 @@ class series:
         # form the population objects.    
         populate.data     = temp_data
         populate.dates    = temp_dates
-        populate.datenumbers = [dateutil.parser.parse(s) for s in populate.dates]
+        populate.datetimes = [dateutil.parser.parse(s) for s in populate.dates]
 
 
         # find the minimum of data window:
-        if populate.datenumbers[0].date() <= self.datenumbers[0].date():
-            win_min = self.datenumbers[0].strftime('%Y-%m-%d')
+        if populate.datetimes[0].date() <= self.datetimes[0].date():
+            win_min = self.datetimes[0].strftime('%Y-%m-%d')
         else:
-            win_min = populate.datenumbers[0].strftime('%Y-%m-%d')
+            win_min = populate.datetimes[0].strftime('%Y-%m-%d')
 
         # find the maximum of data window:
-        if populate.datenumbers[-1].date() <= self.datenumbers[-1].date():
-            win_max = populate.datenumbers[-1].strftime('%Y-%m-%d')
+        if populate.datetimes[-1].date() <= self.datetimes[-1].date():
+            win_max = populate.datetimes[-1].strftime('%Y-%m-%d')
         else:
-            win_max = self.datenumbers[-1].strftime('%Y-%m-%d')
+            win_max = self.datetimes[-1].strftime('%Y-%m-%d')
 
         # set data window
         windo = [win_min,win_max]
@@ -652,7 +652,7 @@ def quickplot(x,year_mult=10,show=True,recess=False,save=False,name='file',width
 
     years  = pylab.YearLocator(year_mult)
     ax = fig.add_subplot(111)
-    ax.plot_date(x.datenumbers,x.data,'b-',lw=width)
+    ax.plot_date(x.datetimes,x.data,'b-',lw=width)
     ax.xaxis.set_major_locator(years)
     ax.set_title(x.title)
     ax.set_ylabel(x.units)
@@ -670,8 +670,8 @@ def window_equalize(fred_list):
 
     '''Takes a list of FRED objects and adjusts the date windows for each to the smallest common window.'''
 
-    minimums = [ k.datenumbers[0].date() for k in fred_list]
-    maximums = [ k.datenumbers[-1].date() for k in fred_list]
+    minimums = [ k.datetimes[0].date() for k in fred_list]
+    maximums = [ k.datetimes[-1].date() for k in fred_list]
     win_min =  max(minimums).strftime('%Y-%m-%d')
     win_max =  min(maximums).strftime('%Y-%m-%d')
     windo = [win_min,win_max]
@@ -681,8 +681,8 @@ def window_equalize(fred_list):
 def date_numbers(date_strings):
 
     '''Converts a list of date strings in yyy-mm-dd format to date numbers.'''
-    datenumbers = [dateutil.parser.parse(s) for s in date_strings]
-    return datenumbers
+    datetimes = [dateutil.parser.parse(s) for s in date_strings]
+    return datetimes
 
 def toFredSeries(data,dates,pandasDates=False,title=None,t=None,season=None,freq=None,source=None,units=None,daterange=None, idCode=None,updated=None):
     '''function for creating a FRED object from a set of data.'''
@@ -693,7 +693,7 @@ def toFredSeries(data,dates,pandasDates=False,title=None,t=None,season=None,freq
     else:
         f.dates = dates
     if type(f.dates[0])==str:
-        f.datenumbers = [dateutil.parser.parse(s) for s in f.dates]
+        f.datetimes = [dateutil.parser.parse(s) for s in f.dates]
     f.title = title
     f.t = t
     f.season = season

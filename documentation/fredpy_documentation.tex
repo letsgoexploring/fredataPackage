@@ -109,7 +109,7 @@ Each \ttt{fredpy.series} instance is initialized with a set of attributes that d
 	\itemb \ttt{idCode}: The unique FRED identification code for the series.
 	\itemb \ttt{data}: A list containing the data.
 	\itemb \ttt{dates}: A list containing date strings in yyy-mm-dd format.
-	\itemb \ttt{datenumbers}: A list containing date numbers to use with the \ttt{date time} package.
+	\itemb \ttt{datetimes}: A list containing the dates in \ttt{datetime} format for use with the \verb!plot_date! function from \ttt{matplotlib}.
 	\ZI
 In terms of the GDP example, find the precise title of data series used by FRED:
 
@@ -164,7 +164,7 @@ Each \ttt{fredpy.series} instance has the following methods:
 			\EE
 			100 \times \left[(X_t - X_{t-1})/X_{t-1}\right].
 			\FF
-		Also, method drops the first elements of the \ttt{dates} and \ttt{datenumbers} attributes to account for the shorter observation window. Other attributes modified: \ttt{units} and \ttt{title}.
+		Also, method drops the first elements of the \ttt{dates} and \ttt{datetimes} attributes to account for the shorter observation window. Other attributes modified: \ttt{units} and \ttt{title}.
 		\ZI
 		
 	\itemb \ttt{apc(log=True)}
@@ -177,22 +177,22 @@ Each \ttt{fredpy.series} instance has the following methods:
 			\EE
 			100 \times \left[(X_t - X_{t-k})/X_{t-k}\right].
 			\FF
-		Also, method drops the first $k$ elements of the \ttt{dates} and \ttt{datenumbers} attributes to account for the shorter observation window. Other attributes modified: \ttt{units} and \ttt{title}.
+		Also, method drops the first $k$ elements of the \ttt{dates} and \ttt{datetimes} attributes to account for the shorter observation window. Other attributes modified: \ttt{units} and \ttt{title}.
 		\ZI
 	
 	\itemb \ttt{ma2side(length)}
 		\IZ
-		\itemb Constructs a two-sided moving average with window of size $2\times\ttt{length}+1$. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma1side} \emph{method}. Adds attributes \ttt{ma2data}, \ttt{ma2dates}, \ttt{ma2datenumbers}, and \ttt{ma2daterange}.
+		\itemb Constructs a two-sided moving average with window of size $2\times\ttt{length}+1$. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma1side} \emph{method}. Adds attributes \ttt{ma2data}, \ttt{ma2dates}, \ttt{ma2datetimes}, and \ttt{ma2daterange}.
 		\ZI
 		
 	\itemb \ttt{ma1side(length)}
 		\IZ
-		\itemb Constructs a one-sided (left side) moving average with window of size \ttt{length}. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma2side} \emph{method}. Adds attributes \ttt{ma1data}, \ttt{ma1dates}, \ttt{ma1datenumbers}, and \ttt{ma1daterange}.
+		\itemb Constructs a one-sided (left side) moving average with window of size \ttt{length}. \emph{Note the different treatment of} \ttt{length} \emph{relative to the} \ttt{ma2side} \emph{method}. Adds attributes \ttt{ma1data}, \ttt{ma1dates}, \ttt{ma1datetimes}, and \ttt{ma1daterange}.
 		\ZI
 		
 	\itemb \ttt{recent(N=10)}
 		\IZ
-		\itemb Constrains data series to the most recent \ttt{N} observations. The \ttt{dates} and \ttt{datenumbers} attributes are adjusted from both ends to account for the reduced observation window. Other attributes modified: \ttt{daterange}
+		\itemb Constrains data series to the most recent \ttt{N} observations. The \ttt{dates} and \ttt{datetimes} attributes are adjusted from both ends to account for the reduced observation window. Other attributes modified: \ttt{daterange}
 		\ZI
 		
 	\itemb \ttt{window(win)}
@@ -215,7 +215,7 @@ Each \ttt{fredpy.series} instance has the following methods:
 			\IZ
             \itemb \ttt{bpcycle}: cyclical component of series
             \itemb \ttt{bpdates}: dates corresponding to bp filtered data
-            \itemb \ttt{bpdatenumbers}: date numbers corresponding to bp filtered data
+            \itemb \ttt{bpdatetimes}: date numbers corresponding to bp filtered data
             \ZI
        Method displays a warning if default values are used for \ttt{low}, \ttt{high}, and $\ttt{K}$ and the original series is not quarterly.
 		\ZI
@@ -257,25 +257,25 @@ Each \ttt{fredpy.series} instance has the following methods:
             \itemb \ttt{diffcycle}: cyclical component of series
             \itemb \ttt{difftrend}: trend component of series
             \itemb \ttt{diffdates}: shorter date sequence
-            \itemb \ttt{diffdatenumbers}: shorter date numbers
+            \itemb \ttt{diffdatetimes}: shorter date numbers
             \itemb \ttt{diffdata}: shorter data series
             \ZI
         \ZI
 		
 	\itemb \verb!monthtoquarter(method='average')!
 		\IZ
-		\itemb Converts series with monthly frequency to quarterly frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datenumbers}, \ttt{t} attributes. If \verb!method='average'!, then the value for a quarter is the average over each month of the corresponding three month period. If \verb!method='sum'!, then the value for a quarter is the sum over the months of the corresponding three month period. And if \verb!method='end'!, then the value for a quarter is value of the last  month of the corresponding three month period. 
+		\itemb Converts series with monthly frequency to quarterly frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datetimes}, \ttt{t} attributes. If \verb!method='average'!, then the value for a quarter is the average over each month of the corresponding three month period. If \verb!method='sum'!, then the value for a quarter is the sum over the months of the corresponding three month period. And if \verb!method='end'!, then the value for a quarter is value of the last  month of the corresponding three month period. 
 		\ZI		
 	
 	\newpage	
 	\itemb \verb!quartertoannual(method='average')!
 		\IZ
-		\itemb Converts series with quarterly frequency to annual frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datenumbers}, \ttt{t} attributes. If \verb!method='average'!, then the value for a year is the average over each quarter of the corresponding four quarter period. If \verb!method='sum'!, then the value for a year is the sum over the quarters of the corresponding four quarter period. And if \verb!method='end'!, then the value for a year is value of the last  quarter of the corresponding four quarter period. 
+		\itemb Converts series with quarterly frequency to annual frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datetimes}, \ttt{t} attributes. If \verb!method='average'!, then the value for a year is the average over each quarter of the corresponding four quarter period. If \verb!method='sum'!, then the value for a year is the sum over the quarters of the corresponding four quarter period. And if \verb!method='end'!, then the value for a year is value of the last  quarter of the corresponding four quarter period. 
 		\ZI		
 	
 	\itemb \verb!monthtoannual(method='average')!
 		\IZ
-		\itemb Converts series with monthly frequency to annual frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datenumbers}, \ttt{t} attributes. If \verb!method='average'!, then the value for a year is the average over each month of the corresponding twelve month period. If \verb!method='sum'!, then the value for a year is the sum over the months of the corresponding twelve month period. And if \verb!method='end'!, then the value for a year is value of the last  month of the corresponding twelve month period.  
+		\itemb Converts series with monthly frequency to annual frequency. Modifies \ttt{data}, \ttt{dates}, \ttt{datetimes}, \ttt{t} attributes. If \verb!method='average'!, then the value for a year is the average over each month of the corresponding twelve month period. If \verb!method='sum'!, then the value for a year is the sum over the months of the corresponding twelve month period. And if \verb!method='end'!, then the value for a year is value of the last  month of the corresponding twelve month period.  
 		\ZI				
 		
 		
@@ -432,7 +432,7 @@ Next we will construct a more elaborate plot using the \ttt{fredpy}. The objecti
 
 \verb!ax1 = fig.add_subplot(221)!
 
-\verb!ax1.plot_date(gdp.datenumbers,gdp.data,'b-',lw = 3)!
+\verb!ax1.plot_date(gdp.datetimes,gdp.data,'b-',lw = 3)!
 
 \verb!ax1.xaxis.set_major_locator(years10)}!
 
@@ -440,7 +440,7 @@ Next we will construct a more elaborate plot using the \ttt{fredpy}. The objecti
 
 \verb!ax1.set_ylabel('Trillions of 2009 $')!
 
-\verb!fig.autofmt\_xdate()!
+\verb!fig.autofmt_xdate()!
 
 \ttt{ax1.grid(True)}
 
@@ -457,7 +457,7 @@ Next we will construct a more elaborate plot using the \ttt{fredpy}. The objecti
 
 \verb!ax2 = fig.add_subplot(222)!
 
-\verb!ax2.plot_date(cpi.datenumbers,cpi.data,'b-',lw = 3)!
+\verb!ax2.plot_date(cpi.datetimes,cpi.data,'b-',lw = 3)!
 
 \verb!ax2.xaxis.set_major_locator(years10)!
 
@@ -480,7 +480,7 @@ Next we will construct a more elaborate plot using the \ttt{fredpy}. The objecti
 
 \verb!ax3 = fig.add_subplot(223)!
 
-\verb!ax3.plot_date(unemp.datenumbers,unemp.data,'b-',lw = 3)!
+\verb!ax3.plot_date(unemp.datetimes,unemp.data,'b-',lw = 3)!
 
 \verb!ax3.xaxis.set_major_locator(years10)!
 
@@ -503,7 +503,7 @@ Next we will construct a more elaborate plot using the \ttt{fredpy}. The objecti
 
 \verb!ax4 = fig.add_subplot(224)!
 
-\verb!ax4.plot_date(tbill.datenumbers,tbill.data,'b-',lw = 3)!
+\verb!ax4.plot_date(tbill.datetimes,tbill.data,'b-',lw = 3)!
 
 \verb!ax4.xaxis.set_major_locator(years10)!
 
@@ -596,9 +596,9 @@ In the final example, we will use the Hodrick-Prescott (HP) and the Bandpass (BP
 
 \verb!ax1 = fig.add_subplot(111)!
 
-\verb!ax1.plot_date(gdp.datenumbers,gdp.hpcycle,'b-',lw = 2)!
+\verb!ax1.plot_date(gdp.datetimes,gdp.hpcycle,'b-',lw = 2)!
 
-\verb!ax1.plot_date(gdp.bpdatenumbers,gdp.bpcycle,'r--',lw = 2)!
+\verb!ax1.plot_date(gdp.bpdatetimes,gdp.bpcycle,'r--',lw = 2)!
 
 \verb!ax1.xaxis.set_major_locator(years10)!
 
