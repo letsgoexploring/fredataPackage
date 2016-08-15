@@ -8,8 +8,7 @@ class series:
     def __init__(self,series_id):
         
         # download fred series from FRED and save information about the series
-        series_url = "http://research.stlouisfed.org/fred2/data/"
-        series_url = series_url + series_id + '.txt'
+        series_url = 'http://research.stlouisfed.org/fred2/data/' + series_id + '.txt'
 
         # Compensate for urllib differences in Python 2 and 3
         try:
