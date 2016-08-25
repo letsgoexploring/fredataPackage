@@ -1,0 +1,652 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fredpy.series class &mdash; fredpy 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="fredpy 2.0.1 documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fredpy-series-class">
+<h1><code class="docutils literal"><span class="pre">fredpy.series</span></code> class<a class="headerlink" href="#fredpy-series-class" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="fredpy.series">
+<em class="property">class </em><code class="descclassname">fredpy.</code><code class="descname">series</code><span class="sig-paren">(</span><em>series_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of a <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object that stores information about the specified data series from FRED with the unique series ID code given by <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; unique FRED series ID. If <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code> equals None, an empy <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object is created.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">data:</th><td class="field-body">(numpy ndarray) &#8211;  data values.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">daterange:</th><td class="field-body">(string) &#8211; specifies the dates of the first and last observations.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body">(list) &#8211; list of date strings in YYYY-MM-DD format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body">(numpy ndarray) &#8211; array containing observation dates formatted as datetime objects.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">freq:</th><td class="field-body">(string) &#8211; data frequency. &#8216;Daily&#8217;, &#8216;Weekly&#8217;, &#8216;Monthly&#8217;, &#8216;Quarterly&#8217;, or &#8216;Annual&#8217;.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">idCode:</th><td class="field-body">(string) &#8211; unique FRED series ID code.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">season:</th><td class="field-body">(string) &#8211; specifies whether the data has been seasonally adjusted.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">source:</th><td class="field-body">(string) &#8211; original source of the data.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">t:</th><td class="field-body">(integer) &#8211; number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">title:</th><td class="field-body">(string) &#8211; title of the data series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">units:</th><td class="field-body">(string) &#8211; units of the data series.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">updated:</th><td class="field-body">(string) &#8211; date series was last updated.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><strong>Methods:</strong></p>
+<blockquote>
+<div><dl class="function">
+<dt id="fredpy.series.apc">
+<code class="descname">apc</code><span class="sig-paren">(</span><em>log=True</em>, <em>method='backward'</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.apc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the percentage change in the data over one year.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, computes the percentage change as <span class="math">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False, compute the percentage change as <span class="math">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If &#8216;backward&#8217;, compute percentage change from the previous period. If &#8216;forward&#8217;, compute percentage change from current to subsequent period.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.bpfilter">
+<code class="descname">bpfilter</code><span class="sig-paren">(</span><em>low=6</em>, <em>high=32</em>, <em>K=12</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.bpfilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the bandpass (Baxter-King) filter of the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>low</strong> (<em>integer</em>) &#8211; Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.</li>
+<li><strong>high</strong> (<em>integer</em>) &#8211; Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.</li>
+<li><strong>K</strong> (<em>integer</em>) &#8211; Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the returned series, the following attributes are different from the input series:</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body"><p class="first">(list) &#8211;  Removes K values from each end of the original series.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body"><p class="first">(numpy ndarray) &#8211;  Removes K observations from each end of the original series.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">daterange:</th><td class="field-body"><p class="first">(string) &#8211; Corrects for the shorter date range.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">data:</th><td class="field-body"><p class="first">(pandas.core.frame.DataFrame) &#8211;  Changes the data attribute to a pandas DataFrame with the following columns:</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211; unfiltered series with K observations removed from each end.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.cffilter">
+<code class="descname">cffilter</code><span class="sig-paren">(</span><em>low=6</em>, <em>high=32</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.cffilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Hodrick-Prescott filter of the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>low</strong> (<em>integer</em>) &#8211; Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.</li>
+<li><strong>high</strong> (<em>integer</em>) &#8211; Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
+<blockquote class="last">
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.divide">
+<code class="descname">divide</code><span class="sig-paren">(</span><em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divides the data from the current fredpy series by the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.firstdiff">
+<code class="descname">firstdiff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.firstdiff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the first difference filter of original series.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the returned series, the following attributes are different from the input series:</p>
+<blockquote class="last">
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body"><p class="first">(list) &#8211;  Removes the first value from the original series.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body"><p class="first">(numpy ndarray) &#8211;  Removes the first value from the original series.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">daterange:</th><td class="field-body"><p class="first">(string) &#8211; Corrects for the shorter date range.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">data:</th><td class="field-body"><p class="first">(pandas.core.frame.DataFrame) &#8211;  Changes the data attribute to a pandas DataFrame with the following columns:</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211; unfiltered series with the first observation removed from the series.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of data values.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of data values.</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.hpfilter">
+<code class="descname">hpfilter</code><span class="sig-paren">(</span><em>lamb=1600</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hpfilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Hodrick-Prescott filter of the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lamb</strong> (<em>integer</em>) &#8211; The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
+<blockquote class="last">
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.lintrend">
+<code class="descname">lintrend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.lintrend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a simple linear filter of the data using OLS.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
+<blockquote class="last">
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.log">
+<code class="descname">log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the natural log of the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.ma1side">
+<code class="descname">ma1side</code><span class="sig-paren">(</span><em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.ma1side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a one-sided moving average with window equal to <code class="xref py py-attr docutils literal"><span class="pre">length</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>length</strong> (<em>integer</em>) &#8211; <code class="xref py py-attr docutils literal"><span class="pre">length</span></code> of the one-sided moving average.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.ma2side">
+<code class="descname">ma2side</code><span class="sig-paren">(</span><em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.ma2side" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Computes a two-sided moving average with window equal to 2 times <code class="xref py py-attr docutils literal"><span class="pre">length</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param integer length:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">half of <code class="xref py py-attr docutils literal"><span class="pre">length</span></code> of the two-sided moving average. For example, if <code class="xref py py-attr docutils literal"><span class="pre">length</span> <span class="pre">=</span> <span class="pre">12</span></code>, then the moving average will contain 24 the 12 periods before and the 12 periods after each observation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">return:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="function">
+<dt id="fredpy.series.minus">
+<code class="descname">minus</code><span class="sig-paren">(</span><em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.minus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtracts the data from <code class="docutils literal"><span class="pre">series2</span></code> from the data from the current fredpy series.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.monthtoannual">
+<code class="descname">monthtoannual</code><span class="sig-paren">(</span><em>method='average'</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.monthtoannual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts monthly data to annual data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If &#8216;average&#8217;, use the average values over each twelve month interval (default), if &#8216;sum,&#8217; use the sum of the values over each twelve month interval, and if &#8216;end&#8217; use the values at the end of each twelve month interval.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.monthtoquarter">
+<code class="descname">monthtoquarter</code><span class="sig-paren">(</span><em>method='average'</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.monthtoquarter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts monthly data to quarterly data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If &#8216;average&#8217;, use the average values over each three month interval (default), if &#8216;sum,&#8217; use the sum of the values over each three month interval, and if &#8216;end&#8217; use the values at the end of each three month interval.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.pc">
+<code class="descname">pc</code><span class="sig-paren">(</span><em>log=True</em>, <em>method='backward'</em>, <em>annualized=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.pc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the percentage change in the data from the preceding period.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, computes the percentage change as <span class="math">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False, compute the percentage change as <span class="math">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If &#8216;backward&#8217;, compute percentage change from the previous period. If &#8216;forward&#8217;, compute percentage change from current to subsequent period.</li>
+<li><strong>annualized</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is <span class="math">\(4\cdot 100\cdot\log(x_{t}/x_{t-1})\)</span>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.percapita">
+<code class="descname">percapita</code><span class="sig-paren">(</span><em>total_pop=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.percapita" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the data into per capita terms (US) by dividing by one of two measures of the total population.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>total_pop</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If <code class="docutils literal"><span class="pre">total_pop</span> <span class="pre">==</span> <span class="pre">True</span></code>, then use the toal population (Default). Else, use Civilian noninstitutional population defined as persons 16 years of age and older.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.plus">
+<code class="descname">plus</code><span class="sig-paren">(</span><em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.plus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the data from the current fredpy series to the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.quartertoannual">
+<code class="descname">quartertoannual</code><span class="sig-paren">(</span><em>method='average'</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.quartertoannual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts quarterly data to annual data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If &#8216;average&#8217;, use the average values over each four quarter interval (default), if &#8216;sum,&#8217; use the sum of the values over each four quarter interval, and if &#8216;end&#8217; use the values at the end of each four quarter interval.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.recent">
+<code class="descname">recent</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict the data to the most recent N observations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>N</strong> (<em>integer</em>) &#8211; Number of periods to include in the data window.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.recessions">
+<code class="descname">recessions</code><span class="sig-paren">(</span><em>color='0.5'</em>, <em>alpha = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates recession bars for plots. Should be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>color</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Color of the bars. Default: &#8216;0.5&#8217;.</li>
+<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.times">
+<code class="descname">times</code><span class="sig-paren">(</span><em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies the data from the current fredpy series with the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.series.window">
+<code class="descname">window</code><span class="sig-paren">(</span><em>win</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restricts the data to the most recent N observations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>win</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; is an ordered pair: <code class="docutils literal"><span class="pre">win</span> <span class="pre">=</span> <span class="pre">[win_min,</span> <span class="pre">win_max]</span></code> where <code class="docutils literal"><span class="pre">win_min</span></code> is the date of the minimum date desired and <code class="docutils literal"><span class="pre">win_max</span></code> is the date of the maximum date. Date strings must be entered in either &#8216;yyyy-mm-dd&#8217; or &#8216;mm-dd-yyyy&#8217; format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/series_class.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Brian C. Jenkins.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/series_class.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
