@@ -26,7 +26,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="fredpy 2.0.1 documentation" href="index.html" />
     <link rel="next" title="Additional fredpy Functions" href="additional_functions.html" />
-    <link rel="prev" title="Welcome to fredpy’s documentation!" href="index.html" /> 
+    <link rel="prev" title="fredpy documentation" href="index.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="index.html">
@@ -36,7 +36,7 @@
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="index.html">Welcome to fredpy&#8217;s documentation!</a>
+        «&#160;&#160;<a href="index.html">fredpy documentation</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
@@ -120,7 +120,9 @@
 <dl class="function">
 <dt id="fredpy.series.bpfilter">
 <code class="descname">bpfilter</code><span class="sig-paren">(</span><em>low=6</em>, <em>high=32</em>, <em>K=12</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.bpfilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the bandpass (Baxter-King) filter of the data.</p>
+<dd><p>Computes the bandpass (Baxter-King) filter of the data. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -132,51 +134,23 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</p>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>In the returned series, the following attributes are different from the input series:</p>
-<table class="last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body"><p class="first">(list) &#8211;  Removes K values from each end of the original series.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body"><p class="first">(numpy ndarray) &#8211;  Removes K observations from each end of the original series.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">daterange:</th><td class="field-body"><p class="first">(string) &#8211; Corrects for the shorter date range.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">data:</th><td class="field-body"><p class="first">(pandas.core.frame.DataFrame) &#8211;  Changes the data attribute to a pandas DataFrame with the following columns:</p>
-<table class="last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211; unfiltered series with K observations removed from each end.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
+<p class="last">In computing the bandpass filter, K observations are lost from each end of the original series so the attributes <em>dates</em>, <em>datetimes</em>, and <em>data</em> are 2K elements shorter than their counterparts in the original series.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="fredpy.series.cffilter">
 <code class="descname">cffilter</code><span class="sig-paren">(</span><em>low=6</em>, <em>high=32</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.cffilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the Hodrick-Prescott filter of the data.</p>
+<dd><p>Computes the Christiano-Fitzgerald filter of the data. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -187,29 +161,11 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
-<blockquote class="last">
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -247,121 +203,59 @@
 <dl class="function">
 <dt id="fredpy.series.firstdiff">
 <code class="descname">firstdiff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.firstdiff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the first difference filter of original series.</p>
+<dd><p>Computes the first difference filter of original series. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>In the returned series, the following attributes are different from the input series:</p>
-<blockquote class="last">
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body"><p class="first">(list) &#8211;  Removes the first value from the original series.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body"><p class="first">(numpy ndarray) &#8211;  Removes the first value from the original series.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">daterange:</th><td class="field-body"><p class="first">(string) &#8211; Corrects for the shorter date range.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">data:</th><td class="field-body"><p class="first">(pandas.core.frame.DataFrame) &#8211;  Changes the data attribute to a pandas DataFrame with the following columns:</p>
-<table class="last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211; unfiltered series with the first observation removed from the series.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of data values.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of data values.</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
+<p class="last">In computing the first difference filter, the first observation from the original series is lost so the attributes <em>dates</em>, <em>datetimes</em>, and <em>data</em> are 1 element shorter than their counterparts in the original series.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="fredpy.series.hpfilter">
 <code class="descname">hpfilter</code><span class="sig-paren">(</span><em>lamb=1600</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hpfilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the Hodrick-Prescott filter of the data.</p>
+<dd><p>Computes the Hodrick-Prescott filter of the data. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lamb</strong> (<em>integer</em>) &#8211; The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
-<blockquote class="last">
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="fredpy.series.lintrend">
 <code class="descname">lintrend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.lintrend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes a simple linear filter of the data using OLS.</p>
+<dd><p>Computes a simple linear filter of the data using OLS. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>In the returned series, the data attribute is a Pandas DataFrame with the following columns:</p>
-<blockquote class="last">
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">actual:</th><td class="field-body">(numpy ndarray) &#8211;  unfiltered data series.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">cycle:</th><td class="field-body">(numpy ndarray) &#8211;  cyclical component of series.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">trend:</th><td class="field-body">(numpy ndarray) &#8211;  trend component of series.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -612,7 +506,7 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="index.html">Welcome to fredpy&#8217;s documentation!</a>
+        «&#160;&#160;<a href="index.html">fredpy documentation</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;

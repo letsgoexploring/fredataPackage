@@ -45,39 +45,26 @@
 
 		.. py:function:: bpfilter(low=6,high=32,K=12)
 
-			Computes the bandpass (Baxter-King) filter of the data. 
+			Computes the bandpass (Baxter-King) filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*[new_series_cycle, new_series_trend]*
 
 			:param integer low: Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.
 			:param integer high: Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.
 			:param integer K: Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.
-		 	:return: :py:class:`fredpy.series`
+		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
-			.. Note:: In the returned series, the following attributes are different from the input series:
-
-				:dates: (list) --  Removes K values from each end of the original series.
-				:datetimes: (numpy ndarray) --  Removes K observations from each end of the original series.
-				:daterange: (string) -- Corrects for the shorter date range.
-				:data: (pandas.core.frame.DataFrame) --  Changes the data attribute to a pandas DataFrame with the following columns:
-
-				    	:actual: (numpy ndarray) -- unfiltered series with K observations removed from each end.
-				    	:cycle: (numpy ndarray) --  cyclical component of series.
-				    	:trend: (numpy ndarray) --  trend component of series.
+			.. Note:: In computing the bandpass filter, K observations are lost from each end of the original series so the attributes *dates*, *datetimes*, and *data* are 2K elements shorter than their counterparts in the original series.
 
 		.. py:function:: cffilter(low=6,high=32)
 
-			Computes the Hodrick-Prescott filter of the data. 
+			Computes the Christiano-Fitzgerald filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*[new_series_cycle, new_series_trend]*
 
 			:param integer low: Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.
 			:param integer high: Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.
-		 	:return: :py:class:`fredpy.series`
-
-			.. Note:: In the returned series, the data attribute is a Pandas DataFrame with the following columns:
-
-			    	:actual: (numpy ndarray) --  unfiltered data series.
-			    	:cycle: (numpy ndarray) --  cyclical component of series.
-			    	:trend: (numpy ndarray) --  trend component of series.
-			    
-			    ..
+		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
 		.. py:function:: copy()
 
@@ -96,53 +83,32 @@
 
 		.. py:function:: firstdiff()
 
-			Computes the first difference filter of original series.
+			Computes the first difference filter of original series. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*[new_series_cycle, new_series_trend]*
 
 			:Parameters:
-		 	:return: :py:class:`fredpy.series`
+		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
-			.. Note:: In the returned series, the following attributes are different from the input series:
-
-				:dates: (list) --  Removes the first value from the original series.
-				:datetimes: (numpy ndarray) --  Removes the first value from the original series.
-				:daterange: (string) -- Corrects for the shorter date range.
-				:data: (pandas.core.frame.DataFrame) --  Changes the data attribute to a pandas DataFrame with the following columns:
-
-				    	:actual: (numpy ndarray) -- unfiltered series with the first observation removed from the series.
-				    	:cycle: (numpy ndarray) --  cyclical component of data values.
-				    	:trend: (numpy ndarray) --  trend component of data values.
-
-			    ..
+			.. Note:: In computing the first difference filter, the first observation from the original series is lost so the attributes *dates*, *datetimes*, and *data* are 1 element shorter than their counterparts in the original series.
 
 		.. py:function:: hpfilter(lamb=1600)
 
-			Computes the Hodrick-Prescott filter of the data. 
+			Computes the Hodrick-Prescott filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*[new_series_cycle, new_series_trend]*
 
 			:param integer lamb: The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.
-		 	:return: :py:class:`fredpy.series`
-
-			.. Note:: In the returned series, the data attribute is a Pandas DataFrame with the following columns:
-
-			    	:actual: (numpy ndarray) --  unfiltered data series.
-			    	:cycle: (numpy ndarray) --  cyclical component of series.
-			    	:trend: (numpy ndarray) --  trend component of series.
-			    
-			    ..
+		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
 		.. py:function:: lintrend()
 
-			Computes a simple linear filter of the data using OLS.
+			Computes a simple linear filter of the data using OLS. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*[new_series_cycle, new_series_trend]*
 
 			:Parameters:
-		 	:return: :py:class:`fredpy.series`
-
-			.. Note:: In the returned series, the data attribute is a Pandas DataFrame with the following columns:
-
-			    	:actual: (numpy ndarray) --  unfiltered data series.
-			    	:cycle: (numpy ndarray) --  cyclical component of series.
-			    	:trend: (numpy ndarray) --  trend component of series.
-			    
-			    ..
+		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
 		.. py:function:: log()
 

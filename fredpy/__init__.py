@@ -149,7 +149,15 @@ class series:
 
     def bpfilter(self,low=6,high=32,K=12):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. 
+        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        instances containing the cyclical and trend components of the data:
+
+            [new_series_cycle, new_series_trend]
+
+        .. Note: 
+            In computing the bandpass filter, K observations are lost from each end of the
+            original series so the attributes dates, datetimes, and data are 2K elements 
+            shorter than their counterparts in the original series.
 
         Args:
             low (int):  Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly 
@@ -158,65 +166,52 @@ class series:
                         data (default), and 8 for annual data.
             K (int):    Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly
                         data (default), and 1.5 for annual data.
-            
-        Modifies attributes:
-
-            dates (list):                       Removes K values from each end of the original series
-            datetimes (numpy ndarray):          Removes K values from each end of the original series
-            daterange (string):                 Corrects for the shorter date range.
-            data (pandas.core.frame.DataFrame): Changes the data attribute to a pandas DataFrame with the 
-                                                following columns:
-
-                                                    actual (numpy ndarray): unfiltered series with K ob-
-                                                                            servations removed from each
-                                                                            end.
-                                                    cycle (numpy ndarray):  cyclical component of series
-                                                    trend (numpy ndarray):  trend component of series
 
         Returns:
-            fredpy series
+            list of two fredpy.series instances
         '''
 
-        new_series = self.copy()
+        new_series_cycle = self.copy()
+        new_series_trend = self.copy()
 
         if low==6 and high==32 and K==12 and self.t !=4:
             print('Warning: data frequency is not quarterly!')
         elif low==3 and high==8 and K==1.5 and self.t !=1:
             print('Warning: data frequency is not annual!')
             
-        cycle = tsa.filters.bkfilter(new_series.data,low=low,high=high,K=K)
-        actual = new_series.data[K:-K]
+        cycle = tsa.filters.bkfilter(self.data,low=low,high=high,K=K)
+        actual = self.data[K:-K]
         trend = actual - cycle
-        new_series.data = pd.DataFrame({'actual':actual,
-                                        'trend':trend,
-                                        'cycle':cycle})
-        new_series.dates = new_series.dates[K:-K]
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
+        
+        new_series_cycle.dates = self.dates[K:-K]
+        new_series_cycle.datetimes = np.array([dateutil.parser.parse(s) for s in new_series_cycle.dates])
+        new_series_cycle.data = cycle
+        new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.title = self.title+' - deviation relative to trend (bandpass filtered)'
+        new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
 
-        return new_series
+
+        new_series_trend.dates = self.dates[K:-K]
+        new_series_trend.datetimes = np.array([dateutil.parser.parse(s) for s in new_series_trend.dates])
+        new_series_trend.data = trend
+        new_series_trend.title = self.title+' - trend (bandpass filtered)'
+        new_series_trend.daterange = 'Range: '+new_series_trend.dates[0]+' to '+new_series_trend.dates[-1]
+
+        return [new_series_cycle, new_series_trend]
 
     def cffilter(self,low=6,high=32):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. 
+        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        instances containing the cyclical and trend components of the data:
 
-        Args:
-            low (int):    Minimum period for oscillations. Select 6 for quarterly data (default) 
-                          and 1.5 for annual data.
-            high (int):   Maximum period for oscillations. Select 32 for quarterly data (default) 
-                          and 8 for annual data.
-
-        Changes the data attribute to a pandas DataFrame with the 
-        following columns:
-
-            actual (numpy ndarray): unfiltered series
-            cycle (numpy ndarray) : cyclical component of series
-            trend (numpy ndarray) : trend component of series
+            [new_series_cycle, new_series_trend]
 
         Returns:
-            fredpy series
+            list of two fredpy.series instances
         '''
 
-        new_series = self.copy()
+        new_series_cycle = self.copy()
+        new_series_trend = self.copy()
 
         if low==6 and high==32 and self.t !=4:
             print('Warning: data frequency is not quarterly!')
@@ -226,12 +221,14 @@ class series:
         actual = self.data
         cycle, trend = tsa.filters.cffilter(self.data,low=low, high=high, drift=False)
 
-        new_series.data = pd.DataFrame({'actual':actual,
-                                        'trend':trend,
-                                        'cycle':cycle})
+        new_series_cycle.data = cycle
+        new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.title = self.title+' - deviation relative to trend (CF filtered)'
 
-        return new_series
+        new_series_trend.data = trend
+        new_series_trend.title = self.title+' - trend (CF filtered)'
 
+        return [new_series_cycle, new_series_trend]
 
     def copy(self):
 
@@ -314,66 +311,64 @@ class series:
 
     def firstdiff(self):
 
-        '''Computes the first difference filter of original series. Adds attributes:
+        '''Computes the first difference filter of original series. Returns a list of two fredpy.series
+        instances containing the cyclical and trend components of the data:
+
+            [new_series_cycle, new_series_trend]
+
+        Note:
+            In computing the first difference filter, the first observation from the original series is
+            lost so the attributes dates, datetimes, and data are 1 element shorter than their 
+            counterparts in the original series.
 
         Args:
 
-        Modifies attributes:
-
-            
-            dates (list):                       Removes first value from the original series
-            datetimes (numpy ndarray):          Removes first value from the original series
-            daterange (string):                 Corrects for the shorter date range.
-            data (pandas.core.frame.DataFrame):  Changes the data attribute to a pandas DataFrame with the 
-                                                following columns:
-
-                                                    actual (numpy ndarray): unfiltered series with the 
-                                                                            first observation removed from
-                                                                            each the series.
-                                                    cycle (numpy ndarray):  cyclical component of series
-                                                    trend (numpy ndarray):  trend component of series
-
         Returns:
-            fredpy series
+            list of two fredpy.series instances
         '''
 
-        new_series = self.copy()
+        new_series_cycle = self.copy()
+        new_series_trend = self.copy()
 
         dy    = self.data[1:] - self.data[0:-1]
         gam   = np.mean(dy)
         cycle = dy - gam
-        new_series.dates = self.dates[1:]
-        new_series.datetimes= self.datetimes[1:]
         actual  = self.data[1:]
         trend = self.data[0:-1]
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
-        new_series.data = pd.DataFrame({'actual':actual,
-                                        'trend':trend,
-                                        'cycle':cycle})
+        new_series_cycle.dates = self.dates[1:]
+        new_series_cycle.datetimes = self.datetimes[1:]
+        new_series_cycle.data = cycle
+        new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.title = self.title+' - deviation relative to trend (first difference filtered)'
+        new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
 
-        return new_series
+
+        new_series_trend.dates = self.dates[1:]
+        new_series_trend.datetimes = self.datetimes[1:]
+        new_series_trend.data = trend
+        new_series_trend.title = self.title+' - trend (first difference filtered)'
+        new_series_trend.daterange = 'Range: '+new_series_trend.dates[0]+' to '+new_series_trend.dates[-1]
+
+        return [new_series_cycle, new_series_trend]
 
     def hpfilter(self,lamb=1600):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. 
+        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        instances containing the cyclical and trend components of the data:
+
+            [new_series_cycle, new_series_trend]
 
         Args:
             lamb (int): The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data,
                         1600 for quarterly data (default), and 6.25 for annual data.
             
-        Changes the data attribute to a pandas DataFrame with the 
-        following columns:
-
-            actual (numpy ndarray): unfiltered series
-            cycle (numpy ndarray):  cyclical component of series
-            trend (numpy ndarray):  trend component of series
-
         Returns:
-            fredpy series
+            list of two fredpy.series instances
         '''
 
-        new_series = self.copy()
+        new_series_cycle = self.copy()
+        new_series_trend = self.copy()
 
         if lamb==1600 and self.t !=4:
             print('Warning: data frequency is not quarterly!')
@@ -383,32 +378,31 @@ class series:
             print('Warning: data frequency is not annual!')
             
         cycle, trend = tsa.filters.hpfilter(self.data,lamb=lamb)
-        actual = self.data
 
-        new_series.data = pd.DataFrame({'actual':actual,
-                                        'trend':trend,
-                                        'cycle':cycle})
+        new_series_cycle.data = cycle
+        new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.title = self.title+' - deviation relative to trend (HP filtered)'
 
-        return new_series
+        new_series_trend.title = self.title+' - trend (HP filtered)'
+        new_series_trend.data = trend
+
+        return [new_series_cycle, new_series_trend]
 
     def lintrend(self):
 
-        '''Computes a simple linear filter of the data using OLS. 
+        '''Computes a simple linear filter of the data using OLS. Returns a list of two fredpy.series
+        instances containing the cyclical and trend components of the data:
+
+            [new_series_cycle, new_series_trend]
 
         Args:
 
-        Changes the data attribute to a pandas DataFrame with the 
-        following columns:
-
-            actual (numpy ndarray): unfiltered series
-            cycle (numpy ndarray):  cyclical component of series
-            trend (numpy ndarray):  trend component of series
-
         Returns:
-            fredpy series
+            list of two fredpy.series instances
         '''
 
-        new_series = self.copy()
+        new_series_cycle = self.copy()
+        new_series_trend = self.copy()
 
         y = self.data
         time = np.arange(len(self.data))
@@ -421,11 +415,15 @@ class series:
         cycle= y-pred
         trend= pred
 
-        new_series.data = pd.DataFrame({'actual':y,
-                                        'trend':trend,
-                                        'cycle':cycle})
+        new_series_cycle.data = cycle
+        new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.title = self.title+' - deviation relative to trend (linearly filtered via OLS)'
 
-        return new_series
+        new_series_trend.title = self.title+' - trend (linearly filtered via OLS)'
+        new_series_trend.data = trend
+
+
+        return [new_series_cycle, new_series_trend]
 
     def log(self):
         
@@ -693,13 +691,13 @@ class series:
 
         return new_series
 
-    def percapita(self,total_pop = True):
+    def percapita(self,civ_pop = True):
 
         '''Transforms the data into per capita terms (US) by dividing by a measure of the total population:
 
         Args:
-            total_pop (string): If total_pop == True, then use the toal population (Default). Else, use Civilian
-                                noninstitutional population defined as persons 16 years of age and older.
+            civ_pop (string): If civ_pop == True, use Civilian noninstitutional population defined as 
+                                persons 16 years of age and older (Default). Else, use the toal population.
 
         Returns:
             fredpy series
@@ -710,7 +708,7 @@ class series:
         T = len(self.data)
         temp_data   = self.data[0:0]
         temp_dates  = self.dates[0:0]
-        if total_pop ==False:
+        if civ_pop ==True:
             populate= series('CNP16OV')
         else:
             populate= series('POP')
