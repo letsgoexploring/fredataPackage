@@ -39,6 +39,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'nbsphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -90,7 +91,8 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = []
+exclude_patterns = ['**.ipynb_checkpoints']
+# exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -129,7 +131,7 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'haiku'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -247,18 +249,22 @@ htmlhelp_basename = 'fredpydoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
+fh = open('latex_preamble.tex', 'r+')
+PREAMBLE = fh.read()
+fh.close()
+
 latex_elements = {
      # The paper size ('letterpaper' or 'a4paper').
      #
-     # 'papersize': 'letterpaper',
+     'papersize': 'letterpaper',
 
      # The font size ('10pt', '11pt' or '12pt').
      #
-     # 'pointsize': '10pt',
+     'pointsize': '10pt',
 
      # Additional stuff for the LaTeX preamble.
      #
-     # 'preamble': '',
+     'preamble': PREAMBLE,
 
      # Latex figure (float) alignment
      #
