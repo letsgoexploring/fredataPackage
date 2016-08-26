@@ -72,7 +72,7 @@
 
 				*[new_series_cycle, new_series_trend]*
 
-			:param integer low: Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.
+			:param low: Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.
 		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: copy()
