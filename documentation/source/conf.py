@@ -19,6 +19,7 @@
 #
 # import os
 # import sys
+import sphinx_bootstrap_theme
 # sys.path.insert(0, os.path.abspath('.'))
 
 # -- General configuration ------------------------------------------------
@@ -143,6 +144,7 @@ html_theme = 'bootstrap'
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
