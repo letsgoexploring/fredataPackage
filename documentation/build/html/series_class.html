@@ -169,6 +169,29 @@
 </dd></dl>
 
 <dl class="function">
+<dt>
+<code class="descname">cffilter</code><span class="sig-paren">(</span><em>low=6</em>, <em>high=32</em><span class="sig-paren">)</span></dt>
+<dd><p>Computes the Christiano-Fitzgerald filter of the data. Returns a list of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
+<blockquote>
+<div><em>[new_series_cycle, new_series_trend]</em></div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>low</strong> (<em>integer</em>) &#8211; Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.</li>
+<li><strong>high</strong> (<em>integer</em>) &#8211; Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instances</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="fredpy.series.copy">
 <code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</p>
