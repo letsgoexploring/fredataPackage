@@ -22,7 +22,7 @@
 		:data: (numpy ndarray) --  data values.
 		:daterange: (string) -- specifies the dates of the first and last observations.
 		:dates: (list) -- list of date strings in YYYY-MM-DD format.
-		:datetimes: (numpy ndarray) -- array containing observation dates formatted as datetime instances.
+		:datetimes: (numpy ndarray) -- array containing observation dates formatted as :py:class:`datetime` instances.
 		:freq: (string) -- data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
 		:idCode: (string) -- unique FRED series ID code.
 		:season: (string) -- specifies whether the data has been seasonally adjusted.
