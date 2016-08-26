@@ -66,14 +66,6 @@
 			:param integer high: Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.
 		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
-		.. py:function:: cffilter(low=6,high=32)
-
-			Computes the Christiano-Fitzgerald filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
-
-				*[new_series_cycle, new_series_trend]*
-
-		 	:return: :py:class:`fredpy.series`
-
 		.. py:function:: copy()
 
 			Returns a copy of the :py:class:`fredpy.series` object.
@@ -227,12 +219,3 @@
 
 			:param list win: is an ordered pair: ``win = [win_min, win_max]`` where ``win_min`` is the date of the minimum date desired and ``win_max`` is the date of the maximum date. Date strings must be entered in either 'yyyy-mm-dd' or 'mm-dd-yyyy' format.
 		 	:return: :py:class:`fredpy.series`
-
-		
-
-		
-
-		
-
-		
-		    
