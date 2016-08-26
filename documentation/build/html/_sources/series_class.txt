@@ -133,7 +133,7 @@
 			:param integer length: half of :py:attr:`length` of the two-sided moving average. For example, if :py:attr:`length = 12`, then the moving average will contain 24 the 12 periods before and the 12 periods after each observation.
 		 	:return: :py:class:`fredpy.series`
 
-		 .. py:function:: minus(series2)
+		.. py:function:: minus(series2)
 
 			Subtracts the data from ``series2`` from the data from the current fredpy series.
 
