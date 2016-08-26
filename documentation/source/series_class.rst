@@ -141,6 +141,8 @@
 			:type series2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
+			..
+
 		.. py:function:: monthtoannual(method='average')
 
 			Converts monthly data to annual data.
