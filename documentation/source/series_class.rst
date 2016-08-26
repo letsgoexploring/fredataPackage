@@ -70,7 +70,7 @@
 
 			Returns a copy of the :py:class:`fredpy.series` object.
 
-			:Parameters: ..
+			:Parameters: None
 			:return: :py:class:`fredpy.series`
 
 		.. py:function:: divide(series2)
