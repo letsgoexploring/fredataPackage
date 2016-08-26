@@ -90,6 +90,8 @@
 			:Parameters:
 		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
 
+		 	..
+
 			.. Note:: In computing the first difference filter, the first observation from the original series is lost so the attributes *dates*, *datetimes*, and *data* are 1 element shorter than their counterparts in the original series.
 
 		.. py:function:: hpfilter(lamb=1600)
