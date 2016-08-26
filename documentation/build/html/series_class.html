@@ -32,7 +32,7 @@
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="fredpy 2.0.1 documentation" href="index.html" />
     <link rel="next" title="Additional fredpy Functions" href="additional_functions.html" />
-    <link rel="prev" title="fredpy" href="index.html" />
+    <link rel="prev" title="About fredpy" href="index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -93,7 +93,7 @@
               
                 
   <li>
-    <a href="index.html" title="Previous Chapter: fredpy"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; fredpy</span>
+    <a href="index.html" title="Previous Chapter: About fredpy"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; About fredpy</span>
     </a>
   </li>
   <li>
@@ -136,12 +136,12 @@
 <dl class="class">
 <dt id="fredpy.series">
 <em class="property">class </em><code class="descclassname">fredpy.</code><code class="descname">series</code><span class="sig-paren">(</span><em>series_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates an instance of a <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object that stores information about the specified data series from FRED with the unique series ID code given by <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code>.</p>
+<dd><p>Creates an instance of a <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance that stores information about the specified data series from FRED with the unique series ID code given by <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; unique FRED series ID. If <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code> equals None, an empy <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object is created.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; unique FRED series ID. If <code class="xref py py-attr docutils literal"><span class="pre">series_id</span></code> equals None, an empy <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance is created.</td>
 </tr>
 </tbody>
 </table>
@@ -157,7 +157,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">dates:</th><td class="field-body">(list) &#8211; list of date strings in YYYY-MM-DD format.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body">(numpy ndarray) &#8211; array containing observation dates formatted as datetime objects.</td>
+<tr class="field-even field"><th class="field-name">datetimes:</th><td class="field-body">(numpy ndarray) &#8211; array containing observation dates formatted as datetime instances.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">freq:</th><td class="field-body">(string) &#8211; data frequency. &#8216;Daily&#8217;, &#8216;Weekly&#8217;, &#8216;Monthly&#8217;, &#8216;Quarterly&#8217;, or &#8216;Annual&#8217;.</td>
 </tr>
@@ -255,7 +255,7 @@
 <dl class="function">
 <dt id="fredpy.series.copy">
 <code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</p>
+<dd><p>Returns a copy of the <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -276,7 +276,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
 </tr>
@@ -398,7 +398,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
 </tr>
@@ -484,7 +484,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
 </tr>
@@ -553,7 +553,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></td>
 </tr>

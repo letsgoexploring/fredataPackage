@@ -11,10 +11,10 @@
 
 .. py:class:: fredpy.series(series_id=None)
 	
-	Creates an instance of a :py:class:`fredpy.series` object that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
+	Creates an instance of a :py:class:`fredpy.series` instance that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
 
 
-	:param string series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empy :py:class:`fredpy.series` object is created.
+	:param string series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empy :py:class:`fredpy.series` instance is created.
 
 	**Attributes:**
     
@@ -22,7 +22,7 @@
 		:data: (numpy ndarray) --  data values.
 		:daterange: (string) -- specifies the dates of the first and last observations.
 		:dates: (list) -- list of date strings in YYYY-MM-DD format.
-		:datetimes: (numpy ndarray) -- array containing observation dates formatted as datetime objects.
+		:datetimes: (numpy ndarray) -- array containing observation dates formatted as datetime instances.
 		:freq: (string) -- data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
 		:idCode: (string) -- unique FRED series ID code.
 		:season: (string) -- specifies whether the data has been seasonally adjusted.
@@ -68,7 +68,7 @@
 
 		.. py:function:: copy()
 
-			Returns a copy of the :py:class:`fredpy.series` object.
+			Returns a copy of the :py:class:`fredpy.series` instance.
 
 			:Parameters: None
 			:return: :py:class:`fredpy.series`
@@ -77,7 +77,7 @@
 
 			Divides the data from the current fredpy series by the data from ``series2``.
 
-			:param series2: A ``fredpy.series`` object.
+			:param series2: A ``fredpy.series`` instance.
 			:type series2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -139,7 +139,7 @@
 
 			Subtracts the data from ``series2`` from the data from the current fredpy series.
 
-			:param series2: A ``fredpy.series`` object.
+			:param series2: A ``fredpy.series`` instance.
 			:type series2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -179,7 +179,7 @@
 
 			Adds the data from the current fredpy series to the data from ``series2``.
 
-			:param series2: A ``fredpy.series`` object.
+			:param series2: A ``fredpy.series`` instance.
 			:type series2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -209,7 +209,7 @@
 
 			Multiplies the data from the current fredpy series with the data from ``series2``.
 
-			:param series2: A ``fredpy.series`` object.
+			:param series2: A ``fredpy.series`` instance.
 			:type series2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
