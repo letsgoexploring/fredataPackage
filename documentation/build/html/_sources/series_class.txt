@@ -72,7 +72,7 @@
 
 				*[new_series_cycle, new_series_trend]*
 
-			:param low: Minimum
+			:param low: Minimum period for oscillations.
 		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: copy()
