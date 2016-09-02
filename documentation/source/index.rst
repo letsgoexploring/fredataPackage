@@ -13,7 +13,7 @@ About ``fredpy``
 Installation
 -------------
 
-Install ``fredpy`` from PyPI using the shell command::
+Install ``fredpy`` from PyPI with the shell command::
 
 
 	pip install fredpy
