@@ -1157,9 +1157,9 @@ class series:
         new_series.dates = new_series.dates[min0:max0]
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
         if len(self.dates)>0:
-            new_series.daterange = new_series.dates[0]+' to '+new_series.dates[-1]
+            new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
         else:
-            new_series.daterange = 'Null'
+            new_series.daterange = 'Range: Null'
 
         if hasattr(self, 'cycle'):
             new_series.cycle = self.cycle[min0:max0]
