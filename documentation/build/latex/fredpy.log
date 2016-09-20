@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  19 SEP 2016 12:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 SEP 2016 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1044,42 +1044,187 @@ less on input line 266.
 
 [3
 
-] [4] [5] [6] [7] [8]
+] [4] [5] [6] [7]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 829.
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 835.
+
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pcr.fd
+File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
+)
+<fredpy_examples_3_0.png, id=204, 366.36874pt x 256.96pt>
+File: fredpy_examples_3_0.png Graphic file (type png)
+
+<use fredpy_examples_3_0.png>
+Package pdftex.def Info: fredpy_examples_3_0.png used on input line 840.
+(pdftex.def)             Requested size: 366.36784pt x 256.95937pt.
+File: fredpy_examples_3_0.png Graphic file (type png)
+ <use fredpy_examples_3_0.png>
+Package pdftex.def Info: fredpy_examples_3_0.png used on input line 840.
+(pdftex.def)             Requested size: 366.36784pt x 256.95937pt.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <12> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 843.
+ [8 <./fredpy_examples_3_0.png>]
+LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <10> not available
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 850.
+ [9] <fredpy_examples_9_1.png, id=223, 401.5pt x 266.9975pt>
+File: fredpy_examples_9_1.png Graphic file (type png)
+
+<use fredpy_examples_9_1.png>
+Package pdftex.def Info: fredpy_examples_9_1.png used on input line 952.
+(pdftex.def)             Requested size: 401.49901pt x 266.99683pt.
+File: fredpy_examples_9_1.png Graphic file (type png)
+ <use fredpy_examples_9_1.png>
+Package pdftex.def Info: fredpy_examples_9_1.png used on input line 952.
+(pdftex.def)             Requested size: 401.49901pt x 266.99683pt.
+ [10 <./fredpy_examples_9_1.png>] <fredpy_examples_11_0.png, id=232, 401.5pt x 
+266.9975pt>
+File: fredpy_examples_11_0.png Graphic file (type png)
+
+<use fredpy_examples_11_0.png>
+Package pdftex.def Info: fredpy_examples_11_0.png used on input line 1046.
+(pdftex.def)             Requested size: 401.49901pt x 266.99683pt.
+File: fredpy_examples_11_0.png Graphic file (type png)
+ <use fredpy_examples_11_0.png>
+Package pdftex.def Info: fredpy_examples_11_0.png used on input line 1046.
+(pdftex.def)             Requested size: 401.49901pt x 266.99683pt.
+ [11]
+<fredpy_examples_12_0.png, id=239, 390.45876pt x 266.9975pt>
+File: fredpy_examples_12_0.png Graphic file (type png)
+
+<use fredpy_examples_12_0.png>
+Package pdftex.def Info: fredpy_examples_12_0.png used on input line 1064.
+(pdftex.def)             Requested size: 390.4578pt x 266.99683pt.
+File: fredpy_examples_12_0.png Graphic file (type png)
+ <use fredpy_examples_12_0.png>
+Package pdftex.def Info: fredpy_examples_12_0.png used on input line 1064.
+(pdftex.def)             Requested size: 390.4578pt x 266.99683pt.
+ [12 <./fredpy_examples_11_0.png>] <fredpy_examples_13_0.png, id=245, 391.4625p
+t x 266.9975pt>
+File: fredpy_examples_13_0.png Graphic file (type png)
+
+<use fredpy_examples_13_0.png>
+Package pdftex.def Info: fredpy_examples_13_0.png used on input line 1079.
+(pdftex.def)             Requested size: 391.46153pt x 266.99683pt.
+File: fredpy_examples_13_0.png Graphic file (type png)
+ <use fredpy_examples_13_0.png>
+Package pdftex.def Info: fredpy_examples_13_0.png used on input line 1079.
+(pdftex.def)             Requested size: 391.46153pt x 266.99683pt.
+ [13 <./fredpy_examples_12_0.png>] <fredpy_examples_16_1.png, id=251, 724.7075p
+t x 266.9975pt>
+File: fredpy_examples_16_1.png Graphic file (type png)
+
+<use fredpy_examples_16_1.png>
+Package pdftex.def Info: fredpy_examples_16_1.png used on input line 1118.
+(pdftex.def)             Requested size: 724.70573pt x 266.99683pt.
+File: fredpy_examples_16_1.png Graphic file (type png)
+ <use fredpy_examples_16_1.png>
+Package pdftex.def Info: fredpy_examples_16_1.png used on input line 1118.
+(pdftex.def)             Requested size: 469.755pt x 173.06964pt.
+ [14 <./fredpy_examples_13_0.png>] <fredpy_examples_19_0.png, id=259, 383.4325p
+t x 266.9975pt>
+File: fredpy_examples_19_0.png Graphic file (type png)
+
+<use fredpy_examples_19_0.png>
+Package pdftex.def Info: fredpy_examples_19_0.png used on input line 1158.
+(pdftex.def)             Requested size: 383.43156pt x 266.99683pt.
+File: fredpy_examples_19_0.png Graphic file (type png)
+ <use fredpy_examples_19_0.png>
+Package pdftex.def Info: fredpy_examples_19_0.png used on input line 1158.
+(pdftex.def)             Requested size: 383.43156pt x 266.99683pt.
+ [15 <./fredpy_examples_16_1.png>] [16 <./fredpy_examples_19_0.png>]
+<fredpy_examples_25_0.png, id=273, 425.59pt x 283.0575pt>
+File: fredpy_examples_25_0.png Graphic file (type png)
+
+<use fredpy_examples_25_0.png>
+Package pdftex.def Info: fredpy_examples_25_0.png used on input line 1232.
+(pdftex.def)             Requested size: 425.58894pt x 283.0568pt.
+File: fredpy_examples_25_0.png Graphic file (type png)
+ <use fredpy_examples_25_0.png>
+Package pdftex.def Info: fredpy_examples_25_0.png used on input line 1232.
+(pdftex.def)             Requested size: 425.58894pt x 283.0568pt.
+ [17 <./fredpy_examples_25_0.png>] <fredpy_examples_28_0.png, id=281, 425.59pt 
+x 572.1375pt>
+File: fredpy_examples_28_0.png Graphic file (type png)
+
+<use fredpy_examples_28_0.png>
+Package pdftex.def Info: fredpy_examples_28_0.png used on input line 1264.
+(pdftex.def)             Requested size: 425.58894pt x 572.1361pt.
+File: fredpy_examples_28_0.png Graphic file (type png)
+ <use fredpy_examples_28_0.png>
+Package pdftex.def Info: fredpy_examples_28_0.png used on input line 1264.
+(pdftex.def)             Requested size: 425.58894pt x 572.1361pt.
+ [18] [19 <./fredpy_examples_28_0.png>]
+<fredpy_examples_30_0.png, id=292, 368.37625pt x 256.96pt>
+File: fredpy_examples_30_0.png Graphic file (type png)
+
+<use fredpy_examples_30_0.png>
+Package pdftex.def Info: fredpy_examples_30_0.png used on input line 1302.
+(pdftex.def)             Requested size: 368.37534pt x 256.95937pt.
+File: fredpy_examples_30_0.png Graphic file (type png)
+ <use fredpy_examples_30_0.png>
+Package pdftex.def Info: fredpy_examples_30_0.png used on input line 1302.
+(pdftex.def)             Requested size: 368.37534pt x 256.95937pt.
+ [20 <./fredpy_examples_30_0.png>] <fredpy_examples_31_0.png, id=298, 391.4625p
+t x 282.05376pt>
+File: fredpy_examples_31_0.png Graphic file (type png)
+
+<use fredpy_examples_31_0.png>
+Package pdftex.def Info: fredpy_examples_31_0.png used on input line 1320.
+(pdftex.def)             Requested size: 391.46153pt x 282.05305pt.
+File: fredpy_examples_31_0.png Graphic file (type png)
+ <use fredpy_examples_31_0.png>
+Package pdftex.def Info: fredpy_examples_31_0.png used on input line 1320.
+(pdftex.def)             Requested size: 391.46153pt x 282.05305pt.
+
+<fredpy_examples_32_0.png, id=299, 387.4475pt x 282.05376pt>
+File: fredpy_examples_32_0.png Graphic file (type png)
+
+<use fredpy_examples_32_0.png>
+Package pdftex.def Info: fredpy_examples_32_0.png used on input line 1338.
+(pdftex.def)             Requested size: 387.44655pt x 282.05305pt.
+File: fredpy_examples_32_0.png Graphic file (type png)
+ <use fredpy_examples_32_0.png>
+Package pdftex.def Info: fredpy_examples_32_0.png used on input line 1338.
+(pdftex.def)             Requested size: 387.44655pt x 282.05305pt.
+ [21 <./fredpy_examples_31_0.png>] [22 <./fredpy_examples_32_0.png>]
 Chapter 3.
 (./fredpy.ind
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 1.
 
-[9
+[23
 
 ]
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 36.
 
-[10
+[24
 
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 832.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 832.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1386.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1386.
  (./fredpy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 832.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 832.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1386.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1386.
+
 Package rerunfilecheck Info: File `fredpy.out' has not changed.
-(rerunfilecheck)             Checksum: 69BB36FA938D2251645E3357894C8655;324.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 832.
+(rerunfilecheck)             Checksum: 4BBBEEB834561EEDB77DA2C3F2E04958;385.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1386.
  ) 
 Here is how much of TeX's memory you used:
- 10436 strings out of 493089
- 146417 string characters out of 6134842
- 258363 words of memory out of 5000000
- 13565 multiletter control sequences out of 15000+600000
- 59176 words of font info for 77 fonts, out of 8000000 for 9000
+ 10583 strings out of 493089
+ 149684 string characters out of 6134842
+ 259163 words of memory out of 5000000
+ 13664 multiletter control sequences out of 15000+600000
+ 64868 words of font info for 84 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 36i,11n,45p,608b,750s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,45p,608b,750s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texl
@@ -1095,10 +1240,10 @@ lvetic/uhvbo8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic
 /uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmb8a.pf
 b></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/lo
 cal/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on fredpy.pdf (12 pages, 164102 bytes).
+Output written on fredpy.pdf (26 pages, 482255 bytes).
 PDF statistics:
- 306 PDF objects out of 1000 (max. 8388607)
- 269 compressed objects within 3 object streams
- 51 named destinations out of 1000 (max. 500000)
- 69 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 420 PDF objects out of 1000 (max. 8388607)
+ 344 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 137 words of extra memory for PDF output out of 10000 (max. 10000000)
 

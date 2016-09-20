@@ -10,7 +10,7 @@ Additional ``fredpy`` Functions
 	Converts a list of date strings in yyyy-mm-dd format to datetime.
 
 	:param list date_strings: a list of date strings formated as: 'yyyy-mm-dd'.
- 	:return: :py:class:`numpy ndarray`
+ 	:return: :py:class:`numpy.ndarray`
 
 .. py:function:: fredpy.divide(series1,series2)
 

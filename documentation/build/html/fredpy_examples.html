@@ -286,7 +286,7 @@ div.nboutput  > :nth-child(2).stderr {
 <div class="highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">fredpy</span> <span class="kn">import</span> <span class="n">series</span><span class="p">,</span> <span class="n">window_equalize</span>
+<span class="kn">from</span> <span class="nn">fredpy</span> <span class="kn">import</span> <span class="n">series</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -318,14 +318,8 @@ div.nboutput  > :nth-child(2).stderr {
 </div>
 <div class="section" id="A-closer-look-at-fredpy-using-real-GDP-data">
 <h2>A closer look at <code class="docutils literal"><span class="pre">fredpy</span></code> using real GDP data<a class="headerlink" href="#A-closer-look-at-fredpy-using-real-GDP-data" title="Permalink to this headline">¶</a></h2>
-<p>Use <code class="docutils literal"><span class="pre">fredpy</span></code> to download real GDP data. The FRED page for real GDP:
-<a class="reference external" href="https://fred.stlouisfed.org/series/GDPC1">https://fred.stlouisfed.org/series/GDPC1</a>. Note that the series ID -
-<code class="docutils literal"><span class="pre">GDPC1</span></code> - is in the URL and is visible in several places on the page.</p>
-<p>The data in text format is located at:
-<a class="reference external" href="https://fred.stlouisfed.org/data/gdpc1.txt">https://fred.stlouisfed.org/data/gdpc1.txt</a>. When supplied with the
-series ID <code class="docutils literal"><span class="pre">GDPC1</span></code>, <code class="docutils literal"><span class="pre">fredpy</span></code> visits the the URL for the
-text-formatted data, reads the information on the page, and stores the
-data as attributes of a <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance.</p>
+<p>Use <code class="docutils literal"><span class="pre">fredpy</span></code> to download real GDP data. The FRED page for real GDP: <a class="reference external" href="https://fred.stlouisfed.org/series/GDPC1">https://fred.stlouisfed.org/series/GDPC1</a>. Note that the series ID - <code class="docutils literal"><span class="pre">GDPC1</span></code> - is in the URL and is visible in several places on the page.</p>
+<p>The data in text format is located at: <a class="reference external" href="https://fred.stlouisfed.org/data/gdpc1.txt">https://fred.stlouisfed.org/data/gdpc1.txt</a>. When supplied with the series ID <code class="docutils literal"><span class="pre">GDPC1</span></code>, <code class="docutils literal"><span class="pre">fredpy</span></code> visits the the URL for the text-formatted data, reads the information on the page, and stores the data as attributes of a <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance.</p>
 <div class="nbinput container">
 <div class="highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -350,26 +344,20 @@ data as attributes of a <code class="docutils literal"><span class="pre">fredpy.
 </div>
 <div class="section" id="Attributes">
 <h3>Attributes<a class="headerlink" href="#Attributes" title="Permalink to this headline">¶</a></h3>
-<p>A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance stores information about a FRED series in
-12 attribues:</p>
+<p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance stores information about a FRED series in 12 attribues:</p>
 <ul class="simple">
-<li><strong>data:</strong> (numpy ndarray) – data values.</li>
-<li><strong>daterange:</strong> (string) – specifies the dates of the first and last
-observations.</li>
-<li><strong>dates:</strong> (list) – list of date strings in YYYY-MM-DD format.</li>
-<li><strong>datetimes:</strong> (numpy ndarray) – array containing observation dates
-formatted as datetime.datetime instances.</li>
-<li><strong>freq:</strong> (string) – data frequency. ‘Daily’, ‘Weekly’, ‘Monthly’,
-‘Quarterly’, or ‘Annual’.</li>
-<li><strong>idCode:</strong> (string) – unique FRED series ID code.</li>
-<li><strong>season:</strong> (string) – specifies whether the data has been seasonally
-adjusted.</li>
-<li><strong>source:</strong> (string) – original source of the data.</li>
-<li><strong>t:</strong> (integer) – number corresponding to frequency: 365 for daily,
-52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.</li>
-<li><strong>title:</strong> (string) – title of the data series.</li>
-<li><strong>units:</strong> (string) – units of the data series.</li>
-<li><strong>updated:</strong> (string) – date series was last updated.</li>
+<li><strong>data:</strong>     (numpy ndarray) – data values.</li>
+<li><strong>daterange:</strong>        (string) – specifies the dates of the first and last observations.</li>
+<li><strong>dates:</strong>    (list) – list of date strings in YYYY-MM-DD format.</li>
+<li><strong>datetimes:</strong>        (numpy ndarray) – array containing observation dates formatted as datetime.datetime instances.</li>
+<li><strong>freq:</strong>     (string) – data frequency. ‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, or ‘Annual’.</li>
+<li><strong>idCode:</strong>   (string) – unique FRED series ID code.</li>
+<li><strong>season:</strong>   (string) – specifies whether the data has been seasonally adjusted.</li>
+<li><strong>source:</strong>   (string) – original source of the data.</li>
+<li><strong>t:</strong>        (integer) – number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.</li>
+<li><strong>title:</strong>    (string) – title of the data series.</li>
+<li><strong>units:</strong>    (string) – units of the data series.</li>
+<li><strong>updated:</strong>  (string) – date series was last updated.</li>
 </ul>
 <div class="nbinput container">
 <div class="highlight-none"><div class="highlight"><pre>
@@ -450,7 +438,7 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 <div class="highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x11aa7f278&gt;
+<span></span>&lt;matplotlib.text.Text at 0x11aa812e8&gt;
 </pre></div>
 </div>
 </div>
@@ -464,7 +452,7 @@ US. Bureau of Economic Analysis
 </div>
 <div class="section" id="Methods">
 <h3>Methods<a class="headerlink" href="#Methods" title="Permalink to this headline">¶</a></h3>
-<p>A <code class="docutils literal"><span class="pre">fredpy.series</span></code> instance has 22 methods</p>
+<p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance has 22 methods:</p>
 <ul class="simple">
 <li><strong>apc</strong>(log=True, method=&#8217;backward&#8217;)</li>
 <li><strong>bpfilter</strong>(low=6, high=32, K=12)</li>
@@ -489,9 +477,7 @@ US. Bureau of Economic Analysis
 <li><strong>times</strong>(series2)</li>
 <li><strong>window</strong>(win)</li>
 </ul>
-<p>The fredpy documentation has detailed explanations of the use of these
-methods:
-<a class="reference external" href="http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html">http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html</a>.</p>
+<p>The fredpy documentation has detailed explanations of the use of these methods: <a class="reference external" href="http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html">http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html</a>.</p>
 <div class="nbinput container">
 <div class="highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
@@ -620,7 +606,7 @@ the respective index since on year prior.</p>
 </pre></div>
 </div>
 <div class="highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x11b0205f8&gt;
+<span></span>&lt;matplotlib.text.Text at 0x11afd5b70&gt;
 </pre></div>
 </div>
 </div>
@@ -710,16 +696,16 @@ comparable measures of US inflation.</p>
 </div>
 <div class="section" id="Equalizing-date-ranges-of-different-series">
 <h3>Equalizing date ranges of different series<a class="headerlink" href="#Equalizing-date-ranges-of-different-series" title="Permalink to this headline">¶</a></h3>
-<p>Often data series have different observation ranges. The
-<code class="docutils literal"><span class="pre">window_equalize()</span></code> function provides a quick way to set the date
-ranges for multiple series to the same interval.</p>
+<p>Often data series have different observation ranges. The <a class="reference internal" href="additional_functions.html#fredpy.window_equalize" title="fredpy.window_equalize"><code class="xref py py-func docutils literal"><span class="pre">fredpy.window_equalize()</span></code></a> function provides a quick way to set the date ranges for multiple series to the same interval.</p>
 <div class="nbinput container">
 <div class="highlight-none"><div class="highlight"><pre>
 <span></span>In [14]:
 </pre></div>
 </div>
 <div class="highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># Download unemployment and 3 month T-bill data</span>
+<span></span><span class="kn">from</span> <span class="nn">fredpy</span> <span class="kn">import</span> <span class="n">window_equalize</span>
+
+<span class="c1"># Download unemployment and 3 month T-bill data</span>
 <span class="n">unemp</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;UNRATE&#39;</span><span class="p">)</span>
 <span class="n">tbill_3m</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;TB3MS&#39;</span><span class="p">)</span>
 
