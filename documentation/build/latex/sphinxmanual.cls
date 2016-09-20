@@ -5,12 +5,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{sphinxmanual}[2009/06/02 Document class (Sphinx manual)]
 
-\ifx\directlua\undefined\else
-% if compiling with lualatex 0.85 or later load compatibility patch issued by
-% the LaTeX team for older packages relying on \pdf<name> named primitives.
-    \IfFileExists{luatex85.sty}{\RequirePackage{luatex85}}{}
-\fi
-
 % chapters starting at odd pages (overridden by 'openany' document option)
 \PassOptionsToClass{openright}{\sphinxdocclass}
 
@@ -43,27 +37,26 @@
   \begin{titlepage}%
     \let\footnotesize\small
     \let\footnoterule\relax
-    \noindent\rule{\textwidth}{1pt}\ifsphinxpdfoutput\newline\null\fi\par
+    \rule{\textwidth}{1pt}%
     \ifsphinxpdfoutput
       \begingroup
       % These \defs are required to deal with multi-line authors; it
       % changes \\ to ', ' (comma-space), making it pass muster for
       % generating document info in the PDF file.
-      \def\\{, }%
-      \def\and{and }%
+      \def\\{, }
+      \def\and{and }
       \pdfinfo{
         /Author (\@author)
         /Title (\@title)
-      }%
+      }
       \endgroup
     \fi
     \begin{flushright}%
-      \sphinxlogo
-      \py@HeaderFamily
-      {\Huge \@title \par}
-      {\itshape\LARGE \py@release\releaseinfo \par}
+      \sphinxlogo%
+      {\rm\Huge\py@HeaderFamily \@title \par}%
+      {\em\LARGE\py@HeaderFamily \py@release\releaseinfo \par}
       \vfill
-      {\LARGE
+      {\LARGE\py@HeaderFamily
         \begin{tabular}[t]{c}
           \@author
         \end{tabular}
@@ -77,27 +70,52 @@
     \end{flushright}%\par
     \@thanks
   \end{titlepage}%
+  \cleardoublepage%
   \setcounter{footnote}{0}%
   \let\thanks\relax\let\maketitle\relax
   %\gdef\@thanks{}\gdef\@author{}\gdef\@title{}
 }
 
+
+% Catch the end of the {abstract} environment, but here make sure the abstract
+% is followed by a blank page if the 'openright' option is used.
+%
+\let\py@OldEndAbstract=\endabstract
+\renewcommand{\endabstract}{
+  \if@openright
+    \ifodd\value{page}
+      \typeout{Adding blank page after the abstract.}
+      \vfil\pagebreak
+    \fi
+  \fi
+  \py@OldEndAbstract
+}
+
+% This wraps the \tableofcontents macro with all the magic to get the spacing
+% right and have the right number of pages if the 'openright' option has been
+% used.  This eliminates a fair amount of crud in the individual document files.
+%
 \let\py@OldTableofcontents=\tableofcontents
 \renewcommand{\tableofcontents}{%
-  % before resetting page counter, let's do the right thing.
-  \if@openright\cleardoublepage\else\clearpage\fi
   \pagenumbering{roman}%
+  \setcounter{page}{1}%
+  \pagebreak%
   \pagestyle{plain}%
-  \begingroup
-    \parskip \z@skip
-    \py@OldTableofcontents
-  \endgroup
-  % before resetting page counter, let's do the right thing.
-  \if@openright\cleardoublepage\else\clearpage\fi
+  {%
+    \parskip = 0mm%
+    \py@OldTableofcontents%
+    \if@openright%
+      \ifodd\value{page}%
+        \typeout{Adding blank page after the table of contents.}%
+        \pagebreak\hspace{0pt}%
+      \fi%
+    \fi%
+    \cleardoublepage%
+  }%
   \pagenumbering{arabic}%
-  \ifdefined\fancyhf\pagestyle{normal}\fi
+  \@ifundefined{fancyhf}{}{\pagestyle{normal}}%
 }
-\pagenumbering{alph}% avoid hyperref "duplicate destination" warnings
+\pagenumbering{alph}
 
 % This is needed to get the width of the section # area wide enough in the
 % library reference.  Doing it here keeps it the same for all the manuals.
@@ -110,7 +128,7 @@
 % For a report document class this environment is a chapter.
 \let\py@OldThebibliography=\thebibliography
 \renewcommand{\thebibliography}[1]{
-  \if@openright\cleardoublepage\else\clearpage\fi
+  \cleardoublepage
   \phantomsection
   \py@OldThebibliography{1}
   \addcontentsline{toc}{chapter}{\bibname}
@@ -122,7 +140,7 @@
 \@ifclassloaded{memoir}{}{
   \let\py@OldTheindex=\theindex
   \renewcommand{\theindex}{
-    \if@openright\cleardoublepage\else\clearpage\fi
+    \cleardoublepage
     \phantomsection
     \py@OldTheindex
     \addcontentsline{toc}{chapter}{\indexname}

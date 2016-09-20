@@ -2,35 +2,35 @@
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 
   \bigletter F
-  \item fredpy.date\_times() (built-in function), \hyperpage{9}
-  \item fredpy.divide() (built-in function), \hyperpage{9}
-  \item fredpy.minus() (built-in function), \hyperpage{10}
-  \item fredpy.plus() (built-in function), \hyperpage{9}
-  \item fredpy.quickplot() (built-in function), \hyperpage{9}
+  \item fredpy.date\_times() (built-in function), \hyperpage{7}
+  \item fredpy.divide() (built-in function), \hyperpage{7}
+  \item fredpy.minus() (built-in function), \hyperpage{7}
+  \item fredpy.plus() (built-in function), \hyperpage{7}
+  \item fredpy.quickplot() (built-in function), \hyperpage{7}
   \item fredpy.series (built-in class), \hyperpage{3}
   \item fredpy.series.apc() (built-in function), \hyperpage{3}
-  \item fredpy.series.bpfilter() (built-in function), \hyperpage{3}
+  \item fredpy.series.bpfilter() (built-in function), \hyperpage{4}
   \item fredpy.series.cffilter() (built-in function), \hyperpage{4}
   \item fredpy.series.copy() (built-in function), \hyperpage{4}
   \item fredpy.series.divide() (built-in function), \hyperpage{4}
   \item fredpy.series.firstdiff() (built-in function), \hyperpage{4}
-  \item fredpy.series.hpfilter() (built-in function), \hyperpage{5}
+  \item fredpy.series.hpfilter() (built-in function), \hyperpage{4}
   \item fredpy.series.lintrend() (built-in function), \hyperpage{5}
   \item fredpy.series.log() (built-in function), \hyperpage{5}
   \item fredpy.series.ma1side() (built-in function), \hyperpage{5}
   \item fredpy.series.ma2side() (built-in function), \hyperpage{5}
   \item fredpy.series.minus() (built-in function), \hyperpage{5}
   \item fredpy.series.monthtoannual() (built-in function), \hyperpage{5}
-  \item fredpy.series.monthtoquarter() (built-in function), \hyperpage{6}
-  \item fredpy.series.pc() (built-in function), \hyperpage{6}
+  \item fredpy.series.monthtoquarter() (built-in function), \hyperpage{5}
+  \item fredpy.series.pc() (built-in function), \hyperpage{5}
   \item fredpy.series.percapita() (built-in function), \hyperpage{6}
   \item fredpy.series.plus() (built-in function), \hyperpage{6}
   \item fredpy.series.quartertoannual() (built-in function), \hyperpage{6}
   \item fredpy.series.recent() (built-in function), \hyperpage{6}
   \item fredpy.series.recessions() (built-in function), \hyperpage{6}
-  \item fredpy.series.times() (built-in function), \hyperpage{7}
-  \item fredpy.series.window() (built-in function), \hyperpage{7}
-  \item fredpy.times() (built-in function), \hyperpage{10}
-  \item fredpy.window\_equalize() (built-in function), \hyperpage{10}
+  \item fredpy.series.times() (built-in function), \hyperpage{6}
+  \item fredpy.series.window() (built-in function), \hyperpage{6}
+  \item fredpy.times() (built-in function), \hyperpage{7}
+  \item fredpy.window\_equalize() (built-in function), \hyperpage{8}
 
 \end{theindex}

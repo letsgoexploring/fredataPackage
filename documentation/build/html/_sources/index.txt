@@ -11,7 +11,7 @@ About ``fredpy``
 
 
 Installation
--------------
+------------
 
 Install ``fredpy`` from PyPI with the shell command::
 
@@ -28,6 +28,7 @@ Contents:
    
    series_class.rst
    additional_functions.rst
+   fredpy_examples.ipynb
 
 
 Indices and tables
