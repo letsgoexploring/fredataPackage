@@ -201,7 +201,7 @@ class series:
 
     def cffilter(self,low=6,high=32):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        '''Computes the Christiano-Fitzgerald (CF) filter of the data. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
 
             [new_series_cycle, new_series_trend]
@@ -354,7 +354,7 @@ class series:
 
     def hpfilter(self,lamb=1600):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        '''Computes the Hodrick-Prescott (HP) filter of the data. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
 
             [new_series_cycle, new_series_trend]
