@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>fredpy Examples &mdash; fredpy 2.0.2 documentation</title>
+    <title>fredpy Examples &#8212; fredpy 2.0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -19,7 +19,8 @@
         VERSION:     '2.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -30,7 +31,8 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="fredpy 2.0.2 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Additional fredpy Functions" href="additional_functions.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -119,7 +121,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="_sources/fredpy_examples.txt"
+  <a href="_sources/fredpy_examples.ipynb.txt"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -149,13 +151,15 @@
 
 /* remove conflicting styling from Sphinx themes */
 div.nbinput,
-div.nbinput > div,
-div.nbinput div[class^=highlight],
-div.nbinput div[class^=highlight] pre,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
 div.nboutput,
-div.nboutput > div,
-div.nboutput div[class^=highlight],
-div.nboutput div[class^=highlight] pre {
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
     background: none;
     border: none;
     padding: 0 0;
@@ -164,7 +168,7 @@ div.nboutput div[class^=highlight] pre {
 }
 
 /* avoid gaps between output lines */
-div.nboutput div[class^=highlight] pre {
+div.nboutput div[class*=highlight] pre {
     line-height: normal;
 }
 
@@ -175,6 +179,13 @@ div.nboutput {
     display: flex;
     align-items: flex-start;
     margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
 }
 
 /* input container */
@@ -188,38 +199,58 @@ div.nblast {
 }
 
 /* input prompt */
-div.nbinput > :first-child pre {
+div.nbinput div.prompt pre {
     color: #303F9F;
 }
 
 /* output prompt */
-div.nboutput > :first-child pre {
+div.nboutput div.prompt pre {
     color: #D84315;
 }
 
 /* all prompts */
-div.nbinput > :first-child[class^=highlight],
-div.nboutput > :first-child[class^=highlight],
-div.nboutput > :first-child {
+div.nbinput div.prompt,
+div.nboutput div.prompt {
     min-width: 9ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
     flex: 0;
 }
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
 
 /* input/output area */
-div.nbinput > :nth-child(2)[class^=highlight],
-div.nboutput > :nth-child(2),
-div.nboutput > :nth-child(2)[class^=highlight] {
+div.nbinput div.input_area,
+div.nboutput div.output_area {
     padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
 }
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
 
 /* input area */
-div.nbinput > :nth-child(2)[class^=highlight] {
+div.nbinput div.input_area {
     border: 1px solid #cfcfcf;
     border-radius: 2px;
     background: #f7f7f7;
@@ -236,7 +267,7 @@ div.nboutput div.math p {
 }
 
 /* standard error */
-div.nboutput  > :nth-child(2).stderr {
+div.nboutput div.output_area.stderr {
     background: #fdd;
 }
 
@@ -278,12 +309,12 @@ div.nboutput  > :nth-child(2).stderr {
 </style>
 <div class="section" id="fredpy-Examples">
 <h1><code class="docutils literal"><span class="pre">fredpy</span></code> Examples<a class="headerlink" href="#fredpy-Examples" title="Permalink to this headline">¶</a></h1>
-<div class="nbinput nblast container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">fredpy</span> <span class="kn">import</span> <span class="n">series</span>
@@ -296,22 +327,22 @@ div.nboutput  > :nth-child(2).stderr {
 <h2>Preliminary example<a class="headerlink" href="#Preliminary-example" title="Permalink to this headline">¶</a></h2>
 <p>Downloading and plotting unemployment rate data for the US is easy with
 <code class="docutils literal"><span class="pre">fredpy</span></code>:</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">u</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;UNRATE&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">datetimes</span><span class="p">,</span><span class="n">u</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.65</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_3_0.png" src="_images/fredpy_examples_3_0.png" />
 </div>
 </div>
@@ -320,12 +351,12 @@ div.nboutput  > :nth-child(2).stderr {
 <h2>A closer look at <code class="docutils literal"><span class="pre">fredpy</span></code> using real GDP data<a class="headerlink" href="#A-closer-look-at-fredpy-using-real-GDP-data" title="Permalink to this headline">¶</a></h2>
 <p>Use <code class="docutils literal"><span class="pre">fredpy</span></code> to download real GDP data. The FRED page for real GDP: <a class="reference external" href="https://fred.stlouisfed.org/series/GDPC1">https://fred.stlouisfed.org/series/GDPC1</a>. Note that the series ID - <code class="docutils literal"><span class="pre">GDPC1</span></code> - is in the URL and is visible in several places on the page.</p>
 <p>The data in text format is located at: <a class="reference external" href="https://fred.stlouisfed.org/data/gdpc1.txt">https://fred.stlouisfed.org/data/gdpc1.txt</a>. When supplied with the series ID <code class="docutils literal"><span class="pre">GDPC1</span></code>, <code class="docutils literal"><span class="pre">fredpy</span></code> visits the the URL for the text-formatted data, reads the information on the page, and stores the data as attributes of a <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> instance.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Download quarterly real GDP data using `fredpy`. Save the data in a variable called gdp</span>
 <span class="n">gdp</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;gdpc1&#39;</span><span class="p">)</span>
 
@@ -334,10 +365,10 @@ div.nboutput  > :nth-child(2).stderr {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 &lt;class &#39;fredpy.series&#39;&gt;
 </pre></div></div>
@@ -359,12 +390,12 @@ div.nboutput  > :nth-child(2).stderr {
 <li><strong>units:</strong>    (string) – units of the data series.</li>
 <li><strong>updated:</strong>  (string) – date series was last updated.</li>
 </ul>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Print the title, the units, the frequency, the date range, and the source of the gdp data</span>
 <span class="k">print</span><span class="p">(</span><span class="n">gdp</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">gdp</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
@@ -374,10 +405,10 @@ div.nboutput  > :nth-child(2).stderr {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 Real Gross Domestic Product
 Billions of Chained 2009 Dollars
@@ -386,12 +417,12 @@ Range: 1947-01-01 to 2016-04-01
 US. Bureau of Economic Analysis
 </pre></div></div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Print the last 4 values of the gdp data</span>
 <span class="k">print</span><span class="p">(</span><span class="n">gdp</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:],</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -403,10 +434,10 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 [ 16454.9  16490.7  16525.   16570.2]
 
@@ -416,12 +447,12 @@ US. Bureau of Economic Analysis
  datetime.datetime(2016, 1, 1, 0, 0) datetime.datetime(2016, 4, 1, 0, 0)]
 </pre></div></div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Plot real GDP data</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -432,20 +463,20 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 </div>
-<div class="nboutput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>Out[6]:
 </pre></div>
 </div>
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none"><div class="highlight"><pre>
 <span></span>&lt;matplotlib.text.Text at 0x11aa812e8&gt;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_9_1.png" src="_images/fredpy_examples_9_1.png" />
 </div>
 </div>
@@ -478,12 +509,12 @@ US. Bureau of Economic Analysis
 <li><strong>window</strong>(win)</li>
 </ul>
 <p>The fredpy documentation has detailed explanations of the use of these methods: <a class="reference external" href="http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html">http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html</a>.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Restrict GDP to observations from January 1, 1990 to present</span>
 <span class="n">win</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;01-01-1990&#39;</span><span class="p">,</span><span class="s1">&#39;01-01-2200&#39;</span><span class="p">]</span>
 <span class="n">gdp_win</span> <span class="o">=</span> <span class="n">gdp</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
@@ -501,19 +532,19 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_11_0.png" src="_images/fredpy_examples_11_0.png" />
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Compute and plot the (annualized) quarterly growth rate of real GDP</span>
 <span class="n">gdp_pc</span> <span class="o">=</span> <span class="n">gdp</span><span class="o">.</span><span class="n">pc</span><span class="p">(</span><span class="n">annualized</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
@@ -530,19 +561,19 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_12_0.png" src="_images/fredpy_examples_12_0.png" />
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Compute and plot the log of real GDP</span>
 <span class="n">gdp_log</span> <span class="o">=</span> <span class="n">gdp</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
 
@@ -556,10 +587,10 @@ US. Bureau of Economic Analysis
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_13_0.png" src="_images/fredpy_examples_13_0.png" />
 </div>
 </div>
@@ -575,12 +606,12 @@ functionality.</p>
 released quarterly by the BEA. Here we&#8217;ll first convert the monthly CPI
 data to monthly frequency compute inflation as the percentage change in
 the respective index since on year prior.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Download CPI and GDP deflator data</span>
 <span class="n">cpi</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">)</span>
 <span class="n">deflator</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;GDPDEF&#39;</span><span class="p">)</span>
@@ -600,29 +631,29 @@ the respective index since on year prior.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>Out[10]:
 </pre></div>
 </div>
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none"><div class="highlight"><pre>
 <span></span>&lt;matplotlib.text.Text at 0x11afd5b70&gt;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_16_1.png" src="_images/fredpy_examples_16_1.png" />
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># The CPI data are produced at a monthly frequency</span>
 <span class="k">print</span><span class="p">(</span><span class="n">cpi</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
 
@@ -632,21 +663,21 @@ the respective index since on year prior.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 Monthly
 Quarterly
 </pre></div></div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [12]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Compute the inflation rate based on each index</span>
 <span class="n">cpi_pi</span> <span class="o">=</span> <span class="n">cpi2</span><span class="o">.</span><span class="n">apc</span><span class="p">()</span>
 <span class="n">def_pi</span> <span class="o">=</span> <span class="n">deflator</span><span class="o">.</span><span class="n">apc</span><span class="p">()</span>
@@ -657,21 +688,21 @@ Quarterly
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 Range: 1948-01-01 to 2016-04-01
 Range: 1948-01-01 to 2016-04-01
 </pre></div></div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [13]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot_date</span><span class="p">(</span><span class="n">cpi_pi</span><span class="o">.</span><span class="n">datetimes</span><span class="p">,</span><span class="n">cpi_pi</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.65</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;cpi&#39;</span><span class="p">)</span>
@@ -683,10 +714,10 @@ Range: 1948-01-01 to 2016-04-01
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_19_0.png" src="_images/fredpy_examples_19_0.png" />
 </div>
 </div>
@@ -697,12 +728,12 @@ comparable measures of US inflation.</p>
 <div class="section" id="Equalizing-date-ranges-of-different-series">
 <h3>Equalizing date ranges of different series<a class="headerlink" href="#Equalizing-date-ranges-of-different-series" title="Permalink to this headline">¶</a></h3>
 <p>Often data series have different observation ranges. The <a class="reference internal" href="additional_functions.html#fredpy.window_equalize" title="fredpy.window_equalize"><code class="xref py py-func docutils literal"><span class="pre">fredpy.window_equalize()</span></code></a> function provides a quick way to set the date ranges for multiple series to the same interval.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [14]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">fredpy</span> <span class="kn">import</span> <span class="n">window_equalize</span>
 
 <span class="c1"># Download unemployment and 3 month T-bill data</span>
@@ -723,10 +754,10 @@ comparable measures of US inflation.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
 Range: 1948-01-01 to 2016-08-01
 Range: 1934-01-01 to 2016-08-01
@@ -738,12 +769,12 @@ Range: 1948-01-01 to 2016-08-01
 </div>
 <div class="section" id="Filtering-1:-Extracting-business-cycle-components-from-quarterly-data-with-the-HP-filter">
 <h3>Filtering 1: Extracting business cycle components from quarterly data with the HP filter<a class="headerlink" href="#Filtering-1:-Extracting-business-cycle-components-from-quarterly-data-with-the-HP-filter" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [15]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Download nominal GDP, the GDP deflator</span>
 
 <span class="n">gdp</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;GDP&#39;</span><span class="p">)</span>
@@ -763,12 +794,12 @@ Range: 1948-01-01 to 2016-08-01
 </pre></div>
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [16]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Plot log data</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 
@@ -783,32 +814,32 @@ Range: 1948-01-01 to 2016-08-01
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_25_0.png" src="_images/fredpy_examples_25_0.png" />
 </div>
 </div>
 <p>The post-Great Recession slowdown in US real GDP growth is apparent in
 the figure.</p>
-<div class="nbinput nblast container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [17]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Compute the hpfilter</span>
 <span class="n">gdp_cycle</span><span class="p">,</span> <span class="n">gdp_trend</span> <span class="o">=</span> <span class="n">gdp</span><span class="o">.</span><span class="n">hpfilter</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [18]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Plot log data</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 
@@ -831,10 +862,10 @@ the figure.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_28_0.png" src="_images/fredpy_examples_28_0.png" />
 </div>
 </div>
@@ -846,12 +877,12 @@ compares the business cycle componenets (BP filtered) of monthly
 inflation and unemployment data for the US from 1960-1982. Here we
 replicate Figure 1.5 to include the most recently available data and we
 also consturct the figure using HP filtered data.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [19]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">u</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;LNS14000028&#39;</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">series</span><span class="p">(</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">)</span>
 
@@ -879,19 +910,19 @@ also consturct the figure using HP filtered data.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_30_0.png" src="_images/fredpy_examples_30_0.png" />
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [20]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Filter the data</span>
 <span class="n">p_bpcycle</span><span class="p">,</span><span class="n">p_bptrend</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">bpfilter</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="mi">84</span><span class="p">,</span><span class="n">K</span><span class="o">=</span><span class="mi">84</span><span class="p">)</span>
 <span class="n">u_bpcycle</span><span class="p">,</span><span class="n">u_bptrend</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">bpfilter</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="mi">84</span><span class="p">,</span><span class="n">K</span><span class="o">=</span><span class="mi">84</span><span class="p">)</span>
@@ -908,19 +939,19 @@ also consturct the figure using HP filtered data.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_31_0.png" src="_images/fredpy_examples_31_0.png" />
 </div>
 </div>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [21]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># HP filter</span>
 <span class="n">p_hpcycle</span><span class="p">,</span><span class="n">p_hptrend</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">hpfilter</span><span class="p">(</span><span class="n">lamb</span><span class="o">=</span><span class="mi">129600</span><span class="p">)</span>
 <span class="n">u_hpcycle</span><span class="p">,</span><span class="n">u_hptrend</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">hpfilter</span><span class="p">(</span><span class="n">lamb</span><span class="o">=</span><span class="mi">129600</span><span class="p">)</span>
@@ -937,10 +968,10 @@ also consturct the figure using HP filtered data.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <img alt="_images/fredpy_examples_32_0.png" src="_images/fredpy_examples_32_0.png" />
 </div>
 </div>
@@ -951,12 +982,12 @@ results. While both filtering methods</p>
 <h3>Exporting data sets<a class="headerlink" href="#Exporting-data-sets" title="Permalink to this headline">¶</a></h3>
 <p>Exporting data inported with <code class="docutils literal"><span class="pre">fredpy</span></code> to csv files is easy with
 <code class="docutils literal"><span class="pre">Pandas</span></code>.</p>
-<div class="nbinput container">
-<div class="highlight-none"><div class="highlight"><pre>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [22]:
 </pre></div>
 </div>
-<div class="highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># create a Pandas DataFrame</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;inflation&#39;</span><span class="p">:</span><span class="n">p</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
                     <span class="s1">&#39;unemployment&#39;</span><span class="p">:</span><span class="n">u</span><span class="o">.</span><span class="n">data</span><span class="p">})</span>
@@ -971,10 +1002,10 @@ results. While both filtering methods</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast container">
-<div class="container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
                inflation  unemployment
 1954-01-01  6.330313e-01           3.6
@@ -1001,7 +1032,7 @@ results. While both filtering methods</p>
     </p>
     <p>
         &copy; Copyright 2016, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.<br/>
     </p>
   </div>
 </footer>

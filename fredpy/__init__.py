@@ -98,18 +98,18 @@ class series:
 
         else:
 
-            self.title = None
-            self.source = None
-            self.season = None
-            self.freq = None
-            self.units = None
-            self.t = None
-            self.daterange = None
-            self.updated = None
-            self.idCode = None
+            self.title = ''
+            self.source = ''
+            self.season = ''
+            self.freq = ''
+            self.units = ''
+            self.t = 0
+            self.daterange = ''
+            self.updated = ''
+            self.idCode = ''
             self.data  = np.array([])
             self.dates = []
-            self.datetimes = []
+            self.datetimes = np.array([])
 
     def apc(self,log=True,method='backward'):
 
@@ -1409,45 +1409,44 @@ def times(series1,series2):
 
         return new_series
 
-# def toFredSeries(data,dates,pandasDates=False,title=None,t=None,season=None,freq=None,source=None,units=None,daterange=None, idCode=None,updated=None):
+def toFredSeries(data,dates,title='',freq='',source='',units='',updated=''):
     
-#     '''Create a FRED object from a set of data obtained from a different source.
+    '''Create a FRED object from a set of data obtained from a different source.
 
-#     Args:
-#         data (numpy ndarray): data values
-#         dates (list): date strings. Optional
-#         pandasDates (bool): Are the Default: False,
-#         title=None,
-#         t=None,
-#         season=None,
-#         freq=None,
-#         source=None,
-#         units=None
-#         ,daterange=None, 
-#         idCode=None,
-#         updated=None):
-
-#         '''
+    Args:
+        data (numpy ndarray):          data values
+        dates (list or numpy ndarray): date strings. Optional. If 
+        title (string):                title of the data. Default: ''
+        freq (string):                 observation frequency. Options: '', 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'. Default: ''
+        source (string):               source of the data. Default: ''
+        units (string):                units. Default: ''
+        '''
     
 
-#     f = series()
-#     f.data = data
-#     if pandasDates==True:
-#         f.dates = [ str(d.to_datetime())[0:10] for d in  dates]
-#     else:
-#         f.dates = dates
-#     if type(f.dates[0])==str:
-#         f.datetimes = np.aray([dateutil.parser.parse(s) for s in f.dates])
-#     f.title = title
-#     f.t = t
-#     f.season = season
-#     f.freq = freq
-#     f.source = source
-#     f.units = units
-#     f.daterange = daterange
-#     f.idCode = idCode
-#     f.updated = updated
-#     return f
+    f = series()
+    f.data = np.array(data)
+
+    timestamps = pd.DatetimeIndex(dates)    
+    f.dates = [ str(d.to_pydatetime())[0:10] for d in timestamps]
+    f.datetimes = np.array([dateutil.parser.parse(s) for s in f.dates])
+    
+    f.title = title
+    f.freq = freq
+    if f.freq == 'Daily':
+        f.t=365
+    elif f.freq[0:6] == 'Weekly':
+        f.t=52
+    elif f.freq[0:7] == 'Monthly':
+        f.t=12
+    elif f.freq[0:9] == 'Quarterly':
+        f.t=4
+    elif f.freq[0:6] == 'Annual':
+        f.t=1
+    f.freq = freq
+    f.source = source
+    f.units = units
+    f.daterange = 'Range: '+f.dates[0]+' to '+f.dates[-1]
+    return f
 
 
 def window_equalize(series_list):

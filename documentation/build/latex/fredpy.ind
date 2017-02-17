@@ -31,6 +31,7 @@
   \item fredpy.series.times() (built-in function), \hyperpage{6}
   \item fredpy.series.window() (built-in function), \hyperpage{6}
   \item fredpy.times() (built-in function), \hyperpage{7}
+  \item fredpy.toFredSeries() (built-in function), \hyperpage{8}
   \item fredpy.window\_equalize() (built-in function), \hyperpage{8}
 
 \end{theindex}

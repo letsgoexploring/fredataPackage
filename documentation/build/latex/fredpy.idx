@@ -27,4 +27,5 @@
 \indexentry{fredpy.quickplot() (built-in function)|hyperpage}{7}
 \indexentry{fredpy.minus() (built-in function)|hyperpage}{7}
 \indexentry{fredpy.times() (built-in function)|hyperpage}{7}
+\indexentry{fredpy.toFredSeries() (built-in function)|hyperpage}{8}
 \indexentry{fredpy.window\_equalize() (built-in function)|hyperpage}{8}

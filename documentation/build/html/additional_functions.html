@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Additional fredpy Functions &mdash; fredpy 2.0.2 documentation</title>
+    <title>Additional fredpy Functions &#8212; fredpy 2.0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -19,7 +19,8 @@
         VERSION:     '2.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -30,7 +31,8 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="fredpy 2.0.2 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="fredpy Examples" href="fredpy_examples.html" />
     <link rel="prev" title="fredpy.series class" href="series_class.html" />
 <meta charset='utf-8'>
@@ -94,7 +96,7 @@
               
                 
   <li>
-    <a href="series_class.html" title="Previous Chapter: fredpy.series class"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; fredpy.series...</span>
+    <a href="series_class.html" title="Previous Chapter: fredpy.series class"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; fredpy.series class</span>
     </a>
   </li>
   <li>
@@ -108,7 +110,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="_sources/additional_functions.txt"
+  <a href="_sources/additional_functions.rst.txt"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -142,7 +144,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>date_strings</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of date strings formated as: &#8216;yyyy-mm-dd&#8217;.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>date_strings</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of date strings formated as: &#8216;yyyy-mm-dd&#8217;.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></td>
 </tr>
@@ -153,14 +155,14 @@
 <dl class="function">
 <dt id="fredpy.divide">
 <code class="descclassname">fredpy.</code><code class="descname">divide</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.divide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Divides the data from <code class="docutils literal"><span class="pre">series1</span></code> by the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<dd><p>Divides the data from <code class="xref py py-data docutils literal"><span class="pre">series1</span></code> by the data from <code class="xref py py-data docutils literal"><span class="pre">series2</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
-<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
+<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
 </ul>
 </td>
 </tr>
@@ -174,14 +176,14 @@
 <dl class="function">
 <dt id="fredpy.plus">
 <code class="descclassname">fredpy.</code><code class="descname">plus</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.plus" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds the data from <code class="docutils literal"><span class="pre">series1</span></code> to the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<dd><p>Adds the data from <code class="xref py py-data docutils literal"><span class="pre">series1</span></code> to the data from <code class="xref py py-data docutils literal"><span class="pre">series2</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
-<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
+<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
 </ul>
 </td>
 </tr>
@@ -195,20 +197,20 @@
 <dl class="function">
 <dt id="fredpy.quickplot">
 <code class="descclassname">fredpy.</code><code class="descname">quickplot</code><span class="sig-paren">(</span><em>fred_series</em>, <em>year_mult=10</em>, <em>show=True</em>, <em>recess=False</em>, <em>save=False</em>, <em>filename='file'</em>, <em>linewidth=2</em>, <em>alpha = 0.75</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.quickplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a plot of a FRED data series</p>
+<dd><p>Create a plot of a FRED data series.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fred_series</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
-<li><strong>year_mult</strong> (<em>integer</em>) &#8211; Interval between year ticks on the x-axis. Default: 10.</li>
-<li><strong>show</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Show the plot? Default: True.</li>
-<li><strong>recess</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Show recession bars in plot? Default: False.</li>
-<li><strong>save</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Save the image to file? Default: False.</li>
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of file to which image is saved <em>without an extension</em>. Default: <code class="docutils literal"><span class="pre">'file'</span></code>.</li>
-<li><strong>linewidth</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Width of plotted line. Default: 2.</li>
-<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Transparency of the recession bars. Must be between 0 and 1. Default: 0.7.</li>
+<li><strong>fred_series</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+<li><strong>year_mult</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Interval between year ticks on the x-axis. Default: 10.</li>
+<li><strong>show</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Show the plot? Default: True.</li>
+<li><strong>recess</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Show recession bars in plot? Default: False.</li>
+<li><strong>save</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Save the image to file? Default: False.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of file to which image is saved <em>without an extension</em>. Default: <code class="docutils literal"><span class="pre">'file'</span></code>.</li>
+<li><strong>linewidth</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Width of plotted line. Default: 2.</li>
+<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Transparency of the recession bars. Must be between 0 and 1. Default: 0.7.</li>
 </ul>
 </td>
 </tr>
@@ -222,14 +224,14 @@
 <dl class="function">
 <dt id="fredpy.minus">
 <code class="descclassname">fredpy.</code><code class="descname">minus</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.minus" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtracts the data from <code class="docutils literal"><span class="pre">series2</span></code> from the data from <code class="docutils literal"><span class="pre">series1</span></code>.</p>
+<dd><p>Subtracts the data from <code class="xref py py-data docutils literal"><span class="pre">series2</span></code> from the data from <code class="xref py py-data docutils literal"><span class="pre">series1</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
-<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
+<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
 </ul>
 </td>
 </tr>
@@ -243,14 +245,39 @@
 <dl class="function">
 <dt id="fredpy.times">
 <code class="descclassname">fredpy.</code><code class="descname">times</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.times" title="Permalink to this definition">¶</a></dt>
-<dd><p>Multiplies the data from <code class="docutils literal"><span class="pre">series1</span></code> with the data from <code class="docutils literal"><span class="pre">series2</span></code>.</p>
+<dd><p>Multiplies the data from <code class="xref py py-data docutils literal"><span class="pre">series1</span></code> with the data from <code class="xref py py-data docutils literal"><span class="pre">series2</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
-<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <code class="docutils literal"><span class="pre">fredpy.series</span></code> object.</li>
+<li><strong>series1</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+<li><strong>series2</strong> (<a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) &#8211; A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> object.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fredpy.toFredSeries">
+<code class="descclassname">fredpy.</code><code class="descname">toFredSeries</code><span class="sig-paren">(</span><em>data</em>, <em>dates</em>, <em>title=''</em>, <em>freq=''</em>, <em>source=''</em>, <em>units=''</em>, <em>updated=''</em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.toFredSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> from time series data not obtained from FRED.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>numpy.ndarray</em><em>, </em><em>Pandas.Series</em><em>, or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; Data values.</li>
+<li><strong>dates</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><em>numpy.ndarry</em>) &#8211; Array or list of dates. Elements formatted as either string (YYYY-MM-DD or MM-DD-YYYY) or <code class="xref py py-class docutils literal"><span class="pre">pandas.tslib.Timestamp</span></code>.</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the series. Default: empty string.</li>
+<li><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Options: empty string, <cite>&#8216;Daily&#8217;</cite>, <cite>&#8216;Weekly&#8217;</cite>, <cite>&#8216;Monthly&#8217;</cite>, <cite>&#8216;Quarterly&#8217;</cite>, or &#8216;Annual&#8217;. Default: empty string</li>
+<li><strong>source</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Source of the data. Default: empty string.</li>
+<li><strong>units</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Units of the data. Default: empty string.</li>
 </ul>
 </td>
 </tr>
@@ -269,7 +296,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series_list</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> objects</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>series_list</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal"><span class="pre">fredpy.series</span></code></a> objects</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -292,7 +319,7 @@
     </p>
     <p>
         &copy; Copyright 2016, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.<br/>
     </p>
   </div>
 </footer>
