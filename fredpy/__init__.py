@@ -558,6 +558,8 @@ class series:
             fredpy series
         '''
 
+        new_series = self.copy()
+
         if self.t !=12:
             print('Warning: data frequency is not monthly!')
         T = len(self.data)
