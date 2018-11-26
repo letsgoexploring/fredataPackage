@@ -1,29 +1,28 @@
 '''This program creates a plot of real GDP growth, CPI inflation, the unemployment rate, and the 3-month T-bill rate
 
-Created by: Brian C Jenkins. Email comments and suggestions to bcjenkin@uci.edu. Version date: August 29, 2014'''
+Created by: Brian C Jenkins. Email comments and suggestions to bcjenkin@uci.edu. Version date: November 26, 2018'''
 
-
-from __future__ import division
 import matplotlib.pyplot as plt
-from fredpy import series, window_equalize
+plt.style.use('classic')
+import fredpy as fp
+fp.api_key = fp.load_api_key('fred_api_key.txt')
 import matplotlib.dates as dts
 
 # download data from FRED
-gdp = series('GDPC96')
-cpi = series('CPIAUCSL')
-unemp=series('UNRATE')
-tbill=series('TB3MS')
+gdp = fp.series('GDPC96')
+cpi = fp.series('CPIAUCSL')
+unemp=fp.series('UNRATE')
+tbill=fp.series('TB3MS')
 
 # express GDP in trillions by dividing original data by 1000
 gdp.data = gdp.data/1000
 
 # find the annual percentage changes in GDP and inflation
-gdp.apc()
-cpi.apc()
+gdp = gdp.apc()
+cpi = cpi.apc()
 
 # equalize the data windows
-series = [gdp,cpi,unemp,tbill]
-window_equalize(series)
+gdp,cpi,unemp,tbill = fp.window_equalize([gdp,cpi,unemp,tbill])
 
 # create figure and define x-axis tick locator for every 10 years
 fig = plt.figure()

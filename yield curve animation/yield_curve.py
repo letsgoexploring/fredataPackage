@@ -1,7 +1,10 @@
-import fredpy, dateutil
+import dateutil
+import fredpy as fp
 import matplotlib.pyplot as plt
 import matplotlib.dates as dts
 import numpy as np
+
+fp.api_key = fp.load_api_key('fred_api_key.txt')
 
 # date example: '1981-01-14'
 
@@ -9,14 +12,14 @@ def yc(date,all_yields=None):
 
 	yields=[]
 	if all_yields == None:
-		y1m= fredpy.series('DTB4WK')
-		y3m= fredpy.series('DTB3')
-		y6m= fredpy.series('DTB6')
-		y1 = fredpy.series('DGS1')
-		y5 = fredpy.series('DGS5')
-		y10= fredpy.series('DGS10')
-		y20= fredpy.series('DGS20')
-		y30= fredpy.series('DGS30')
+		y1m= fp.series('DTB4WK')
+		y3m= fp.series('DTB3')
+		y6m= fp.series('DTB6')
+		y1 = fp.series('DGS1')
+		y5 = fp.series('DGS5')
+		y10= fp.series('DGS10')
+		y20= fp.series('DGS20')
+		y30= fp.series('DGS30')
 
 		all_yields = [y1m,y3m,y6m,y1,y5,y10,y20,y30] 
 

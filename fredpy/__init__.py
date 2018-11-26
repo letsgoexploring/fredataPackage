@@ -1,8 +1,32 @@
-import urllib, dateutil, pylab, datetime
+import requests,dateutil, pylab, datetime, os
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 tsa = sm.tsa
+
+# API key attribute needs to be set
+api_key=None
+
+def load_api_key(path):
+    try:
+        # Try to load file from currect working directory
+        with open(path,'r') as api_key_file:
+            return api_key_file.readline()
+    except:
+
+        try:
+            # Try to find file in OSX home directory
+            items = os.getcwd().split('/')[:3]
+            items.append(path)
+            path = '/'.join(items)
+            with open(path,'r') as api_key_file:
+                return api_key_file.readline()
+
+        except:
+            path = os.path.join(os.getcwd(),path)
+            with open(path,'r') as api_key_file:
+                return api_key_file.readline()
+
 
 ######################################################################################################
 # The series class and methods
@@ -23,93 +47,115 @@ class series:
             None
 
         Attributes:
-            data:      (numpy ndarray) data values.
-            dates:     (list) list of date strings in YYYY-MM-DD format.
-            daterange: (string) specifies the dates of the first and last observations.
-            datetimes: (numpy ndarray) array containing observation dates formatted as datetime objects.
-            freq:      (string) data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
-            idCode:    (string) unique FRED series ID code.
-            title:     (string) title of the data series.
-            season:    (string) specifies whether the data has been seasonally adjusted.
-            source:    (string) original source of the data.
-            t:         (int) number corresponding to frequency: 365 for daily, 52 for weekly,
-                       12 for monthly, 4 for quarterly, and 1 for annual.
-            units:     (string) units of the data series.
-            updated:   (string) date series was last updated.
+            data:                       (numpy ndarray) data values.
+            daterange:                  (string) specifies the dates of the first and last observations.
+            dates:                      (list) list of date strings in YYYY-MM-DD format.
+            datetimes:                  (numpy ndarray) array containing observation dates formatted as datetime objects.
+            frequency:                  (string) data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Semiannual', or 'Annual'.
+            frequency_short:            (string) data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
+            last_updated:               (string) date series was last updated.
+            notes:                      (string) details about series. Not available for all series.
+            release:                    (string) statistical release containing data.
+            seasonal_adjustment:        (string) specifies whether the data has been seasonally adjusted.
+            seasonal_adjustment_short:  (string) specifies whether the data has been seasonally adjusted. Abbreviated.
+            series_id:                  (string) unique FRED series ID code.
+            source:                     (string) original source of the data.
+            t:                          (int) number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.
+            title:                      (string) title of the data series.
+            units:                      (string) units of the data series.
+            units_short:                (string) units of the data series. Abbreviated.
         '''
 
         if type(series_id) == str:
-        
-            # download fred series from FRED and save information about the series
-            series_url = 'http://research.stlouisfed.org/fred2/data/' + series_id + '.txt'
 
-            # Compensate for urllib differences in Python 2 and 3
+
+
+            request_url = 'https://api.stlouisfed.org/fred/series?series_id='+series_id+'&api_key='+api_key+'&file_type=json'
+            r = requests.get(request_url)
+            results = r.json()
+
+            self.series_id = series_id
+            self.title = results['seriess'][0]['title']
+            self.frequency = results['seriess'][0]['frequency']
+            self.frequency_short = results['seriess'][0]['frequency_short']
+            self.units = results['seriess'][0]['units']
+            self.units_short = results['seriess'][0]['units_short']
+            self.seasonal_adjustment = results['seriess'][0]['seasonal_adjustment']
+            self.seasonal_adjustment_short = results['seriess'][0]['seasonal_adjustment_short']
+            self.last_updated = results['seriess'][0]['last_updated']
             try:
-                webs = urllib.request.urlopen(series_url)
+                self.notes = results['seriess'][0]['notes']
             except:
-                webs = urllib.urlopen(series_url)
-            
-            raw = [line.decode('utf-8') for line in webs]
+                pass
 
-            for k, val in enumerate(raw):
-                if raw[k][0:5] == 'Title':
-                    self.title = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'Sou':
-                    self.source = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'Sea':
-                    self.season = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'Fre':
-                    self.freq = " ".join(x for x in raw[k].split()[1:])
-                    if self.freq[0:5] == 'Daily':
-                        self.t=365
-                    elif self.freq[0:6] == 'Weekly':
-                        self.t=52
-                    elif self.freq[0:7] == 'Monthly':
-                        self.t=12
-                    elif self.freq[0:9] == 'Quarterly':
-                        self.t=4
-                    elif self.freq[0:6] == 'Annual':
-                        self.t=1
-                elif raw[k][0:3] == 'Uni':
-                    self.units    = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'Dat':
-                    self.daterange = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'Las':
-                    self.updated  = " ".join(x for x in raw[k].split()[1:])
-                elif raw[k][0:3] == 'DAT':
-                    raw2 = list(raw[k+1:])
-                    break
+            obs_per_year = {'D':365,'W':52,'M':12,'Q':4,'SA':2,'A':1}
+            try:
+                self.t = obs_per_year[self.frequency_short]
+            except:
+                self.t = np.nan
 
-            date=list(range(len(raw2)))
-            data=list(range(len(raw2)))
 
-            # Create data for FRED object. Replace missing values with np.nan
-            for k,n in enumerate(raw2):
-                date[k] = raw2[k].split()[0]
-                if raw2[k].split()[1] != '.':
-                    data[k] = float(raw2[k].split()[1])
-                else:
-                    data[k] = np.nan
+            request_url = 'https://api.stlouisfed.org/fred/series/observations?series_id='+series_id+'&api_key='+api_key+'&file_type=json'
+            r = requests.get(request_url)
+            results = r.json()
 
-            self.idCode    = series_id
-            self.data  = np.array(data)
-            self.dates = date
+            count = results['count']
+
+            self.data = np.zeros(count)
+            self.dates = [None]*count
+            for i in range(count):
+                try:
+                    self.data[i] = results['observations'][i]['value']
+                except:
+                    self.data[i] = np.nan
+                self.dates[i] = results['observations'][i]['date']
+
+            if np.isnan(self.data[0]):
+                index =0
+                for i,value in enumerate(self.data):
+                    if np.isnan(value):
+                        index+=1
+                    else:
+                        break
+                self.data = self.data[index:]
+                self.dates = self.dates[index:]
+                
             self.datetimes = np.array([dateutil.parser.parse(s) for s in self.dates])
+            self.daterange = 'Range: '+self.dates[0]+' to '+self.dates[-1]
+
+
+
+            request_url =  'https://api.stlouisfed.org/fred/series/release?series_id='+series_id+'&api_key='+api_key+'&file_type=json'
+            r = requests.get(request_url)
+            results = r.json()
+            self.release = results['releases'][0]['name']
+            release_id = results['releases'][0]['id']
+
+
+            request_url =  'https://api.stlouisfed.org/fred/release/sources?release_id='+str(release_id)+'&api_key='+api_key+'&file_type=json'
+            r = requests.get(request_url)
+            results = r.json()
+            self.source = results['sources'][0]['name']
 
         else:
 
-            self.title = ''
-            self.source = ''
-            self.season = ''
-            self.freq = ''
-            self.units = ''
-            self.t = 0
+            self.data = np.array([])
             self.daterange = ''
-            self.updated = ''
-            self.idCode = ''
-            self.data  = np.array([])
             self.dates = []
             self.datetimes = np.array([])
+            self.frequency = ''
+            self.frequency_short = ''
+            self.last_updated = ''
+            self.notes = ''
+            self.release = ''
+            self.seasonal_adjustment = ''
+            self.seasonal_adjustment_short = ''
+            self.series_id = ''
+            self.source = ''
+            self.t = 0
+            self.title = ''
+            self.units = ''
+            self.units_short = ''
 
     def apc(self,log=True,method='backward'):
 
@@ -142,6 +188,7 @@ class series:
         new_series.dates =dte
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in dte])
         new_series.units = 'Percent'
+        new_series.units_short = '%'
         new_series.title = 'Annual Percentage Change in '+self.title
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
@@ -187,6 +234,7 @@ class series:
         new_series_cycle.datetimes = np.array([dateutil.parser.parse(s) for s in new_series_cycle.dates])
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (bandpass filtered)'
         new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
 
@@ -223,6 +271,7 @@ class series:
 
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (CF filtered)'
 
         new_series_trend.data = trend
@@ -242,18 +291,25 @@ class series:
 
         new_series = series()
 
+
         new_series.data = self.data
         new_series.daterange = self.daterange
         new_series.dates = self.dates
         new_series.datetimes = self.datetimes
-        new_series.freq = self.freq
-        new_series.idCode = self.idCode
-        new_series.season = self.season
+        new_series.frequency = self.frequency
+        new_series.frequency_short = self.frequency_short
+        new_series.last_updated = self.last_updated
+        new_series.notes = self.notes
+        new_series.release = self.release
+        new_series.seasonal_adjustment = self.seasonal_adjustment
+        new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
+        new_series.series_id = self.series_id
         new_series.source = self.source
         new_series.t = self.t
         new_series.title = self.title
         new_series.units = self.units
-        new_series.updated = self.updated
+        new_series.units_short = self.units_short
+
 
         if hasattr(self, 'cycle'):
             new_series.cycle = self.cycle
@@ -293,15 +349,31 @@ class series:
                 new_series.source = self.source
             else:
                 new_series.source = self.source +' and '+series2.source
-            new_series.freq = self.freq
+            new_series.frequency = self.frequency
+            new_series.frequency_short = self.frequency_short
             new_series.units = self.units +' / '+series2.units
+            new_series.units_short = self.units_short +' / '+series2.units_short
             new_series.t = self.t
             new_series.daterange = self.daterange
-            if self.updated == series2.updated:
-                new_series.updated = self.updated
+
+            if self.seasonal_adjustment == series2.seasonal_adjustment:
+                new_series.seasonal_adjustment = self.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
             else:
-                new_series.updated = self.updated +' and '+series2.updated
-            new_series.idCode = self.idCode +' and '+series2.idCode
+                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+            if self.last_updated == series2.last_updated:
+                new_series.last_updated = self.last_updated
+            else:
+                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+
+            if self.release == series2.release:
+                new_series.release = self.release
+            else:
+                new_series.release = self.release +' and '+series2.release
+
+            new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data/series2.data
             new_series.dates = self.dates
             new_series.datetimes = self.datetimes
@@ -340,6 +412,7 @@ class series:
         new_series_cycle.datetimes = self.datetimes[1:]
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (first difference filtered)'
         new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
 
@@ -381,6 +454,7 @@ class series:
 
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (HP filtered)'
 
         new_series_trend.title = self.title+' - trend (HP filtered)'
@@ -417,6 +491,7 @@ class series:
 
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
+        new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (linearly filtered via OLS)'
 
         new_series_trend.title = self.title+' - trend (linearly filtered via OLS)'
@@ -438,7 +513,8 @@ class series:
         new_series = self.copy()
 
         new_series.data = np.log(new_series.data)
-        new_series.units= 'log '+new_series.units
+        new_series.units = 'log '+new_series.units
+        new_series.units_short = 'log '+new_series.units_short
         new_series.title = 'Log '+new_series.title
 
         return new_series
@@ -527,15 +603,31 @@ class series:
                 new_series.source = self.source
             else:
                 new_series.source = self.source +' and '+series2.source
-            new_series.freq = self.freq
+            new_series.frequency = self.frequency
+            new_series.frequency_short = self.frequency_short
             new_series.units = self.units +' - '+series2.units
+            new_series.units_short = self.units_short +' - '+series2.units_short
             new_series.t = self.t
             new_series.daterange = self.daterange
-            if self.updated == series2.updated:
-                new_series.updated = self.updated
+
+            if self.seasonal_adjustment == series2.seasonal_adjustment:
+                new_series.seasonal_adjustment = self.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
             else:
-                new_series.updated = self.updated +' and '+series2.updated
-            new_series.idCode = self.idCode +' and '+series2.idCode
+                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+            if self.last_updated == series2.last_updated:
+                new_series.last_updated = self.last_updated
+            else:
+                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+
+            if self.release == series2.release:
+                new_series.release = self.release
+            else:
+                new_series.release = self.release +' and '+series2.release
+
+            new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data-series2.data
             new_series.dates = self.dates
             new_series.datetimes = self.datetimes
@@ -590,7 +682,8 @@ class series:
         new_series.dates = temp_dates
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
         new_series.t = 1
-        new_series.freq = 'Annual'
+        new_series.frequency = 'Annual'
+        new_series.frequency_short = 'A'
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
         return new_series
@@ -639,7 +732,8 @@ class series:
         new_series.dates = temp_dates
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
         new_series.t = 4
-        new_series.freq = 'Quarterly'
+        new_series.frequency = 'Quarterly'
+        new_series.frequency_short = 'Q'
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
         return new_series
@@ -678,16 +772,11 @@ class series:
             dte = self.dates[:-1]
 
 
-        new_series.idCode = self.idCode
-        new_series.freq = self.freq
-        new_series.sourse = self.source
-        new_series.updated = self.updated
-
-
         new_series.data  =pct
         new_series.dates =dte
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in dte])
         new_series.units = 'Percent'
+        new_series.units_short = '%'
         new_series.title = 'Percentage Change in '+self.title
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
@@ -762,6 +851,7 @@ class series:
         new_series.data = new_series.data/populate.data
         new_series.title = new_series.title+' Per Capita'
         new_series.units = new_series.units+' Per Thousand People'
+        new_series.units_short = new_series.units_short+' Per Thousand People'
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
         return new_series
@@ -796,15 +886,31 @@ class series:
                 new_series.source = self.source
             else:
                 new_series.source = self.source +' and '+series2.source
-            new_series.freq = self.freq
+            new_series.frequency = self.frequency
+            new_series.frequency_short = self.frequency_short
             new_series.units = self.units +' + '+series2.units
+            new_series.units_short = self.units_short +' + '+series2.units_short
             new_series.t = self.t
             new_series.daterange = self.daterange
-            if self.updated == series2.updated:
-                new_series.updated = self.updated
+
+            if self.seasonal_adjustment == series2.seasonal_adjustment:
+                new_series.seasonal_adjustment = self.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
             else:
-                new_series.updated = self.updated +' and '+series2.updated
-            new_series.idCode = self.idCode +' and '+series2.idCode
+                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+            if self.last_updated == series2.last_updated:
+                new_series.last_updated = self.last_updated
+            else:
+                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+
+            if self.release == series2.release:
+                new_series.release = self.release
+            else:
+                new_series.release = self.release +' and '+series2.release
+                
+            new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data+series2.data
             new_series.dates = self.dates
             new_series.datetimes = self.datetimes
@@ -858,6 +964,7 @@ class series:
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
         new_series.t = 1
         new_series.freq = 'Annual'
+        new_series.freq_short = 'A'
         new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
 
         return new_series
@@ -875,7 +982,6 @@ class series:
 
         new_series = self.copy()
 
-        # t = self.t
         new_series.data  =new_series.data[-N:]
         new_series.dates =new_series.dates[-N:]
         new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
@@ -1096,15 +1202,31 @@ class series:
                 new_series.source = self.source
             else:
                 new_series.source = self.source +' and '+series2.source
-            new_series.freq = self.freq
+            new_series.frequency = self.frequency
+            new_series.frequency_short = self.frequency_short
             new_series.units = self.units +' x '+series2.units
+            new_series.units_short = self.units_short +' x '+series2.units_short
             new_series.t = self.t
             new_series.daterange = self.daterange
-            if self.updated == series2.updated:
-                new_series.updated = self.updated
+
+            if self.seasonal_adjustment == series2.seasonal_adjustment:
+                new_series.seasonal_adjustment = self.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
             else:
-                new_series.updated = self.updated +' and '+series2.updated
-            new_series.idCode = self.idCode +' and '+series2.idCode
+                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+            if self.last_updated == series2.last_updated:
+                new_series.last_updated = self.last_updated
+            else:
+                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+
+            if self.release == series2.release:
+                new_series.release = self.release
+            else:
+                new_series.release = self.release +' and '+series2.release
+                
+            new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data*series2.data
             new_series.dates = self.dates
             new_series.datetimes = self.datetimes
@@ -1199,7 +1321,7 @@ def divide(series1,series2):
         Both series must have exactly the same date attribute. You are 
         responsibile for making sure that adding the series makes sense.
         E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units with hours.
+        units in dollars to another with units in hours.
 
     Returns:
         fredpy series
@@ -1218,15 +1340,31 @@ def divide(series1,series2):
             new_series.source = series1.source
         else:
             new_series.source = series1.source +' and '+series2.source
-        new_series.freq = series1.freq
+        new_series.frequency = series1.frequency
+        new_series.frequency_short = series1.frequency_short
         new_series.units = series1.units +' / '+series2.units
+        new_series.units_short = series1.units_short +' / '+series2.units_short
         new_series.t = series1.t
         new_series.daterange = series1.daterange
-        if series1.updated == series2.updated:
-            new_series.updated = series1.updated
+
+        if series1.seasonal_adjustment == series2.seasonal_adjustment:
+            new_series.seasonal_adjustment = series1.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
         else:
-            new_series.updated = series1.updated +' and '+series2.updated
-        new_series.idCode = series1.idCode +' and '+series2.idCode
+            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+        if series1.last_updated == series2.last_updated:
+            new_series.last_updated = series1.last_updated
+        else:
+            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
+
+        if series1.release == series2.release:
+            new_series.release = series1.release
+        else:
+            new_series.release = series1.release +' and '+series2.release
+            
+        new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data/series2.data
         new_series.dates = series1.dates
         new_series.datetimes = series1.datetimes
@@ -1245,7 +1383,7 @@ def minus(series1,series2):
         Both series must have exactly the same date attribute. You are 
         responsibile for making sure that adding the series makes sense.
         E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units with hours.
+        units in dollars to another with units in hours.
 
     Returns:
         fredpy series
@@ -1264,15 +1402,31 @@ def minus(series1,series2):
             new_series.source = series1.source
         else:
             new_series.source = series1.source +' and '+series2.source
-        new_series.freq = series1.freq
+        new_series.frequency = series1.frequency
+        new_series.frequency_short = series1.frequency_short
         new_series.units = series1.units +' - '+series2.units
+        new_series.units_short = series1.units_short +' - '+series2.units_short
         new_series.t = series1.t
         new_series.daterange = series1.daterange
-        if series1.updated == series2.updated:
-            new_series.updated = series1.updated
+
+        if series1.seasonal_adjustment == series2.seasonal_adjustment:
+            new_series.seasonal_adjustment = series1.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
         else:
-            new_series.updated = series1.updated +' and '+series2.updated
-        new_series.idCode = series1.idCode +' and '+series2.idCode
+            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+        if series1.last_updated == series2.last_updated:
+            new_series.last_updated = series1.last_updated
+        else:
+            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
+
+        if series1.release == series2.release:
+            new_series.release = series1.release
+        else:
+            new_series.release = series1.release +' and '+series2.release
+            
+        new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data-series2.data
         new_series.dates = series1.dates
         new_series.datetimes = series1.datetimes
@@ -1292,7 +1446,7 @@ def plus(series1,series2):
         Both series must have exactly the same date attribute. You are 
         responsibile for making sure that adding the series makes sense.
         E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units with hours.
+        units in dollars to another with units in hours.
 
     Returns:
         fredpy series
@@ -1311,15 +1465,31 @@ def plus(series1,series2):
             new_series.source = series1.source
         else:
             new_series.source = series1.source +' and '+series2.source
-        new_series.freq = series1.freq
+        new_series.frequency = series1.frequency
+        new_series.frequency_short = series1.frequency_short
         new_series.units = series1.units +' + '+series2.units
+        new_series.units_short = series1.units_short +' + '+series2.units_short
         new_series.t = series1.t
         new_series.daterange = series1.daterange
-        if series1.updated == series2.updated:
-            new_series.updated = series1.updated
+
+        if series1.seasonal_adjustment == series2.seasonal_adjustment:
+            new_series.seasonal_adjustment = series1.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
         else:
-            new_series.updated = series1.updated +' and '+series2.updated
-        new_series.idCode = series1.idCode +' and '+series2.idCode
+            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+        if series1.last_updated == series2.last_updated:
+            new_series.last_updated = series1.last_updated
+        else:
+            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
+
+        if series1.release == series2.release:
+            new_series.release = series1.release
+        else:
+            new_series.release = series1.release +' and '+series2.release
+            
+        new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data+series2.data
         new_series.dates = series1.dates
         new_series.datetimes = series1.datetimes
@@ -1328,7 +1498,7 @@ def plus(series1,series2):
         return new_series
 
 
-def quickplot(fred_series,year_mult=10,show=True,recess=False,save=False,filename='file',linewidth=2,alpha = 0.7):
+def quickplot(fred_series,year_mult=10,show=True,recess=False,style='default',save=False,filename='file',linewidth=2,alpha = 0.7):
 
     '''Create a plot of a FRED data series.
 
@@ -1337,15 +1507,18 @@ def quickplot(fred_series,year_mult=10,show=True,recess=False,save=False,filenam
         year_mult (integer):         Interval between year ticks on the x-axis. Default: 10.
         show (bool):                 Show the plot? Default: True.
         recess (bool):               Show recession bars in plot? Default: False.
+        style (string):              Matplotlib style Default: 'default'.
         save (bool):                 Save the image to file? Default: False.
         filename (string):           Name of file to which image is saved *without an extension*.
                                      Default: ``'file'``.
         linewidth (float):           Width of plotted line. Default: 2.
         alpha (float):               Transparency of the recession bars. Must be between 0 and 1. 
-                                     Default: 0.5
+                                     Default: 0.7
 
     Returns:
     '''
+
+    pylab.style.use(style)
 
     fig = pylab.figure()
 
@@ -1376,7 +1549,7 @@ def times(series1,series2):
         Both series must have exactly the same date attribute. You are 
         responsibile for making sure that adding the series makes sense.
         E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units with hours.
+        units in dollars to another with units in hours.
 
     Returns:
         fredpy series
@@ -1395,15 +1568,31 @@ def times(series1,series2):
             new_series.source = series1.source
         else:
             new_series.source = series1.source +' and '+series2.source
-        new_series.freq = series1.freq
-        new_series.units = series1.units +' x '+series2.units
+        new_series.frequency = series1.frequency
+        new_series.frequency_short = series1.frequency_short
+        new_series.units = series1.units +' * '+series2.units
+        new_series.units_short = series1.units_short +' * '+series2.units_short
         new_series.t = series1.t
         new_series.daterange = series1.daterange
-        if series1.updated == series2.updated:
-            new_series.updated = series1.updated
+
+        if series1.seasonal_adjustment == series2.seasonal_adjustment:
+            new_series.seasonal_adjustment = series1.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
         else:
-            new_series.updated = series1.updated +' and '+series2.updated
-        new_series.idCode = series1.idCode +' and '+series2.idCode
+            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
+            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+        if series1.last_updated == series2.last_updated:
+            new_series.last_updated = series1.last_updated
+        else:
+            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
+
+        if series1.release == series2.release:
+            new_series.release = series1.release
+        else:
+            new_series.release = series1.release +' and '+series2.release
+            
+        new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data*series2.data
         new_series.dates = series1.dates
         new_series.datetimes = series1.datetimes
@@ -1411,17 +1600,26 @@ def times(series1,series2):
 
         return new_series
 
-def toFredSeries(data,dates,title='',freq='',source='',units='',updated=''):
+def toFredSeries(data,dates,frequency='',frequency_short='',last_updated='',notes='',release='',seasonal_adjustment='',seasonal_adjustment_short='',series_id='',source='',t=0,title='',units='',units_short=''):
     
     '''Create a FRED object from a set of data obtained from a different source.
 
     Args:
-        data (numpy ndarray):          data values
-        dates (list or numpy ndarray): date strings. Optional. If 
-        title (string):                title of the data. Default: ''
-        freq (string):                 observation frequency. Options: '', 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'. Default: ''
-        source (string):               source of the data. Default: ''
-        units (string):                units. Default: ''
+        data (numpy ndarray):                   Data
+        dates (list or numpy ndarray):          Elements must be strings in 'MM-DD-YYYY' format
+        frequency (string):                     Observation frequency. Options: '', 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'. Default: ''
+        frequency_short (string):               Observation frequency abbreviated. Options: '', 'D', 'W', 'M', 'Q', or 'A'. Default: ''
+        last_updated (string):                  Date data was last updated. Default = ''
+        notes (string):                         Default: ''
+        release (string):                       Notes about data. Default: ''
+        seasonal_adjustment (string):           Default: ''
+        seasonal_adjustment_short (string):     Default: ''
+        series_id (string):                     FRED series ID. Default: ''
+        source (string):                        Original source of data. Default: ''
+        t (int):                                Number of observations per year. Default: 0
+        title (string):                         Title of the data. Default: ''
+        units (string):                         Default: ''
+        units_short (string):                   Default: ''
         '''
     
 
@@ -1431,22 +1629,60 @@ def toFredSeries(data,dates,title='',freq='',source='',units='',updated=''):
     timestamps = pd.DatetimeIndex(dates)    
     f.dates = [ str(d.to_pydatetime())[0:10] for d in timestamps]
     f.datetimes = np.array([dateutil.parser.parse(s) for s in f.dates])
-    
-    f.title = title
-    f.freq = freq
-    if f.freq == 'Daily':
-        f.t=365
-    elif f.freq[0:6] == 'Weekly':
-        f.t=52
-    elif f.freq[0:7] == 'Monthly':
-        f.t=12
-    elif f.freq[0:9] == 'Quarterly':
-        f.t=4
-    elif f.freq[0:6] == 'Annual':
-        f.t=1
-    f.freq = freq
+
+
+
+    if frequency in ['Daily','Weekly','Monthly','Quarterly','Annual']:
+
+        if frequency == 'Daily':
+            t=365
+            frequency_short = 'D'
+        elif frequency == 'Weekly':
+            t=52
+            frequency_short = 'W'
+        elif frequency == 'Monthly':
+            t=12
+            frequency_short = 'M'
+        elif frequency == 'Quarterly':
+            t=4
+            frequency_short = 'Q'
+        else:
+            t=1
+            frequency_short = 'A'
+
+    elif frequency_short in ['D','W','M','Q','A']:
+
+        if frequency_short == 'D':
+            t=365
+            frequency = 'Daily'
+        elif frequency_short == 'W':
+            t=52
+            frequency = 'Weekly'
+        elif frequency_short == 'M':
+            t=12
+            frequency = 'Monthly'
+        elif frequency_short == 'Q':
+            t=4
+            frequency = 'Quarterly'
+        else:
+            t=1
+            frequency = 'Annual'
+
+
+
+    f.frequency = frequency
+    f.frequency_short = frequency_short
+    f.last_updated = last_updated
+    f.notes = notes
+    f.release = release
+    f.seasonal_adjustment = seasonal_adjustment
+    f.seasonal_adjustment_short = seasonal_adjustment_short
+    f.series_id = series_id
     f.source = source
+    f.title = title
     f.units = units
+    f.units_short = units_short
+    f.t = t
     f.daterange = 'Range: '+f.dates[0]+' to '+f.dates[-1]
     return f
 

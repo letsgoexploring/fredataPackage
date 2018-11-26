@@ -23,14 +23,20 @@
 		:daterange: (string) -- specifies the dates of the first and last observations.
 		:dates: (list) -- list of date strings in YYYY-MM-DD format.
 		:datetimes: (numpy ndarray) -- array containing observation dates formatted as :py:class:`datetime.datetime` instances.
-		:freq: (string) -- data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
-		:idCode: (string) -- unique FRED series ID code.
-		:season: (string) -- specifies whether the data has been seasonally adjusted.
+		:frequency: (string) -- data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
+		:frequency_short: (string) -- data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
+		:last_updated: (string) -- date series was last updated.
+		:notes: (string) -- details about series. Not available for all series.
+		:release: (string) -- statistical release containing data.
+		:seasonal_adjustment: (string) -- specifies whether the data has been seasonally adjusted.
+		:seasonal_adjustment_short: (string) --specifies whether the data has been seasonally adjusted. Abbreviated.
+		:series_id: (string) -- unique FRED series ID code.
 		:source: (string) -- original source of the data.
 		:t: (integer) -- number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual. 
 		:title: (string) -- title of the data series.
 		:units: (string) -- units of the data series.
-		:updated: (string) -- date series was last updated.
+		:units_short: (string) units of the data series. Abbreviated.
+
 
 	**Methods:**
 

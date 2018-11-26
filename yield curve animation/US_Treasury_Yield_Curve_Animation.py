@@ -3,12 +3,16 @@
 from __future__ import division
 import matplotlib
 matplotlib.use("Agg")
-import fredpy, dateutil, datetime
+import dateutil, datetime
+import fredpy as fp
 import numpy as np
 import matplotlib.pyplot as plt
+plt.style.use('classic')
 import matplotlib.animation as animation
 import matplotlib.dates as dts
 from yield_curve import yc
+
+fp.api_key = fp.load_api_key('fred_api_key.txt')
 
 # Initial and final dates for video
 date_alpha = '1965-01-01'
@@ -21,24 +25,24 @@ day        = datetime.timedelta(days =1)
 dates, date_strs, maturities, yield_curves,masks = [],[],[],[],[]
 
 # Create Fred objects
-y1m= fredpy.series('DTB4WK')
-y3m= fredpy.series('DTB3')
-y6m= fredpy.series('DTB6')
-y1 = fredpy.series('DGS1')
-y5 = fredpy.series('DGS5')
-y10= fredpy.series('DGS10')
-y20= fredpy.series('DGS20')
-y30= fredpy.series('DGS30')
+y1m= fp.series('DTB4WK')
+y3m= fp.series('DTB3')
+y6m= fp.series('DTB6')
+y1 = fp.series('DGS1')
+y5 = fp.series('DGS5')
+y10= fp.series('DGS10')
+y20= fp.series('DGS20')
+y30= fp.series('DGS30')
 
 # Limit all data series to the same date windows
-y1m.window(win)
-y3m.window(win)
-y6m.window(win)
-y1.window(win)
-y5.window(win)
-y10.window(win)
-y20.window(win)
-y30.window(win)
+y1m = y1m.window(win)
+y3m = y3m.window(win)
+y6m = y6m.window(win)
+y1 = y1.window(win)
+y5 = y5.window(win)
+y10 = y10.window(win)
+y20 = y20.window(win)
+y30 = y30.window(win)
 
 all_yields = [y1m,y3m,y6m,y1,y5,y10,y20,y30] 
 
@@ -108,3 +112,4 @@ def run(*args):
 
 ani = animation.FuncAnimation(fig, run, N-1, blit=False,repeat=False,interval=1)
 ani.save('US_Treasury_Yield_Curve_Animation.mp4',writer=writer)
+
