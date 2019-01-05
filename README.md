@@ -19,7 +19,7 @@ This repository contains:
     * **US_Treasury_Yield_Curve_With_Macro_Data.py**: Program for creating the animation
 5. **documentation**: Files used to create fredpy_documentation.pdf.
 
-Documentation for fredpy: https://www.briancjenkins.com/fredpy-documentation/index.html
+Documentation for fredpy: https://www.briancjenkins.com/fredpy-package/documentation/build/html/
 
 Free use of this code is welcome. Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
 
