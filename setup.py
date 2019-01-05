@@ -1,9 +1,12 @@
-from distutils.core import setup
+import setuptools
 
-setup(
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
   name = 'fredpy',
   packages = ['fredpy'],
-  version = '3.0.3',
+  version = '3.0.4',
   description = 'A package for downloading and working with data from Federal Reserve Economic Data',
   author = 'Brian C. Jenkins',
   author_email = 'bcjenkin@uci.edu',
