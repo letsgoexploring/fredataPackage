@@ -1,11 +1,22 @@
 import requests,dateutil, pylab, datetime, os
 import numpy as np
 import pandas as pd
+import warnings
 import statsmodels.api as sm
 tsa = sm.tsa
 
 # API key attribute needs to be set
-api_key=None
+
+# Try to find file in OSX home directory
+try:
+    items = os.getcwd().split('/')[:3]
+    items.append('fred_api_key.txt')
+    path = '/'.join(items)
+    with open(path,'r') as api_key_file:
+        api_key = api_key_file.readline()
+
+except:
+    api_key=None
 
 def load_api_key(path):
     try:
@@ -47,10 +58,8 @@ class series:
             None
 
         Attributes:
-            data:                       (numpy ndarray) data values.
-            daterange:                  (string) specifies the dates of the first and last observations.
-            dates:                      (list) list of date strings in YYYY-MM-DD format.
-            datetimes:                  (numpy ndarray) array containing observation dates formatted as datetime objects.
+            data:                       (Pandas Series} data values with dates as index.
+            date_range:                 (string) specifies the dates of the first and last observations.
             frequency:                  (string) data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Semiannual', or 'Annual'.
             frequency_short:            (string) data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
             last_updated:               (string) date series was last updated.
@@ -66,9 +75,10 @@ class series:
             units_short:                (string) units of the data series. Abbreviated.
         '''
 
+        if api_key==None:
+            raise ValueError('fredpy.api_key value not assigned. You need to provide your key for the FRED API.')
+
         if type(series_id) == str:
-
-
 
             request_url = 'https://api.stlouisfed.org/fred/series?series_id='+series_id+'&api_key='+api_key+'&file_type=json'
             r = requests.get(request_url)
@@ -101,28 +111,27 @@ class series:
 
             count = results['count']
 
-            self.data = np.zeros(count)
-            self.dates = [None]*count
+            data = np.zeros(count)
+            dates = [None]*count
             for i in range(count):
                 try:
-                    self.data[i] = results['observations'][i]['value']
+                    data[i] = results['observations'][i]['value']
                 except:
-                    self.data[i] = np.nan
-                self.dates[i] = results['observations'][i]['date']
+                    data[i] = np.nan
+                dates[i] = results['observations'][i]['date']
 
-            if np.isnan(self.data[0]):
+            if np.isnan(data[0]):
                 index =0
-                for i,value in enumerate(self.data):
+                for i,value in enumerate(data):
                     if np.isnan(value):
                         index+=1
                     else:
                         break
-                self.data = self.data[index:]
-                self.dates = self.dates[index:]
+                data = data[index:]
+                dates = dates[index:]
                 
-            self.datetimes = np.array([dateutil.parser.parse(s) for s in self.dates])
-            self.daterange = 'Range: '+self.dates[0]+' to '+self.dates[-1]
-
+            self.data = pd.Series(data,pd.to_datetime(dates))
+            self.date_range = 'Range: '+str(self.data.index[0])[:10]+' to '+str(self.data.index[-1])[:10]
 
 
             request_url =  'https://api.stlouisfed.org/fred/series/release?series_id='+series_id+'&api_key='+api_key+'&file_type=json'
@@ -139,10 +148,8 @@ class series:
 
         else:
 
-            self.data = np.array([])
-            self.daterange = ''
-            self.dates = []
-            self.datetimes = np.array([])
+            self.date_range = ''
+            self.data = pd.Series([],pd.to_datetime([]))
             self.frequency = ''
             self.frequency_short = ''
             self.last_updated = ''
@@ -157,6 +164,7 @@ class series:
             self.units = ''
             self.units_short = ''
 
+    
     def apc(self,log=True,method='backward'):
 
         '''Computes the percentage change in the data over one year.
@@ -175,26 +183,94 @@ class series:
         
         T = len(self.data)
         t = self.t
-        if log==True:
-            pct = 100 * np.log(self.data[t:]/ self.data[0:-t])
-        else:
-            pct = 100 * (self.data[t:]/self.data[0:-t] - 1)
-        if method=='backward':
-            dte = self.dates[t:]
-        elif method=='forward':
-            dte = self.dates[:T-t]
 
-        new_series.data  =pct
-        new_series.dates =dte
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in dte])
+        if log==True:
+            if method=='backward':
+                new_series.data = 100*np.log(self.data/self.data.shift(t)).dropna()
+            else:
+                new_series.data = 100*np.log(self.data.shift(-t)/self.data).dropna()
+        
+
+        else:
+            if method=='backward':
+                new_series.data = 100*(self.data/self.data.shift(t)-1).dropna()
+            else:
+                new_series.data = 100*(self.data.shift(-t)/self.data-1).dropna()
+
+
         new_series.units = 'Percent'
         new_series.units_short = '%'
         new_series.title = 'Annual Percentage Change in '+self.title
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
 
         return new_series
 
-    def bpfilter(self,low=6,high=32,K=12):
+    
+    def as_frequency(self,freq,method='mean'):
+
+        '''Convert a fredpy series to a lower frequency.
+
+        Args:
+            freq (string):      Abbreviation of desired frequency: 'D','W','M','Q','A'
+            method (string):    How to resample the data: 'first', 'last', 'mean' (default), 'median',
+                                    'min', 'max', 'sum'
+        Returns:
+            fredpy series
+        '''
+
+        new_series = self.copy()
+
+        obs_per_year = {'D':365,'W':52,'M':12,'Q':4,'A':1}
+        map_of_freqency_abbreviations = {'D':'Daily','W':'Weekly','M':'Monthly','Q':'Quarterly','A':'Annual'}
+
+
+        try:
+            new_series.t = obs_per_year[freq]
+            new_series.frequency_short=freq
+            new_series.frequency=map_of_freqency_abbreviations[freq]
+
+        except:
+            raise ValueError("freq must be 'D', 'W', 'M', 'Q', or 'A'")
+
+        if self.t<new_series.t:
+            warnings.warn('Warning: You are converting series to a higher frequency and this method may not behave as you expect.')
+
+        map_to_pandas_frequencies = {'D':'D','W':'W','M':'MS','Q':'QS','A':'AS'}
+
+        if method == 'first':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).first()
+
+        elif method == 'last':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).last()
+
+        elif method == 'mean':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).mean()
+
+        elif method == 'median':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).median()
+
+        elif method == 'min':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).min()
+
+        elif method == 'max':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).max()
+
+        elif method == 'sum':
+
+            new_series.data = self.data.resample(map_to_pandas_frequencies[freq]).sum()
+
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
+
+        return new_series
+
+    
+    def bp_filter(self,low=6,high=32,K=12):
 
         '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -227,27 +303,23 @@ class series:
             print('Warning: data frequency is not annual!')
             
         cycle = tsa.filters.bkfilter(self.data,low=low,high=high,K=K)
-        actual = self.data[K:-K]
+        actual = self.data.iloc[K:-K]
         trend = actual - cycle
         
-        new_series_cycle.dates = self.dates[K:-K]
-        new_series_cycle.datetimes = np.array([dateutil.parser.parse(s) for s in new_series_cycle.dates])
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
         new_series_cycle.units_short = 'Dev. rel. to trend'
         new_series_cycle.title = self.title+' - deviation relative to trend (bandpass filtered)'
-        new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
+        new_series_cycle.date_range = 'Range: '+str(new_series_cycle.data.index[0])[:10]+' to '+str(new_series_cycle.data.index[-1])[:10]
 
-
-        new_series_trend.dates = self.dates[K:-K]
-        new_series_trend.datetimes = np.array([dateutil.parser.parse(s) for s in new_series_trend.dates])
         new_series_trend.data = trend
         new_series_trend.title = self.title+' - trend (bandpass filtered)'
-        new_series_trend.daterange = 'Range: '+new_series_trend.dates[0]+' to '+new_series_trend.dates[-1]
+        new_series_trend.date_range = 'Range: '+str(new_series_trend.data.index[0])[:10]+' to '+str(new_series_trend.data.index[-1])[:10]
 
         return [new_series_cycle, new_series_trend]
 
-    def cffilter(self,low=6,high=32):
+
+    def cf_filter(self,low=6,high=32):
 
         '''Computes the Christiano-Fitzgerald (CF) filter of the data. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -279,6 +351,7 @@ class series:
 
         return [new_series_cycle, new_series_trend]
 
+    
     def copy(self):
 
         '''Returns a copy of a series object.
@@ -293,9 +366,7 @@ class series:
 
 
         new_series.data = self.data
-        new_series.daterange = self.daterange
-        new_series.dates = self.dates
-        new_series.datetimes = self.datetimes
+        new_series.date_range = self.date_range
         new_series.frequency = self.frequency
         new_series.frequency_short = self.frequency_short
         new_series.last_updated = self.last_updated
@@ -310,78 +381,10 @@ class series:
         new_series.units = self.units
         new_series.units_short = self.units_short
 
-
-        if hasattr(self, 'cycle'):
-            new_series.cycle = self.cycle
-
-        if hasattr(self, 'trend'):
-            new_series.trend = self.trend
-
         return new_series
 
-    def divide(self,series2):
 
-        '''Divides the data from the current fredpy series by the data from series2.
-
-        Args:
-            series2 (fredpy series): A fredpy series
-
-        Note::
-            Both series must have exactly the same date attribute. You are 
-            responsibile for making sure that adding the series makes sense.
-            E.g., this function will not stop you from adding a series with 
-            units in dollars to another with units with hours.
-
-        Returns:
-            fredpy series
-        '''
-
-        if self.dates != series2.dates:
-
-            raise ValueError('Current series and series2 do not have the same observation dates')
-
-        else:
-
-            new_series = series()
-
-            new_series.title = self.title +' divided by '+series2.title
-            if self.source == series2.source:
-                new_series.source = self.source
-            else:
-                new_series.source = self.source +' and '+series2.source
-            new_series.frequency = self.frequency
-            new_series.frequency_short = self.frequency_short
-            new_series.units = self.units +' / '+series2.units
-            new_series.units_short = self.units_short +' / '+series2.units_short
-            new_series.t = self.t
-            new_series.daterange = self.daterange
-
-            if self.seasonal_adjustment == series2.seasonal_adjustment:
-                new_series.seasonal_adjustment = self.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
-            else:
-                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-            if self.last_updated == series2.last_updated:
-                new_series.last_updated = self.last_updated
-            else:
-                new_series.last_updated = self.last_updated +' and '+series2.last_updated
-
-            if self.release == series2.release:
-                new_series.release = self.release
-            else:
-                new_series.release = self.release +' and '+series2.release
-
-            new_series.series_id = self.series_id +' and '+series2.series_id
-            new_series.data  = self.data/series2.data
-            new_series.dates = self.dates
-            new_series.datetimes = self.datetimes
-
-
-            return new_series
-
-    def firstdiff(self):
+    def diff_filter(self):
 
         '''Computes the first difference filter of original series. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -402,30 +405,80 @@ class series:
         new_series_cycle = self.copy()
         new_series_trend = self.copy()
 
-        dy    = self.data[1:] - self.data[0:-1]
-        gam   = np.mean(dy)
-        cycle = dy - gam
-        actual  = self.data[1:]
-        trend = self.data[0:-1]
-
-        new_series_cycle.dates = self.dates[1:]
-        new_series_cycle.datetimes = self.datetimes[1:]
-        new_series_cycle.data = cycle
+        new_series_cycle.data = self.data.diff().dropna() - self.data.diff().dropna().mean()
         new_series_cycle.units = 'Deviation relative to trend'
         new_series_cycle.units_short = 'Dev. rel. to trend'
-        new_series_cycle.title = self.title+' - deviation relative to trend (first difference filtered)'
-        new_series_cycle.daterange = 'Range: '+new_series_cycle.dates[0]+' to '+new_series_cycle.dates[-1]
+        new_series_cycle.date_range = 'Range: '+str(new_series_cycle.data.index[0])[:10]+' to '+str(new_series_cycle.data.index[-1])[:10]
 
-
-        new_series_trend.dates = self.dates[1:]
-        new_series_trend.datetimes = self.datetimes[1:]
-        new_series_trend.data = trend
+        new_series_trend.data = self.data.shift(1).dropna()
         new_series_trend.title = self.title+' - trend (first difference filtered)'
-        new_series_trend.daterange = 'Range: '+new_series_trend.dates[0]+' to '+new_series_trend.dates[-1]
+        new_series_trend.date_range = 'Range: '+str(new_series_trend.data.index[0])[:10]+' to '+str(new_series_trend.data.index[-1])[:10]
 
         return [new_series_cycle, new_series_trend]
 
-    def hpfilter(self,lamb=1600):
+    
+    def divide(self,series2):
+
+        '''Divides the data from the current fredpy series by the data from series2.
+
+        Args:
+            series2 (fredpy series): A fredpy series
+
+        Note::
+            Both series must have exactly the same date attribute. You are 
+            responsibile for making sure that adding the series makes sense.
+            E.g., this function will not stop you from adding a series with 
+            units in dollars to another with units with hours.
+
+        Returns:
+            fredpy series
+        '''
+
+        if not self.data.index.equals(series2.data.index):
+
+            raise ValueError('Current series and series2 do not have the same observation dates')
+
+        else:
+
+            new_series = series()
+
+            new_series.title = self.title +' divided by '+series2.title
+            if self.source == series2.source:
+                new_series.source = self.source
+            else:
+                new_series.source = self.source +' and '+series2.source
+            new_series.frequency = self.frequency
+            new_series.frequency_short = self.frequency_short
+            new_series.units = self.units +' / '+series2.units
+            new_series.units_short = self.units_short +' / '+series2.units_short
+            new_series.t = self.t
+            new_series.date_range = self.date_range
+
+            if self.seasonal_adjustment == series2.seasonal_adjustment:
+                new_series.seasonal_adjustment = self.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
+            else:
+                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+
+            if self.last_updated == series2.last_updated:
+                new_series.last_updated = self.last_updated
+            else:
+                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+
+            if self.release == series2.release:
+                new_series.release = self.release
+            else:
+                new_series.release = self.release +' and '+series2.release
+
+            new_series.series_id = self.series_id +' and '+series2.series_id
+            new_series.data  = self.data/series2.data
+
+
+            return new_series
+
+
+    def hp_filter(self,lamb=1600):
 
         '''Computes the Hodrick-Prescott (HP) filter of the data. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -462,7 +515,8 @@ class series:
 
         return [new_series_cycle, new_series_trend]
 
-    def lintrend(self):
+    
+    def linear_filter(self):
 
         '''Computes a simple linear filter of the data using OLS. Returns a list of two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -487,7 +541,7 @@ class series:
         pred  = result.predict(x)
         
         cycle= y-pred
-        trend= pred
+        trend= pd.Series(pred,index=self.data.index)
 
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'
@@ -500,6 +554,7 @@ class series:
 
         return [new_series_cycle, new_series_trend]
 
+    
     def log(self):
         
         '''Computes the natural log of the data
@@ -513,18 +568,19 @@ class series:
         new_series = self.copy()
 
         new_series.data = np.log(new_series.data)
-        new_series.units = 'log '+new_series.units
-        new_series.units_short = 'log '+new_series.units_short
+        new_series.units = 'Log '+new_series.units
+        new_series.units_short = 'Log '+new_series.units_short
         new_series.title = 'Log '+new_series.title
 
         return new_series
 
-    def ma1side(self,length):
+    
+    def ma_one_side(self,length):
 
         '''Computes a one-sided moving average with window equal to length
 
         Args:
-            length (int): length of the one-sided moving average.
+            length (int): window of the one-sided moving average.
 
         Returns:
             fredpy series
@@ -532,26 +588,20 @@ class series:
 
         new_series = self.copy()
 
-        length=int(length)
-        z = np.array([])
-        for s in range(len(self.data)-length+1):
-            z = np.append(z,np.mean(self.data[s+0:s+length]))
-
-        new_series.data = z
-        new_series.dates =self.dates[length-1:]
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.data = new_series.data.rolling(window=length).mean().dropna()
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
         new_series.title = self.title+' (1-sided moving average)'
 
         return new_series
 
-    def ma2side(self,length):
+    
+    def ma_two_side(self,length):
 
         '''Computes a two-sided moving average with window equal to 2x length
 
         Args:
-            length (int): half of length of the two-sided moving average. For example, if length = 12,
-                          then the moving average will contain 24 the 12 periods before and the 12 
+            length (int): half of window of the two-sided moving average. For example, if length = 12,
+                          then the moving average will contain the 12 periods before and the 12 
                           periods after each observation.
 
         Returns:
@@ -560,19 +610,13 @@ class series:
 
         new_series = self.copy()
         
-        length=int(length)
-        z = np.array([])
-        for s in range(len(self.data)-2*length):
-            z = np.append(z,np.mean(self.data[s+0:s+2*length]))
-        
-        new_series.data = z
-        new_series.dates =self.dates[length:-length]
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.data = self.data.rolling(window=2*length+1,center=True).mean().dropna()
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
         new_series.title = self.title+' (2-sided moving average)'
 
         return new_series
 
+    
     def minus(self,series2):
 
         '''Subtracts the data from series2 from the data from the current fredpy series.
@@ -590,7 +634,7 @@ class series:
             fredpy series
         '''
 
-        if self.dates != series2.dates:
+        if not self.data.index.equals(series2.data.index):
 
             raise ValueError('Current series and series2 do not have the same observation dates')
 
@@ -608,7 +652,7 @@ class series:
             new_series.units = self.units +' - '+series2.units
             new_series.units_short = self.units_short +' - '+series2.units_short
             new_series.t = self.t
-            new_series.daterange = self.daterange
+            new_series.date_range = self.date_range
 
             if self.seasonal_adjustment == series2.seasonal_adjustment:
                 new_series.seasonal_adjustment = self.seasonal_adjustment
@@ -629,114 +673,9 @@ class series:
 
             new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data-series2.data
-            new_series.dates = self.dates
-            new_series.datetimes = self.datetimes
 
 
             return new_series
-
-    def monthtoannual(self,method='average'):
-
-        '''Converts monthly data to annual data.
-
-        Args:
-            method (sring): Three values accepted:
-
-                'average': average of values for 12 months
-                'sum':     sum of the values for 12 months
-                'end':     value in twelfth month only.
-
-        Returns:
-            fredpy series
-        '''
-
-        new_series = self.copy()
-
-        if self.t !=12:
-            print('Warning: data frequency is not monthly!')
-        T = len(self.data)
-        temp_data = self.data[0:0]
-        temp_dates = self.datetimes[0:0]
-        if method =='average':
-            for k in range(0,T):
-                '''Annual data is the average of monthly data'''
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
-                    temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+ self.data[k+3] + self.data[k+4] + self.data[k+5]
-                        + self.data[k+6] + self.data[k+7] + self.data[k+8] + self.data[k+9] + self.data[k+10] + self.data[k+11])/12)  
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        elif method =='sum':
-            for k in range(0,T):
-                '''Annual data is the sum of monthly data'''
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
-                    temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+ self.data[k+3] + self.data[k+4] + self.data[k+5]
-                        + self.data[k+6] + self.data[k+7] + self.data[k+8] + self.data[k+9] + self.data[k+10] + self.data[k+11]))
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        elif method=='end':
-            for k in range(0,T):
-                '''Annual data is the end of year value'''
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>11):
-                    temp_data = np.append(temp_data,self.data[k+11])
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        
-        new_series.data = temp_data
-        new_series.dates = temp_dates
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
-        new_series.t = 1
-        new_series.frequency = 'Annual'
-        new_series.frequency_short = 'A'
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
-
-        return new_series
-
-
-    def monthtoquarter(self,method='average'):
-        
-        '''Converts monthly data to quarterly data.
-
-        Args:
-            method (sring): Three values accepted:
-
-                'average': average of values for three months
-                'sum':     sum of the values for three months
-                'end':     value in third month only.
-
-        Returns:
-            fredpy series
-        '''
-
-        new_series = self.copy()
-
-        if self.t !=12:
-            print('Warning: data frequency is not monthly!')
-        T = len(self.data)
-        temp_data = self.data[0:0]
-        temp_dates = self.datetimes[0:0]
-        if method == 'average':
-            for k in range(1,T-1):
-                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
-                    temp_data = np.append(temp_data,(self.data[k-1]+self.data[k]+self.data[k+1])/3)
-                    temp_dates = np.append(temp_dates,self.dates[k-1])
-        elif method == 'sum':
-            for k in range(1,T-1):
-                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
-                    temp_data = np.append(temp_data,(self.data[k-1]+self.data[k]+self.data[k+1]))
-                    temp_dates = np.append(temp_dates,self.dates[k-1])
-        elif method== 'end':
-            for k in range(1,T-1):
-                if (self.datetimes[k].month == 2) or (self.datetimes[k].month == 5) or (self.datetimes[k].month == 8) or (self.datetimes[k].month == 11):
-                    temp_data = np.append(temp_data,self.data[k+1])
-                    temp_dates = np.append(temp_dates,self.dates[k-1])
-
-        
-        new_series.data = temp_data
-        new_series.dates = temp_dates
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
-        new_series.t = 4
-        new_series.frequency = 'Quarterly'
-        new_series.frequency_short = 'Q'
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
-
-        return new_series
 
 
     def pc(self,log=True,method='backward',annualized=False):
@@ -760,35 +699,39 @@ class series:
         
         T = len(self.data)
         t = self.t
+
         if log==True:
-            pct = 100*np.log(self.data[1:]/self.data[0:-1])
+            if method=='backward':
+                new_series.data = 100*np.log(self.data/self.data.shift(1)).dropna()
+            else:
+                new_series.data = 100*np.log(self.data.shift(-1)/self.data).dropna()
+        
+
         else:
-            pct = 100*(self.data[1:]/self.data[0:-1] - 1)
-        if annualized==True:
-            pct = np.array([t*x for x in pct])
-        if method=='backward':
-            dte = self.dates[1:]
-        elif method=='forward':
-            dte = self.dates[:-1]
+            if method=='backward':
+                new_series.data = 100*(self.data/self.data.shift(1)-1).dropna()
+            else:
+                new_series.data = 100*(self.data.shift(-1)/self.data-1).dropna()
 
+        if annualized:
+            new_series.data = t*new_series.data
 
-        new_series.data  =pct
-        new_series.dates =dte
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in dte])
         new_series.units = 'Percent'
         new_series.units_short = '%'
         new_series.title = 'Percentage Change in '+self.title
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
 
         return new_series
 
-    def percapita(self,civ_pop = True):
+    
+    def per_capita(self,civ_pop = True):
 
         '''Transforms the data into per capita terms (US) by dividing by a measure of the total population:
 
         Args:
             civ_pop (string): If civ_pop == True, use Civilian noninstitutional population defined as 
-                                persons 16 years of age and older (Default). Else, use the toal population.
+                                persons 16 years of age and older (Default). Else, use the total US 
+                                population.
 
         Returns:
             fredpy series
@@ -796,65 +739,27 @@ class series:
 
         new_series = self.copy()
 
-        T = len(self.data)
-        temp_data   = self.data[0:0]
-        temp_dates  = self.dates[0:0]
         if civ_pop ==True:
-            populate= series('CNP16OV')
+            population= series('CNP16OV').as_frequency(new_series.frequency_short)
         else:
-            populate= series('POP')
-        T2 = len(populate.data)
+            population= series('POP').as_frequency(new_series.frequency_short)
+    
+        new_series,population = window_equalize([new_series,population])
 
-        # Generate quarterly population data.
-        if self.t == 4:
-            for k in range(1,T2-1):
-                if (populate.datetimes[k].month == 2) or (populate.datetimes[k].month == 5) or (populate.datetimes[k].month == 8) or \
-                (populate.datetimes[k].month == 11):
-                    temp_data = np.append(temp_data,(populate.data[k-1]+populate.data[k]+populate.data[k+1])/3)
-                    temp_dates.append(populate.dates[k])
+        new_series.data = new_series.data/population.data
 
-        # Generate annual population data.
-        if self.t == 1:
-            for k in range(0,T2):
-                if (populate.datetimes[k].month == 1) and (len(populate.datetimes[k:])>11):
-                    temp_data = np.append(temp_data,(populate.data[k]+populate.data[k+1]+populate.data[k+2]+populate.data[k+3]+populate.data[k+4]+populate.data[k+5] \
-                        +populate.data[k+6]+populate.data[k+7]+populate.data[k+8]+populate.data[k+9]+populate.data[k+10]+populate.data[k+11])/12) 
-                    temp_dates.append(populate.dates[k])
-
-        if self.t == 12:
-            temp_data  = populate.data
-            temp_dates = populate.dates
-        
-        # form the population objects.    
-        populate.data     = temp_data
-        populate.dates    = temp_dates
-        populate.datetimes = np.array([dateutil.parser.parse(s) for s in populate.dates])
-
-
-        # find the minimum of data window:
-        if populate.datetimes[0].date() <= self.datetimes[0].date():
-            win_min = self.datetimes[0].strftime('%Y-%m-%d')
-        else:
-            win_min = populate.datetimes[0].strftime('%Y-%m-%d')
-
-        # find the maximum of data window:
-        if populate.datetimes[-1].date() <= self.datetimes[-1].date():
-            win_max = populate.datetimes[-1].strftime('%Y-%m-%d')
-        else:
-            win_max = self.datetimes[-1].strftime('%Y-%m-%d')
-
-        # set data window
-        windo = [win_min,win_max]
-
-        populate = populate.window(windo)
-        new_series = new_series.window(windo)
-        new_series.data = new_series.data/populate.data
         new_series.title = new_series.title+' Per Capita'
         new_series.units = new_series.units+' Per Thousand People'
         new_series.units_short = new_series.units_short+' Per Thousand People'
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
 
         return new_series
+
+    
+    def plot(self,**kwargs):
+
+        self.data.plot(**kwargs)
+
 
     def plus(self,series2):
 
@@ -873,7 +778,7 @@ class series:
             fredpy series
         '''
 
-        if self.dates != series2.dates:
+        if not self.data.index.equals(series2.data.index):
 
             raise ValueError('Current series and series2 do not have the same observation dates')
 
@@ -891,7 +796,7 @@ class series:
             new_series.units = self.units +' + '+series2.units
             new_series.units_short = self.units_short +' + '+series2.units_short
             new_series.t = self.t
-            new_series.daterange = self.daterange
+            new_series.date_range = self.date_range
 
             if self.seasonal_adjustment == series2.seasonal_adjustment:
                 new_series.seasonal_adjustment = self.seasonal_adjustment
@@ -912,63 +817,11 @@ class series:
                 
             new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data+series2.data
-            new_series.dates = self.dates
-            new_series.datetimes = self.datetimes
 
 
             return new_series
 
-    def quartertoannual(self,method='average'):
-
-        '''Converts quarterly data to annual data.
-
-        Args:
-            method (sring): Three values accepted:
-
-                'average': average of values for four quarters
-                'sum':     sum of the values for four quarters
-                'end':     value in fourth quarter only.
-
-        Returns:
-            fredpy series
-        '''
-
-        new_series = self.copy()
-
-        if self.t !=4:
-            print('Warning: data frequency is not quarterly!')
-        T = len(self.data)
-        temp_data = self.data[0:0]
-        temp_dates = self.datetimes[0:0]
-        if method =='average':
-            for k in range(0,T):
-                '''Annual data is the average of monthly data'''
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
-                    temp_data = np.append(temp_data,(self.data[k]+self.data[k+1]+self.data[k+2]+self.data[k+3])/4)
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        elif method=='sum':
-            for k in range(0,T):
-                '''Annual data is the sum of monthly data'''
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
-                    temp_data = np.append(temp_data,self.data[k]+self.data[k+1]+self.data[k+2]+self.data[k+3])
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        elif method == 'end':
-            for k in range(0,T):
-                if (self.datetimes[k].month == 1) and (len(self.datetimes[k:])>3):
-                    '''Annual data is the end of month value'''
-                    temp_data = np.append(temp_data,self.data[k+3])
-                    temp_dates = np.append(temp_dates,self.dates[k])
-        
-        new_series.data = temp_data
-        new_series.dates = temp_dates
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in temp_dates])
-        new_series.t = 1
-        new_series.freq = 'Annual'
-        new_series.freq_short = 'A'
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
-
-        return new_series
-
+    
     def recent(self,N):
 
         '''Restrict the data to the most recent N observations.
@@ -982,13 +835,12 @@ class series:
 
         new_series = self.copy()
 
-        new_series.data  =new_series.data[-N:]
-        new_series.dates =new_series.dates[-N:]
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
-        new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        new_series.data  =new_series.data.iloc[-N:]
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
 
         return new_series
 
+    
     def recessions(self,color='0.5',alpha = 0.5):
         
         '''Creates recession bars for plots. Should be used after a plot has been made but
@@ -1172,6 +1024,7 @@ class series:
         for k in range(len(peaks2)):
             pylab.axvspan(peaks2num[k], troughs2num[k], edgecolor= color, facecolor=color, alpha=alpha)
 
+    
     def times(self,series2):
 
         '''Multiplies the data from the current fredpy series with the data from series2.
@@ -1189,7 +1042,7 @@ class series:
             fredpy series
         '''
 
-        if self.dates != series2.dates:
+        if not self.data.index.equals(series2.data.index):
 
             raise ValueError('Current series and series2 do not have the same observation dates')
 
@@ -1207,7 +1060,7 @@ class series:
             new_series.units = self.units +' x '+series2.units
             new_series.units_short = self.units_short +' x '+series2.units_short
             new_series.t = self.t
-            new_series.daterange = self.daterange
+            new_series.date_range = self.date_range
 
             if self.seasonal_adjustment == series2.seasonal_adjustment:
                 new_series.seasonal_adjustment = self.seasonal_adjustment
@@ -1228,25 +1081,23 @@ class series:
                 
             new_series.series_id = self.series_id +' and '+series2.series_id
             new_series.data  = self.data*series2.data
-            new_series.dates = self.dates
-            new_series.datetimes = self.datetimes
 
 
             return new_series
 
 
-    def window(self,win):
+    def window(self,start_end):
 
         '''Restricts the data to a specified date window.
 
         Args:
 
-            win (list): is an ordered pair: win = [win_min, win_max]
+            start_end (list):   is an ordered pair: start_end = [start, end]
 
-                            win_min is the date of the minimum date
-                            win_max is the date of the maximum date
+                                    start is the date of the minimum date
+                                    end is the date of the maximum date
         
-                        both are strings in either 'yyyy-mm-dd' or 'mm-dd-yyyy' format
+                                both are strings in either 'yyyy-mm-dd' or 'mm-dd-yyyy' format
 
         Returns:
             fredpy series
@@ -1254,61 +1105,18 @@ class series:
 
         new_series = self.copy()
 
-        T = len(self.data)
-        win_min = win[0]
-        win_max = win[1]
-        win_min_num = pylab.date2num(dateutil.parser.parse(win_min))
-        win_max_num = pylab.date2num(dateutil.parser.parse(win_max))
-        date_num    = pylab.date2num([dateutil.parser.parse(s) for s in self.dates])
-        dumpy       = date_num.tolist()
-        min0 = 0
-        max0 = T
-        t = self.t
+        new_series.data = new_series.data.loc[start_end[0]:start_end[1]]
 
-        if win_min_num > min(date_num):
-            for k in range(T):
-                if win_min_num <= dumpy[k]:
-                    min0 = k
-                    break
-                                              
-        if win_max_num < max(date_num):
-            for k in range(T):
-                if win_max_num < dumpy[k]:
-                    max0 = k
-                    break
-
-        new_series.data = new_series.data[min0:max0]
-        new_series.dates = new_series.dates[min0:max0]
-        new_series.datetimes = np.array([dateutil.parser.parse(s) for s in new_series.dates])
-        if len(self.dates)>0:
-            new_series.daterange = 'Range: '+new_series.dates[0]+' to '+new_series.dates[-1]
+        if len(new_series.data)>0:
+            new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
         else:
-            new_series.daterange = 'Range: Null'
+            new_series.date_range = 'Range: Null'
 
-        if hasattr(self, 'cycle'):
-            new_series.cycle = self.cycle[min0:max0]
-
-        if hasattr(self, 'trend'):
-            new_series.trend = self.trend[min0:max0]
 
         return new_series
 
 ######################################################################################################
 # Additional functions
-
-def date_times(date_strings):
-
-    '''Converts a list of date strings in 'yyyy-mm-dd' format to a list of datetime-formatted objects.
-
-    Args:
-        date_strings (list): a list of date strings formated as: 'yyyy-mm-dd'.
-
-    Returns:
-        numpy ndarray
-    '''
-
-    datetimes = np.array([dateutil.parser.parse(s) for s in date_strings])
-    return datetimes
 
 def divide(series1,series2):
 
@@ -1327,7 +1135,7 @@ def divide(series1,series2):
         fredpy series
     '''
 
-    if series1.dates != series2.dates:
+    if not series1.data.index.equals(series2.data.index):
 
         raise ValueError('series1 and series2 do not have the same observation dates')
 
@@ -1345,7 +1153,7 @@ def divide(series1,series2):
         new_series.units = series1.units +' / '+series2.units
         new_series.units_short = series1.units_short +' / '+series2.units_short
         new_series.t = series1.t
-        new_series.daterange = series1.daterange
+        new_series.date_range = series1.date_range
 
         if series1.seasonal_adjustment == series2.seasonal_adjustment:
             new_series.seasonal_adjustment = series1.seasonal_adjustment
@@ -1366,11 +1174,9 @@ def divide(series1,series2):
             
         new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data/series2.data
-        new_series.dates = series1.dates
-        new_series.datetimes = series1.datetimes
-
 
         return new_series
+
 
 def minus(series1,series2):
 
@@ -1389,7 +1195,7 @@ def minus(series1,series2):
         fredpy series
     '''
 
-    if series1.dates != series2.dates:
+    if not series1.data.index.equals(series2.data.index):
 
         raise ValueError('series1 and series2 do not have the same observation dates')
 
@@ -1407,7 +1213,7 @@ def minus(series1,series2):
         new_series.units = series1.units +' - '+series2.units
         new_series.units_short = series1.units_short +' - '+series2.units_short
         new_series.t = series1.t
-        new_series.daterange = series1.daterange
+        new_series.date_range = series1.date_range
 
         if series1.seasonal_adjustment == series2.seasonal_adjustment:
             new_series.seasonal_adjustment = series1.seasonal_adjustment
@@ -1428,9 +1234,6 @@ def minus(series1,series2):
             
         new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data-series2.data
-        new_series.dates = series1.dates
-        new_series.datetimes = series1.datetimes
-
 
         return new_series
 
@@ -1452,7 +1255,7 @@ def plus(series1,series2):
         fredpy series
     '''
 
-    if series1.dates != series2.dates:
+    if not series1.data.index.equals(series2.data.index):
 
         raise ValueError('series1 and series2 do not have the same observation dates')
 
@@ -1470,7 +1273,7 @@ def plus(series1,series2):
         new_series.units = series1.units +' + '+series2.units
         new_series.units_short = series1.units_short +' + '+series2.units_short
         new_series.t = series1.t
-        new_series.daterange = series1.daterange
+        new_series.date_range = series1.date_range
 
         if series1.seasonal_adjustment == series2.seasonal_adjustment:
             new_series.seasonal_adjustment = series1.seasonal_adjustment
@@ -1491,52 +1294,9 @@ def plus(series1,series2):
             
         new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data+series2.data
-        new_series.dates = series1.dates
-        new_series.datetimes = series1.datetimes
-
 
         return new_series
 
-
-def quickplot(fred_series,year_mult=10,show=True,recess=False,style='default',save=False,filename='file',linewidth=2,alpha = 0.7):
-
-    '''Create a plot of a FRED data series.
-
-    Args:
-        fred_series (fredpy.series): A ``fredpy.series`` object.
-        year_mult (integer):         Interval between year ticks on the x-axis. Default: 10.
-        show (bool):                 Show the plot? Default: True.
-        recess (bool):               Show recession bars in plot? Default: False.
-        style (string):              Matplotlib style Default: 'default'.
-        save (bool):                 Save the image to file? Default: False.
-        filename (string):           Name of file to which image is saved *without an extension*.
-                                     Default: ``'file'``.
-        linewidth (float):           Width of plotted line. Default: 2.
-        alpha (float):               Transparency of the recession bars. Must be between 0 and 1. 
-                                     Default: 0.7
-
-    Returns:
-    '''
-
-    pylab.style.use(style)
-
-    fig = pylab.figure()
-
-    years  = pylab.YearLocator(year_mult)
-    ax = fig.add_subplot(111)
-    ax.plot_date(fred_series.datetimes,fred_series.data,'b-',lw=linewidth,alpha = alpha)
-    ax.xaxis.set_major_locator(years)
-    ax.set_title(fred_series.title)
-    ax.set_ylabel(fred_series.units)
-    fig.autofmt_xdate()
-    if recess != False:
-        fred_series.recessions()
-    ax.grid(True)
-    if show==True:
-        pylab.show()
-    if save !=False:
-        fullname = filename+'.png'
-        fig.savefig(fullname,bbox_inches='tight')
 
 def times(series1,series2):
 
@@ -1555,7 +1315,7 @@ def times(series1,series2):
         fredpy series
     '''
 
-    if series1.dates != series2.dates:
+    if not series1.data.index.equals(series2.data.index):
 
         raise ValueError('series1 and series2 do not have the same observation dates')
 
@@ -1573,7 +1333,7 @@ def times(series1,series2):
         new_series.units = series1.units +' * '+series2.units
         new_series.units_short = series1.units_short +' * '+series2.units_short
         new_series.t = series1.t
-        new_series.daterange = series1.daterange
+        new_series.date_range = series1.date_range
 
         if series1.seasonal_adjustment == series2.seasonal_adjustment:
             new_series.seasonal_adjustment = series1.seasonal_adjustment
@@ -1594,13 +1354,11 @@ def times(series1,series2):
             
         new_series.series_id = series1.series_id +' and '+series2.series_id
         new_series.data  = series1.data*series2.data
-        new_series.dates = series1.dates
-        new_series.datetimes = series1.datetimes
-
 
         return new_series
 
-def toFredSeries(data,dates,frequency='',frequency_short='',last_updated='',notes='',release='',seasonal_adjustment='',seasonal_adjustment_short='',series_id='',source='',t=0,title='',units='',units_short=''):
+
+def to_fred_series(data,dates,frequency='',frequency_short='',last_updated='',notes='',release='',seasonal_adjustment='',seasonal_adjustment_short='',series_id='',source='',t=0,title='',units='',units_short=''):
     
     '''Create a FRED object from a set of data obtained from a different source.
 
@@ -1624,13 +1382,7 @@ def toFredSeries(data,dates,frequency='',frequency_short='',last_updated='',note
     
 
     f = series()
-    f.data = np.array(data)
-
-    timestamps = pd.DatetimeIndex(dates)    
-    f.dates = [ str(d.to_pydatetime())[0:10] for d in timestamps]
-    f.datetimes = np.array([dateutil.parser.parse(s) for s in f.dates])
-
-
+    f.data = pd.Series(data,pd.to_datetime(dates))
 
     if frequency in ['Daily','Weekly','Monthly','Quarterly','Annual']:
 
@@ -1668,8 +1420,6 @@ def toFredSeries(data,dates,frequency='',frequency_short='',last_updated='',note
             t=1
             frequency = 'Annual'
 
-
-
     f.frequency = frequency
     f.frequency_short = frequency_short
     f.last_updated = last_updated
@@ -1683,28 +1433,32 @@ def toFredSeries(data,dates,frequency='',frequency_short='',last_updated='',note
     f.units = units
     f.units_short = units_short
     f.t = t
-    f.daterange = 'Range: '+f.dates[0]+' to '+f.dates[-1]
+    f.date_range = 'Range: '+f.dates[0]+' to '+f.dates[-1]
     return f
-
 
 def window_equalize(series_list):
 
-    '''Adjusts the date windows for a collection of fredpy.series objects to the smallest common window.
+    '''Adjusts the date windows for a collection of fredpy.series objects to the 
+    smallest common date window.
 
     Args:
         series_list (list): A list of fredpy.series objects
 
     Returns:
+        list
     '''
 
-    new_list = []
+    minimums = []
+    maximums = []
+    for s in series_list:
+        minimums.append(s.data.index[0])
+        maximums.append(s.data.index[-1])
 
-    minimums = [ k.datetimes[0].date() for k in series_list]
-    maximums = [ k.datetimes[-1].date() for k in series_list]
-    win_min =  max(minimums).strftime('%Y-%m-%d')
-    win_max =  min(maximums).strftime('%Y-%m-%d')
-    windo = [win_min,win_max]
-    for x in series_list:
-        new_list.append(x.window(windo))
+    start_end = [np.max(minimums),np.min(maximums)]
+
+    new_list = []
+    for s in series_list:
+
+        new_list.append(s.window(start_end))
 
     return new_list
