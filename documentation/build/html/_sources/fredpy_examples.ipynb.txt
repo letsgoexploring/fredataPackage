@@ -280,7 +280,7 @@
     "* **minus**\\ (object2)\n",
     "* **pc**\\ (log=True, method='backward', annualized=False)\n",
     "* **per_capita**\\ (total_pop=True)\n",
-    "* **plot**\\ (**kwargs)\n",
+    "* **plot**\\ (\\*\\*kwargs)\n",
     "* **plus**\\ (object2)\n",
     "* **recent**\\ (N)\n",
     "* **recessions**\\ (color='0.5', alpha = 0.5)\n",
