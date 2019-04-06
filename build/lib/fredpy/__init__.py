@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import warnings
 import statsmodels.api as sm
+import numbers
 tsa = sm.tsa
 
 # API key attribute needs to be set
@@ -51,14 +52,14 @@ class series:
         '''Initializes an instance of the series class.
 
         Args:
-            series_id (string): unique FRED series ID. If series_id equals None, an empy series 
+            series_id (string): unique FRED series ID. If series_id equals None, an empty series 
                                 object is created.
 
         Returns:
             None
 
         Attributes:
-            data:                       (Pandas Series} data values with dates as index.
+            data:                       (Pandas Series) data values with dates as index.
             date_range:                 (string) specifies the dates of the first and last observations.
             frequency:                  (string) data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Semiannual', or 'Annual'.
             frequency_short:            (string) data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
@@ -206,7 +207,7 @@ class series:
         return new_series
 
     
-    def as_frequency(self,freq,method='mean'):
+    def as_frequency(self,freq=None,method='mean'):
 
         '''Convert a fredpy series to a lower frequency.
 
@@ -272,15 +273,14 @@ class series:
     
     def bp_filter(self,low=6,high=32,K=12):
 
-        '''Computes the bandpass (Baxter-King) filter of the data. Returns a list of two fredpy.series
+        '''Computes the bandpass (Baxter-King) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
-            [new_series_cycle, new_series_trend]
+            new_series_cycle,new_series_trend
 
         .. Note: 
             In computing the bandpass filter, K observations are lost from each end of the
-            original series so the attributes dates, datetimes, and data are 2K elements 
-            shorter than their counterparts in the original series.
+            original series to the data are 2K elements shorter than in the original series.
 
         Args:
             low (int):  Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly 
@@ -291,7 +291,7 @@ class series:
                         data (default), and 1.5 for annual data.
 
         Returns:
-            list of two fredpy.series instances
+            two fredpy.series instances
         '''
 
         new_series_cycle = self.copy()
@@ -316,18 +316,18 @@ class series:
         new_series_trend.title = self.title+' - trend (bandpass filtered)'
         new_series_trend.date_range = 'Range: '+str(new_series_trend.data.index[0])[:10]+' to '+str(new_series_trend.data.index[-1])[:10]
 
-        return [new_series_cycle, new_series_trend]
+        return new_series_cycle,new_series_trend
 
 
     def cf_filter(self,low=6,high=32):
 
-        '''Computes the Christiano-Fitzgerald (CF) filter of the data. Returns a list of two fredpy.series
+        '''Computes the Christiano-Fitzgerald (CF) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
-            [new_series_cycle, new_series_trend]
+            new_series_cycle,new_series_trend
 
         Returns:
-            list of two fredpy.series instances
+            two fredpy.series instances
         '''
 
         new_series_cycle = self.copy()
@@ -349,7 +349,7 @@ class series:
         new_series_trend.data = trend
         new_series_trend.title = self.title+' - trend (CF filtered)'
 
-        return [new_series_cycle, new_series_trend]
+        return new_series_cycle,new_series_trend
 
     
     def copy(self):
@@ -386,20 +386,19 @@ class series:
 
     def diff_filter(self):
 
-        '''Computes the first difference filter of original series. Returns a list of two fredpy.series
+        '''Computes the first difference filter of original series. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
-            [new_series_cycle, new_series_trend]
+            new_series_cycle,new_series_trend
 
         Note:
             In computing the first difference filter, the first observation from the original series is
-            lost so the attributes dates, datetimes, and data are 1 element shorter than their 
-            counterparts in the original series.
+            lost so data are 1 element shorter than in the original series.
 
         Args:
 
         Returns:
-            list of two fredpy.series instances
+            two fredpy.series instances
         '''
 
         new_series_cycle = self.copy()
@@ -414,83 +413,39 @@ class series:
         new_series_trend.title = self.title+' - trend (first difference filtered)'
         new_series_trend.date_range = 'Range: '+str(new_series_trend.data.index[0])[:10]+' to '+str(new_series_trend.data.index[-1])[:10]
 
-        return [new_series_cycle, new_series_trend]
+        return new_series_cycle,new_series_trend
 
     
-    def divide(self,series2):
+    def divide(self,object2):
 
-        '''Divides the data from the current fredpy series by the data from series2.
+        '''Divides the data from the current fredpy series by the data from object2.
 
         Args:
-            series2 (fredpy series): A fredpy series
+            object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-        Note::
-            Both series must have exactly the same date attribute. You are 
-            responsibile for making sure that adding the series makes sense.
-            E.g., this function will not stop you from adding a series with 
-            units in dollars to another with units with hours.
+        Note:
+            You are responsibile for making sure that dividing the series makes sense.
 
         Returns:
             fredpy series
         '''
 
-        if not self.data.index.equals(series2.data.index):
-
-            raise ValueError('Current series and series2 do not have the same observation dates')
-
-        else:
-
-            new_series = series()
-
-            new_series.title = self.title +' divided by '+series2.title
-            if self.source == series2.source:
-                new_series.source = self.source
-            else:
-                new_series.source = self.source +' and '+series2.source
-            new_series.frequency = self.frequency
-            new_series.frequency_short = self.frequency_short
-            new_series.units = self.units +' / '+series2.units
-            new_series.units_short = self.units_short +' / '+series2.units_short
-            new_series.t = self.t
-            new_series.date_range = self.date_range
-
-            if self.seasonal_adjustment == series2.seasonal_adjustment:
-                new_series.seasonal_adjustment = self.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
-            else:
-                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-            if self.last_updated == series2.last_updated:
-                new_series.last_updated = self.last_updated
-            else:
-                new_series.last_updated = self.last_updated +' and '+series2.last_updated
-
-            if self.release == series2.release:
-                new_series.release = self.release
-            else:
-                new_series.release = self.release +' and '+series2.release
-
-            new_series.series_id = self.series_id +' and '+series2.series_id
-            new_series.data  = self.data/series2.data
-
-
-            return new_series
+        return divide(self,object2)
 
 
     def hp_filter(self,lamb=1600):
 
-        '''Computes the Hodrick-Prescott (HP) filter of the data. Returns a list of two fredpy.series
+        '''Computes the Hodrick-Prescott (HP) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
-            [new_series_cycle, new_series_trend]
+            new_series_cycle,new_series_trend
 
         Args:
             lamb (int): The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data,
                         1600 for quarterly data (default), and 6.25 for annual data.
             
         Returns:
-            list of two fredpy.series instances
+            two fredpy.series instances
         '''
 
         new_series_cycle = self.copy()
@@ -513,20 +468,20 @@ class series:
         new_series_trend.title = self.title+' - trend (HP filtered)'
         new_series_trend.data = trend
 
-        return [new_series_cycle, new_series_trend]
+        return new_series_cycle,new_series_trend
 
     
     def linear_filter(self):
 
-        '''Computes a simple linear filter of the data using OLS. Returns a list of two fredpy.series
+        '''Computes a simple linear filter of the data using OLS. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
-            [new_series_cycle, new_series_trend]
+            new_series_cycle,new_series_trend
 
         Args:
 
         Returns:
-            list of two fredpy.series instances
+            two fredpy.series instances
         '''
 
         new_series_cycle = self.copy()
@@ -551,8 +506,7 @@ class series:
         new_series_trend.title = self.title+' - trend (linearly filtered via OLS)'
         new_series_trend.data = trend
 
-
-        return [new_series_cycle, new_series_trend]
+        return new_series_cycle,new_series_trend
 
     
     def log(self):
@@ -574,13 +528,14 @@ class series:
 
         return new_series
 
-    
-    def ma_one_side(self,length):
+    def ma(self,length,center=False):
 
-        '''Computes a one-sided moving average with window equal to length
+        '''Computes a moving average with window equal to length. If center is True, then the 
+        two-sided moving average is computed.
 
         Args:
             length (int): window of the one-sided moving average.
+            center (bool): False (default) - one-sided MA. True - two-sided MA
 
         Returns:
             fredpy series
@@ -590,92 +545,29 @@ class series:
 
         new_series.data = new_series.data.rolling(window=length).mean().dropna()
         new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
-        new_series.title = self.title+' (1-sided moving average)'
-
-        return new_series
-
-    
-    def ma_two_side(self,length):
-
-        '''Computes a two-sided moving average with window equal to 2x length
-
-        Args:
-            length (int): half of window of the two-sided moving average. For example, if length = 12,
-                          then the moving average will contain the 12 periods before and the 12 
-                          periods after each observation.
-
-        Returns:
-            fredpy series
-        '''
-
-        new_series = self.copy()
-        
-        new_series.data = self.data.rolling(window=2*length+1,center=True).mean().dropna()
-        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
-        new_series.title = self.title+' (2-sided moving average)'
-
-        return new_series
-
-    
-    def minus(self,series2):
-
-        '''Subtracts the data from series2 from the data from the current fredpy series.
-
-        Args:
-            series2 (fredpy series): A fredpy series
-
-        Note::
-            Both series must have exactly the same date attribute. You are 
-            responsibile for making sure that adding the series makes sense.
-            E.g., this function will not stop you from adding a series with 
-            units in dollars to another with units with hours.
-
-        Returns:
-            fredpy series
-        '''
-
-        if not self.data.index.equals(series2.data.index):
-
-            raise ValueError('Current series and series2 do not have the same observation dates')
-
+        if center:
+            new_series.title = self.title+' (: one-sided moving average)'
         else:
+            new_series.title = self.title+' (: two-sided moving average)'
 
-            new_series = series()
+        return new_series
 
-            new_series.title = self.title +' minus '+series2.title
-            if self.source == series2.source:
-                new_series.source = self.source
-            else:
-                new_series.source = self.source +' and '+series2.source
-            new_series.frequency = self.frequency
-            new_series.frequency_short = self.frequency_short
-            new_series.units = self.units +' - '+series2.units
-            new_series.units_short = self.units_short +' - '+series2.units_short
-            new_series.t = self.t
-            new_series.date_range = self.date_range
+    
+    def minus(self,object2):
 
-            if self.seasonal_adjustment == series2.seasonal_adjustment:
-                new_series.seasonal_adjustment = self.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
-            else:
-                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+        '''Subtracts the data from object2 from the data from the current fredpy series.
 
-            if self.last_updated == series2.last_updated:
-                new_series.last_updated = self.last_updated
-            else:
-                new_series.last_updated = self.last_updated +' and '+series2.last_updated
+        Args:
+            object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-            if self.release == series2.release:
-                new_series.release = self.release
-            else:
-                new_series.release = self.release +' and '+series2.release
+        Note:
+            You are responsibile for making sure that adding the series makes sense.
 
-            new_series.series_id = self.series_id +' and '+series2.series_id
-            new_series.data  = self.data-series2.data
+        Returns:
+            fredpy series
+        '''
 
-
-            return new_series
+        return minus(self,object2)
 
 
     def pc(self,log=True,method='backward',annualized=False):
@@ -689,7 +581,7 @@ class series:
                                If ‘forward’, compute percentage change from current to subsequent period.
             annualized (bool): If True (default), percentage change is annualized by multipying the simple 
                                percentage change by the number of data observations per year. E.g., if the
-                               data are monthly, then the annualized percentage change is 4⋅100⋅log[x(t)/x(t−1)].
+                               data are monthly, then the annualized percentage change is 12⋅100⋅log[x(t)/x(t−1)].
 
         Returns:
             fredpy series
@@ -761,65 +653,21 @@ class series:
         self.data.plot(**kwargs)
 
 
-    def plus(self,series2):
+    def plus(self,object2):
 
-        '''Adds the data from the current fredpy series to the data from series2.
+        '''Adds the data from the current fredpy series to the data from object2.
 
         Args:
-            series2 (fredpy series): A fredpy series
+            object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-        Note::
-            Both series must have exactly the same date attribute. You are 
-            responsibile for making sure that adding the series makes sense.
-            E.g., this function will not stop you from adding a series with 
-            units in dollars to another with units with hours.
+        Note:
+            You are responsibile for making sure that adding the series makes sense.
 
         Returns:
             fredpy series
         '''
 
-        if not self.data.index.equals(series2.data.index):
-
-            raise ValueError('Current series and series2 do not have the same observation dates')
-
-        else:
-
-            new_series = series()
-
-            new_series.title = self.title +' plus '+series2.title
-            if self.source == series2.source:
-                new_series.source = self.source
-            else:
-                new_series.source = self.source +' and '+series2.source
-            new_series.frequency = self.frequency
-            new_series.frequency_short = self.frequency_short
-            new_series.units = self.units +' + '+series2.units
-            new_series.units_short = self.units_short +' + '+series2.units_short
-            new_series.t = self.t
-            new_series.date_range = self.date_range
-
-            if self.seasonal_adjustment == series2.seasonal_adjustment:
-                new_series.seasonal_adjustment = self.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
-            else:
-                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-            if self.last_updated == series2.last_updated:
-                new_series.last_updated = self.last_updated
-            else:
-                new_series.last_updated = self.last_updated +' and '+series2.last_updated
-
-            if self.release == series2.release:
-                new_series.release = self.release
-            else:
-                new_series.release = self.release +' and '+series2.release
-                
-            new_series.series_id = self.series_id +' and '+series2.series_id
-            new_series.data  = self.data+series2.data
-
-
-            return new_series
+        return plus(self,object2)
 
     
     def recent(self,N):
@@ -1025,65 +873,21 @@ class series:
             pylab.axvspan(peaks2num[k], troughs2num[k], edgecolor= color, facecolor=color, alpha=alpha)
 
     
-    def times(self,series2):
+    def times(self,object2):
 
-        '''Multiplies the data from the current fredpy series with the data from series2.
+        '''Multiplies the data from the current fredpy series with the data from object2.
 
         Args:
-            series2 (fredpy series): A fredpy series
+            object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-        Note::
-            Both series must have exactly the same date attribute. You are 
-            responsibile for making sure that adding the series makes sense.
-            E.g., this function will not stop you from adding a series with 
-            units in dollars to another with units with hours.
+        Note:
+            You are responsibile for making sure that adding the series makes sense.
 
         Returns:
             fredpy series
         '''
 
-        if not self.data.index.equals(series2.data.index):
-
-            raise ValueError('Current series and series2 do not have the same observation dates')
-
-        else:
-
-            new_series = series()
-
-            new_series.title = self.title +' times '+series2.title
-            if self.source == series2.source:
-                new_series.source = self.source
-            else:
-                new_series.source = self.source +' and '+series2.source
-            new_series.frequency = self.frequency
-            new_series.frequency_short = self.frequency_short
-            new_series.units = self.units +' x '+series2.units
-            new_series.units_short = self.units_short +' x '+series2.units_short
-            new_series.t = self.t
-            new_series.date_range = self.date_range
-
-            if self.seasonal_adjustment == series2.seasonal_adjustment:
-                new_series.seasonal_adjustment = self.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short
-            else:
-                new_series.seasonal_adjustment = self.seasonal_adjustment +' and '+series2.seasonal_adjustment
-                new_series.seasonal_adjustment_short = self.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-            if self.last_updated == series2.last_updated:
-                new_series.last_updated = self.last_updated
-            else:
-                new_series.last_updated = self.last_updated +' and '+series2.last_updated
-
-            if self.release == series2.release:
-                new_series.release = self.release
-            else:
-                new_series.release = self.release +' and '+series2.release
-                
-            new_series.series_id = self.series_id +' and '+series2.series_id
-            new_series.data  = self.data*series2.data
-
-
-            return new_series
+        return times(self,object2)
 
 
     def window(self,start_end):
@@ -1118,244 +922,317 @@ class series:
 ######################################################################################################
 # Additional functions
 
-def divide(series1,series2):
+def divide(object1,object2):
 
-    '''Divides the data from the series1 by the data from series2.
+    '''Divides the data from the object1 by the data from object2.
 
     Args:
-        series2 (fredpy series): A fredpy series
+        object1 (int, float, numpy ndarray, or similar or fredpy series)
+        object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-    Note::
-        Both series must have exactly the same date attribute. You are 
-        responsibile for making sure that adding the series makes sense.
-        E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units in hours.
+    Note:
+        You are responsibile for making sure that adding the series makes sense.
 
     Returns:
         fredpy series
     '''
 
-    if not series1.data.index.equals(series2.data.index):
+    if not isinstance(object1, series) and not isinstance(object2, series):
 
-        raise ValueError('series1 and series2 do not have the same observation dates')
+        return object1/object2
 
-    else:
+    elif not isinstance(object1, series) and isinstance(object2, series):
 
-        new_series = series()
-
-        new_series.title = series1.title +' divided by '+series2.title
-        if series1.source == series2.source:
-            new_series.source = series1.source
-        else:
-            new_series.source = series1.source +' and '+series2.source
-        new_series.frequency = series1.frequency
-        new_series.frequency_short = series1.frequency_short
-        new_series.units = series1.units +' / '+series2.units
-        new_series.units_short = series1.units_short +' / '+series2.units_short
-        new_series.t = series1.t
-        new_series.date_range = series1.date_range
-
-        if series1.seasonal_adjustment == series2.seasonal_adjustment:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
-        else:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-        if series1.last_updated == series2.last_updated:
-            new_series.last_updated = series1.last_updated
-        else:
-            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
-
-        if series1.release == series2.release:
-            new_series.release = series1.release
-        else:
-            new_series.release = series1.release +' and '+series2.release
-            
-        new_series.series_id = series1.series_id +' and '+series2.series_id
-        new_series.data  = series1.data/series2.data
+        new_series = object2.copy()
+        new_series.data = object1/new_series.data
 
         return new_series
 
+    elif not isinstance(object2, series) and isinstance(object1, series):
 
-def minus(series1,series2):
+        new_series = object1.copy()
+        new_series.data = new_series.data/object2
 
-    '''Subtracts the data from series2 from the data from series1.
+        return new_series
+
+    else:
+
+        if not object1.data.index.equals(object2.data.index):
+
+            raise ValueError('object1 and object2 do not have the same observation dates')
+
+        else:
+
+            new_series = series()
+
+            new_series.title = object1.title +' divided by '+object2.title
+            if object1.source == object2.source:
+                new_series.source = object1.source
+            else:
+                new_series.source = object1.source +' and '+object2.source
+            new_series.frequency = object1.frequency
+            new_series.frequency_short = object1.frequency_short
+            new_series.units = object1.units +' / '+object2.units
+            new_series.units_short = object1.units_short +' / '+object2.units_short
+            new_series.t = object1.t
+            new_series.date_range = object1.date_range
+
+            if object1.seasonal_adjustment == object2.seasonal_adjustment:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short
+            else:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment +' and '+object2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short +' and '+object2.seasonal_adjustment_short
+
+            if object1.last_updated == object2.last_updated:
+                new_series.last_updated = object1.last_updated
+            else:
+                new_series.last_updated = object1.last_updated +' and '+object2.last_updated
+
+            if object1.release == object2.release:
+                new_series.release = object1.release
+            else:
+                new_series.release = object1.release +' and '+object2.release
+                
+            new_series.series_id = object1.series_id +' and '+object2.series_id
+            new_series.data  = object1.data/object2.data
+
+            return new_series
+
+
+def minus(object1,object2):
+
+    '''Subtracts the data from object2 from the data from object1.
 
     Args:
-        series2 (fredpy series): A fredpy series
+        object1 (int, float, numpy ndarray, or similar or fredpy series)
+        object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-    Note::
-        Both series must have exactly the same date attribute. You are 
-        responsibile for making sure that adding the series makes sense.
-        E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units in hours.
+    Note:
+        You are responsibile for making sure that adding the series makes sense.
 
     Returns:
         fredpy series
     '''
 
-    if not series1.data.index.equals(series2.data.index):
+    if not isinstance(object1, series) and not isinstance(object2, series):
 
-        raise ValueError('series1 and series2 do not have the same observation dates')
+        return object1-object2
 
-    else:
+    elif not isinstance(object1, series) and isinstance(object2, series):
 
-        new_series = series()
-
-        new_series.title = series1.title +' minus '+series2.title
-        if series1.source == series2.source:
-            new_series.source = series1.source
-        else:
-            new_series.source = series1.source +' and '+series2.source
-        new_series.frequency = series1.frequency
-        new_series.frequency_short = series1.frequency_short
-        new_series.units = series1.units +' - '+series2.units
-        new_series.units_short = series1.units_short +' - '+series2.units_short
-        new_series.t = series1.t
-        new_series.date_range = series1.date_range
-
-        if series1.seasonal_adjustment == series2.seasonal_adjustment:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
-        else:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-        if series1.last_updated == series2.last_updated:
-            new_series.last_updated = series1.last_updated
-        else:
-            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
-
-        if series1.release == series2.release:
-            new_series.release = series1.release
-        else:
-            new_series.release = series1.release +' and '+series2.release
-            
-        new_series.series_id = series1.series_id +' and '+series2.series_id
-        new_series.data  = series1.data-series2.data
+        new_series = object2.copy()
+        new_series.data = object1-new_series.data
 
         return new_series
 
+    elif not isinstance(object2, series) and isinstance(object1, series):
 
-def plus(series1,series2):
+        new_series = object1.copy()
+        new_series.data = new_series.data-object2
 
-    '''Adds the data from series1 to the data from series2.
+        return new_series
+
+    else:
+
+        if not object1.data.index.equals(object2.data.index):
+
+            raise ValueError('object1 and object2 do not have the same observation dates')
+
+        else:
+
+            new_series = series()
+
+            new_series.title = object1.title +' minus '+object2.title
+            if object1.source == object2.source:
+                new_series.source = object1.source
+            else:
+                new_series.source = object1.source +' and '+object2.source
+            new_series.frequency = object1.frequency
+            new_series.frequency_short = object1.frequency_short
+            new_series.units = object1.units +' - '+object2.units
+            new_series.units_short = object1.units_short +' - '+object2.units_short
+            new_series.t = object1.t
+            new_series.date_range = object1.date_range
+
+            if object1.seasonal_adjustment == object2.seasonal_adjustment:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short
+            else:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment +' and '+object2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short +' and '+object2.seasonal_adjustment_short
+
+            if object1.last_updated == object2.last_updated:
+                new_series.last_updated = object1.last_updated
+            else:
+                new_series.last_updated = object1.last_updated +' and '+object2.last_updated
+
+            if object1.release == object2.release:
+                new_series.release = object1.release
+            else:
+                new_series.release = object1.release +' and '+object2.release
+                
+            new_series.series_id = object1.series_id +' and '+object2.series_id
+            new_series.data  = object1.data-object2.data
+
+            return new_series
+
+
+def plus(object1,object2):
+
+    '''Adds the data from object1 to the data from object2.
 
     Args:
-        series2 (fredpy series): A fredpy series
+        object1 (int, float, numpy ndarray, or similar or fredpy series)
+        object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-    Note::
-        Both series must have exactly the same date attribute. You are 
-        responsibile for making sure that adding the series makes sense.
-        E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units in hours.
+    Note:
+        You are responsibile for making sure that adding the series makes sense.
 
     Returns:
         fredpy series
     '''
 
-    if not series1.data.index.equals(series2.data.index):
+    if not isinstance(object1, series) and not isinstance(object2, series):
 
-        raise ValueError('series1 and series2 do not have the same observation dates')
+        return object1+object2
 
-    else:
+    elif not isinstance(object1, series) and isinstance(object2, series):
 
-        new_series = series()
-
-        new_series.title = series1.title +' plus '+series2.title
-        if series1.source == series2.source:
-            new_series.source = series1.source
-        else:
-            new_series.source = series1.source +' and '+series2.source
-        new_series.frequency = series1.frequency
-        new_series.frequency_short = series1.frequency_short
-        new_series.units = series1.units +' + '+series2.units
-        new_series.units_short = series1.units_short +' + '+series2.units_short
-        new_series.t = series1.t
-        new_series.date_range = series1.date_range
-
-        if series1.seasonal_adjustment == series2.seasonal_adjustment:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
-        else:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
-
-        if series1.last_updated == series2.last_updated:
-            new_series.last_updated = series1.last_updated
-        else:
-            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
-
-        if series1.release == series2.release:
-            new_series.release = series1.release
-        else:
-            new_series.release = series1.release +' and '+series2.release
-            
-        new_series.series_id = series1.series_id +' and '+series2.series_id
-        new_series.data  = series1.data+series2.data
+        new_series = object2.copy()
+        new_series.data = new_series.data+object1
 
         return new_series
 
+    elif not isinstance(object2, series) and isinstance(object1, series):
 
-def times(series1,series2):
+        new_series = object1.copy()
+        new_series.data = new_series.data+object2
 
-    '''Multiplies the data from series1 with the data from series2.
+        return new_series
+
+    else:
+
+        if not object1.data.index.equals(object2.data.index):
+
+            raise ValueError('object1 and object2 do not have the same observation dates')
+
+        else:
+
+            new_series = series()
+
+            new_series.title = object1.title +' plus '+object2.title
+            if object1.source == object2.source:
+                new_series.source = object1.source
+            else:
+                new_series.source = object1.source +' and '+object2.source
+            new_series.frequency = object1.frequency
+            new_series.frequency_short = object1.frequency_short
+            new_series.units = object1.units +' + '+object2.units
+            new_series.units_short = object1.units_short +' + '+object2.units_short
+            new_series.t = object1.t
+            new_series.date_range = object1.date_range
+
+            if object1.seasonal_adjustment == object2.seasonal_adjustment:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short
+            else:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment +' and '+object2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short +' and '+object2.seasonal_adjustment_short
+
+            if object1.last_updated == object2.last_updated:
+                new_series.last_updated = object1.last_updated
+            else:
+                new_series.last_updated = object1.last_updated +' and '+object2.last_updated
+
+            if object1.release == object2.release:
+                new_series.release = object1.release
+            else:
+                new_series.release = object1.release +' and '+object2.release
+                
+            new_series.series_id = object1.series_id +' and '+object2.series_id
+            new_series.data  = object1.data+object2.data
+
+            return new_series
+
+
+def times(object1,object2):
+
+    '''Multiplies the data from object1 with the data from object2.
 
     Args:
-        series2 (fredpy series): A fredpy series
+        object1 (int, float, numpy ndarray, or similar or fredpy series)
+        object2 (int, float, numpy ndarray, or similar or fredpy series)
 
-    Note::
-        Both series must have exactly the same date attribute. You are 
-        responsibile for making sure that adding the series makes sense.
-        E.g., this function will not stop you from adding a series with 
-        units in dollars to another with units in hours.
+
+    Note:
+        You are responsibile for making sure that multipying the series makes sense.
 
     Returns:
         fredpy series
     '''
 
-    if not series1.data.index.equals(series2.data.index):
+    if not isinstance(object1, series) and not isinstance(object2, series):
 
-        raise ValueError('series1 and series2 do not have the same observation dates')
+        return object1*object2
+
+    elif not isinstance(object1, series) and isinstance(object2, series):
+
+        new_series = object2.copy()
+        new_series.data = new_series.data*object1
+
+        return new_series
+
+    elif not isinstance(object2, series) and isinstance(object1, series):
+
+        new_series = object1.copy()
+        new_series.data = new_series.data*object2
+
+        return new_series
 
     else:
 
-        new_series = series()
+        if not object1.data.index.equals(object2.data.index):
 
-        new_series.title = series1.title +' times '+series2.title
-        if series1.source == series2.source:
-            new_series.source = series1.source
+            raise ValueError('object1 and object2 do not have the same observation dates')
+
         else:
-            new_series.source = series1.source +' and '+series2.source
-        new_series.frequency = series1.frequency
-        new_series.frequency_short = series1.frequency_short
-        new_series.units = series1.units +' * '+series2.units
-        new_series.units_short = series1.units_short +' * '+series2.units_short
-        new_series.t = series1.t
-        new_series.date_range = series1.date_range
 
-        if series1.seasonal_adjustment == series2.seasonal_adjustment:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short
-        else:
-            new_series.seasonal_adjustment = series1.seasonal_adjustment +' and '+series2.seasonal_adjustment
-            new_series.seasonal_adjustment_short = series1.seasonal_adjustment_short +' and '+series2.seasonal_adjustment_short
+            new_series = series()
 
-        if series1.last_updated == series2.last_updated:
-            new_series.last_updated = series1.last_updated
-        else:
-            new_series.last_updated = series1.last_updated +' and '+series2.last_updated
+            new_series.title = object1.title +' times '+object2.title
+            if object1.source == object2.source:
+                new_series.source = object1.source
+            else:
+                new_series.source = object1.source +' and '+object2.source
+            new_series.frequency = object1.frequency
+            new_series.frequency_short = object1.frequency_short
+            new_series.units = object1.units +' * '+object2.units
+            new_series.units_short = object1.units_short +' * '+object2.units_short
+            new_series.t = object1.t
+            new_series.date_range = object1.date_range
 
-        if series1.release == series2.release:
-            new_series.release = series1.release
-        else:
-            new_series.release = series1.release +' and '+series2.release
-            
-        new_series.series_id = series1.series_id +' and '+series2.series_id
-        new_series.data  = series1.data*series2.data
+            if object1.seasonal_adjustment == object2.seasonal_adjustment:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short
+            else:
+                new_series.seasonal_adjustment = object1.seasonal_adjustment +' and '+object2.seasonal_adjustment
+                new_series.seasonal_adjustment_short = object1.seasonal_adjustment_short +' and '+object2.seasonal_adjustment_short
 
-        return new_series
+            if object1.last_updated == object2.last_updated:
+                new_series.last_updated = object1.last_updated
+            else:
+                new_series.last_updated = object1.last_updated +' and '+object2.last_updated
+
+            if object1.release == object2.release:
+                new_series.release = object1.release
+            else:
+                new_series.release = object1.release +' and '+object2.release
+                
+            new_series.series_id = object1.series_id +' and '+object2.series_id
+            new_series.data  = object1.data*object2.data
+
+            return new_series
 
 
 def to_fred_series(data,dates,frequency='',frequency_short='',last_updated='',notes='',release='',seasonal_adjustment='',seasonal_adjustment_short='',series_id='',source='',t=0,title='',units='',units_short=''):
