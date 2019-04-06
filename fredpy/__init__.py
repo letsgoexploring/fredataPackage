@@ -531,11 +531,11 @@ class series:
     def ma(self,length,center=False):
 
         '''Computes a moving average with window equal to length. If center is True, then the 
-        two-sided moving average is computed.
+        two-sided moving average is computed. Otherwise, the moving average will be one-sided.
 
         Args:
-            length (int): window of the one-sided moving average.
-            center (bool): False (default) - one-sided MA. True - two-sided MA
+            length (int): window length of the one-sided moving average.
+            center (bool): False (default) - one-sided MA. True - two-sided MA.
 
         Returns:
             fredpy series

@@ -11,7 +11,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -185,18 +185,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 9ex;
+    min-width: 7ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -236,9 +236,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -246,7 +246,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -295,12 +295,45 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 </style>
 <div class="section" id="fredpy-Examples">
 <h1><code class="docutils literal notranslate"><span class="pre">fredpy</span></code> Examples<a class="headerlink" href="#fredpy-Examples" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -315,14 +348,9 @@ div.nboutput div.output_area.stderr {
 </div>
 <div class="section" id="Load-API-key">
 <h2>Load API key<a class="headerlink" href="#Load-API-key" title="Permalink to this headline">¶</a></h2>
-<p>First apply for an API key for FRED here:
-<a class="reference external" href="https://research.stlouisfed.org/docs/api/api_key.html">https://research.stlouisfed.org/docs/api/api_key.html</a>. The API key is a
-32 character string that is required for making requests from FRED. Save
-your API key in the <code class="docutils literal notranslate"><span class="pre">fp</span></code> namespace by either setting the
-<code class="docutils literal notranslate"><span class="pre">fp.api_key</span></code> directly:</p>
+<p>First apply for an API key for FRED here: <a class="reference external" href="https://research.stlouisfed.org/docs/api/api_key.html">https://research.stlouisfed.org/docs/api/api_key.html</a>. The API key is a 32 character string that is required for making requests from FRED. Save your API key in the <code class="docutils literal notranslate"><span class="pre">fp</span></code> namespace by either setting the <code class="docutils literal notranslate"><span class="pre">fp.api_key</span></code> directly:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -330,11 +358,9 @@ your API key in the <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 </div>
-<p>or by reading from a text file containing only the text of the API key
-in the first line:</p>
+<p>or by reading from a text file containing only the text of the API key in the first line:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -342,16 +368,13 @@ in the first line:</p>
 </pre></div>
 </div>
 </div>
-<p>If <code class="docutils literal notranslate"><span class="pre">fred_api_key.txt</span></code> is not in the same directory as your program
-file, then you must supply the full path of the file.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">fred_api_key.txt</span></code> is not in the same directory as your program file, then you must supply the full path of the file.</p>
 </div>
 <div class="section" id="Preliminary-example">
 <h2>Preliminary example<a class="headerlink" href="#Preliminary-example" title="Permalink to this headline">¶</a></h2>
-<p>Downloading and plotting unemployment rate data for the US is easy with
-<code class="docutils literal notranslate"><span class="pre">fredpy</span></code>:</p>
+<p>Downloading and plotting unemployment rate data for the US is easy with <code class="docutils literal notranslate"><span class="pre">fredpy</span></code>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -374,8 +397,7 @@ file, then you must supply the full path of the file.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> to download real GDP data. The FRED page for real GDP: <a class="reference external" href="https://fred.stlouisfed.org/series/GDPC1">https://fred.stlouisfed.org/series/GDPC1</a>. Note that the series ID - <code class="docutils literal notranslate"><span class="pre">GDPC1</span></code> - is in the URL and is visible in several places on the page.</p>
 <p>The data in text format is located at: <a class="reference external" href="https://fred.stlouisfed.org/data/gdpc1.txt">https://fred.stlouisfed.org/data/gdpc1.txt</a>. When supplied with the series ID <code class="docutils literal notranslate"><span class="pre">GDPC1</span></code>, <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> visits the the URL for the text-formatted data, reads the information on the page, and stores the data as attributes of a <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -399,10 +421,8 @@ file, then you must supply the full path of the file.</p>
 <h3>Attributes<a class="headerlink" href="#Attributes" title="Permalink to this headline">¶</a></h3>
 <p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance stores information about a FRED series in 17 attribues:</p>
 <ul class="simple">
-<li><strong>data:</strong> (numpy ndarray) - data values.</li>
-<li><strong>daterange:</strong> (string) - specifies the dates of the first and last observations.</li>
-<li><strong>dates:</strong> (list) - list of date strings in YYYY-MM-DD format.</li>
-<li><strong>datetimes:</strong> (numpy ndarray) - array containing observation dates formatted as datetime objects.</li>
+<li><strong>data:</strong> (Pandas Series) - data values.</li>
+<li><strong>date_range:</strong> (string) - specifies the dates of the first and last observations.</li>
 <li><strong>frequency:</strong> (string) - data frequency. ‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, ‘Semiannual’, or ‘Annual’.</li>
 <li><strong>frequency_short:</strong> (string) - data frequency. Abbreviated. ‘D’, ‘W’, ‘M’, ‘Q’, ‘SA, or ‘A’.</li>
 <li><strong>last_updated:</strong> (string) - date series was last updated.</li>
@@ -418,8 +438,7 @@ file, then you must supply the full path of the file.</p>
 <li><strong>units_short:</strong> (string) - units of the data series. Abbreviated.</li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -445,8 +464,7 @@ U.S. Bureau of Economic Analysis
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -475,8 +493,7 @@ U.S. Bureau of Economic Analysis
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -491,8 +508,7 @@ U.S. Bureau of Economic Analysis
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -510,35 +526,32 @@ U.S. Bureau of Economic Analysis
 </div>
 <div class="section" id="Methods">
 <h3>Methods<a class="headerlink" href="#Methods" title="Permalink to this headline">¶</a></h3>
-<p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance has 22 methods:</p>
+<p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance has 20 methods:</p>
 <ul class="simple">
 <li><strong>apc</strong>(log=True, method=’backward’)</li>
-<li><strong>bpfilter</strong>(low=6, high=32, K=12)</li>
-<li><strong>cffilter</strong>(low=6, high=32)</li>
+<li><strong>as_frequency</strong>(freq=None,method=’mean’)</li>
+<li><strong>bp_filter</strong>(low=6, high=32, K=12)</li>
+<li><strong>cf_filter</strong>(low=6, high=32)</li>
 <li><strong>copy</strong>()</li>
-<li><strong>divide</strong>(series2)</li>
-<li><strong>firstdiff</strong>()</li>
-<li><strong>hpfilter</strong>(lamb=1600)</li>
-<li><strong>lintrend</strong>()</li>
+<li><strong>diff_filter</strong>()</li>
+<li><strong>divide</strong>(object2)</li>
+<li><strong>hp_filter</strong>(lamb=1600)</li>
+<li><strong>linear_filter</strong>()</li>
 <li><strong>log</strong>()</li>
-<li><strong>ma1side</strong>(length)</li>
-<li><strong>ma2side</strong>(length)</li>
-<li><strong>minus</strong>(series2)</li>
-<li><strong>monthtoannual</strong>(method=’average’)</li>
-<li><strong>monthtoquarter</strong>(method=’average’)</li>
+<li><strong>ma</strong>(length,center=False)</li>
+<li><strong>minus</strong>(object2)</li>
 <li><strong>pc</strong>(log=True, method=’backward’, annualized=False)</li>
-<li><strong>percapita</strong>(total_pop=True)</li>
-<li><strong>plus</strong>(series2)</li>
-<li><strong>quartertoannual</strong>(method=’average’)</li>
+<li><strong>per_capita</strong>(total_pop=True)</li>
+<li><strong>plot</strong>(<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs)</li>
+<li><strong>plus</strong>(object2)</li>
 <li><strong>recent</strong>(N)</li>
 <li><strong>recessions</strong>(color=‘0.5’, alpha = 0.5)</li>
-<li><strong>times</strong>(series2)</li>
+<li><strong>times</strong>(object2)</li>
 <li><strong>window</strong>(win)</li>
 </ul>
 <p>The fredpy documentation has detailed explanations of the use of these methods: <a class="reference external" href="http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html">http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -567,8 +580,7 @@ U.S. Bureau of Economic Analysis
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -596,8 +608,7 @@ U.S. Bureau of Economic Analysis
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -625,17 +636,12 @@ U.S. Bureau of Economic Analysis
 </div>
 <div class="section" id="More-examples">
 <h2>More examples<a class="headerlink" href="#More-examples" title="Permalink to this headline">¶</a></h2>
-<p>The following examples demonstrate some additional <code class="docutils literal notranslate"><span class="pre">fredpy</span></code>
-functionality.</p>
+<p>The following examples demonstrate some additional <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> functionality.</p>
 <div class="section" id="Comparison-of-CPI-and-GDP-deflator-inflation">
 <h3>Comparison of CPI and GDP deflator inflation<a class="headerlink" href="#Comparison-of-CPI-and-GDP-deflator-inflation" title="Permalink to this headline">¶</a></h3>
-<p>CPI data are released monthly by the BLS while GDP deflator data are
-released quarterly by the BEA. Here we’ll first convert the monthly CPI
-data to monthly frequency compute inflation as the percentage change in
-the respective index since on year prior.</p>
+<p>CPI data are released monthly by the BLS while GDP deflator data are released quarterly by the BEA. Here we’ll first convert the monthly CPI data to monthly frequency compute inflation as the percentage change in the respective index since on year prior.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -659,8 +665,7 @@ the respective index since on year prior.</p>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -676,8 +681,7 @@ the respective index since on year prior.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -700,8 +704,7 @@ Quarterly
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -725,8 +728,7 @@ Range: 1948-01-01 to 2018-07-01
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -748,16 +750,13 @@ Range: 1948-01-01 to 2018-07-01
 <img alt="_images/fredpy_examples_24_0.png" src="_images/fredpy_examples_24_0.png" />
 </div>
 </div>
-<p>Even though the CPI inflation rate is on average about .3% higher the
-GDP deflator inflation rate, the CPI and the GDP deflator produce
-comparable measures of US inflation.</p>
+<p>Even though the CPI inflation rate is on average about .3% higher the GDP deflator inflation rate, the CPI and the GDP deflator produce comparable measures of US inflation.</p>
 </div>
 <div class="section" id="Equalizing-date-ranges-of-different-series">
 <h3>Equalizing date ranges of different series<a class="headerlink" href="#Equalizing-date-ranges-of-different-series" title="Permalink to this headline">¶</a></h3>
 <p>Often data series have different observation ranges. The <a class="reference internal" href="additional_functions.html#fredpy.window_equalize" title="fredpy.window_equalize"><code class="xref py py-func docutils literal notranslate"><span class="pre">fredpy.window_equalize()</span></code></a> function provides a quick way to set the date ranges for multiple series to the same interval.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -795,8 +794,7 @@ Range: 1948-01-01 to 2018-10-01
 <div class="section" id="Filtering-1:-Extracting-business-cycle-components-from-quarterly-data-with-the-HP-filter">
 <h3>Filtering 1: Extracting business cycle components from quarterly data with the HP filter<a class="headerlink" href="#Filtering-1:-Extracting-business-cycle-components-from-quarterly-data-with-the-HP-filter" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -820,8 +818,7 @@ Range: 1948-01-01 to 2018-10-01
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -846,11 +843,9 @@ Range: 1948-01-01 to 2018-10-01
 <img alt="_images/fredpy_examples_30_0.png" src="_images/fredpy_examples_30_0.png" />
 </div>
 </div>
-<p>The post-Great Recession slowdown in US real GDP growth is apparent in
-the figure.</p>
+<p>The post-Great Recession slowdown in US real GDP growth is apparent in the figure.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -860,8 +855,7 @@ the figure.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -897,14 +891,9 @@ the figure.</p>
 </div>
 <div class="section" id="Filtering-2:-Extracting-business-cycle-components-from-monthly-data">
 <h3>Filtering 2: Extracting business cycle components from monthly data<a class="headerlink" href="#Filtering-2:-Extracting-business-cycle-components-from-monthly-data" title="Permalink to this headline">¶</a></h3>
-<p>In Figure 1.5 from <em>The Conquest of American Inflation</em>, Thomas Sargent
-compares the business cycle componenets (BP filtered) of monthly
-inflation and unemployment data for the US from 1960-1982. Here we
-replicate Figure 1.5 to include the most recently available data and we
-also consturct the figure using HP filtered data.</p>
+<p>In Figure 1.5 from <em>The Conquest of American Inflation</em>, Thomas Sargent compares the business cycle componenets (BP filtered) of monthly inflation and unemployment data for the US from 1960-1982. Here we replicate Figure 1.5 to include the most recently available data and we also consturct the figure using HP filtered data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -943,8 +932,7 @@ also consturct the figure using HP filtered data.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -972,8 +960,7 @@ also consturct the figure using HP filtered data.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1000,16 +987,13 @@ also consturct the figure using HP filtered data.</p>
 <img alt="_images/fredpy_examples_37_0.png" src="_images/fredpy_examples_37_0.png" />
 </div>
 </div>
-<p>The choice of filterning method appears to strongly influence the
-results. While both filtering methods</p>
+<p>The choice of filterning method appears to strongly influence the results. While both filtering methods</p>
 </div>
 <div class="section" id="Exporting-data-sets">
 <h3>Exporting data sets<a class="headerlink" href="#Exporting-data-sets" title="Permalink to this headline">¶</a></h3>
-<p>Exporting data inported with <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> to csv files is easy with
-<code class="docutils literal notranslate"><span class="pre">Pandas</span></code>.</p>
+<p>Exporting data inported with <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> to csv files is easy with <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1057,7 +1041,7 @@ results. While both filtering methods</p>
     </p>
     <p>
         &copy; Copyright 2018, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
     </p>
   </div>
 </footer>

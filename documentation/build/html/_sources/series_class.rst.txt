@@ -14,15 +14,13 @@
 	Creates an instance of a :py:class:`fredpy.series` instance that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
 
 
-	:param string series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empty :py:class:`fredpy.series` instance is created.
+	:param str series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empty :py:class:`fredpy.series` instance is created.
 
 	**Attributes:**
     
 
-		:data: (numpy ndarray) --  data values.
-		:daterange: (string) -- specifies the dates of the first and last observations.
-		:dates: (list) -- list of date strings in YYYY-MM-DD format.
-		:datetimes: (numpy ndarray) -- array containing observation dates formatted as :py:class:`datetime.datetime` instances.
+		:data: (Pandas Series) --  data values.
+		:date_range: (string) -- specifies the dates of the first and last observations.
 		:frequency: (string) -- data frequency. 'Daily', 'Weekly', 'Monthly', 'Quarterly', or 'Annual'.
 		:frequency_short: (string) -- data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
 		:last_updated: (string) -- date series was last updated.
@@ -46,31 +44,39 @@
 			Computes the percentage change in the data over one year.
 
 			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-1})`. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-1} - 1\right)`.
-			:param string method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
+			:param str method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
 		 	:return: :py:class:`fredpy.series`
 
-		.. py:function:: bpfilter(low=6,high=32,K=12)
+		.. py:function:: as_frequency(freq=None,method='mean')
 
-			Computes the bandpass (Baxter-King) filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+			Convert a :py:class:`fredpy.series` to a lower frequency.
 
-				*[new_series_cycle, new_series_trend]*
+			:param str freq: Abbreviation of desired frequency: 'D','W','M','Q','A'.
+			:param str method: How to resample the data: 'first', 'last', 'mean' (default), 'median', 'min', 'max', 'sum'
+		 	:return: :py:class:`fredpy.series`
+
+		.. py:function:: bp_filter(low=6,high=32,K=12)
+
+			Computes the bandpass (Baxter-King) filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*new_series_cycle, new_series_trend*
 
 			:param int low: Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.
 			:param int high: Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.
 			:param int K: Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.
-		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
+		 	:return: two :py:class:`fredpy.series` instances
 
 			.. Note:: In computing the bandpass filter, K observations are lost from each end of the original series so the attributes *dates*, *datetimes*, and *data* are 2K elements shorter than their counterparts in the original series.
 
-		.. py:function:: cffilter(low=6,high=32)
+		.. py:function:: cf_filter(low=6,high=32)
 
-			Computes the Christiano-Fitzgerald filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+			Computes the Christiano-Fitzgerald filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
-				*[new_series_cycle, new_series_trend]*
+				*new_series_cycle, new_series_trend*
 
 			:param int low: Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.
 			:param int high: Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.
-		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
+		 	:return: two :py:class:`fredpy.series` instances
 
 		.. py:function:: copy()
 
@@ -79,44 +85,44 @@
 			:Parameters: None
 			:return: :py:class:`fredpy.series`
 
-		.. py:function:: divide(series2)
+		.. py:function:: diff_filter()
 
-			Divides the data from the current fredpy series by the data from :py:attr:`series2`.
+			Computes the first difference filter of original series. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
-			:param series2: A :py:class:`fredpy.series` instance.
-			:type series2: fredpy.series
-			:return: :py:class:`fredpy.series`
-
-		.. py:function:: firstdiff()
-
-			Computes the first difference filter of original series. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
-
-				*[new_series_cycle, new_series_trend]*
+				*new_series_cycle, new_series_trend*
 
 			:Parameters:
-		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
+		 	:return: two :py:class:`fredpy.series` instances
 
 		 	..
 
 			.. Note:: In computing the first difference filter, the first observation from the original series is lost so the attributes *dates*, *datetimes*, and *data* are 1 element shorter than their counterparts in the original series.
 
-		.. py:function:: hpfilter(lamb=1600)
+		.. py:function:: divide(object2)
 
-			Computes the Hodrick-Prescott filter of the data. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+			Divides the data from the current fredpy series by the data from :py:attr:`object2`.
 
-				*[new_series_cycle, new_series_trend]*
+			:param object2: A :py:class:`fredpy.series` instance.
+			:type object2: fredpy.series
+			:return: :py:class:`fredpy.series`
+
+		.. py:function:: hp_filter(lamb=1600)
+
+			Computes the Hodrick-Prescott filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+
+				*new_series_cycle, new_series_trend*
 
 			:param int lamb: The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.
-		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
+		 	:return: two :py:class:`fredpy.series` instances
 
-		.. py:function:: lintrend()
+		.. py:function:: linear_filter()
 
-			Computes a simple linear filter of the data using OLS. Returns a list of two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
+			Computes a simple linear filter of the data using OLS. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
-				*[new_series_cycle, new_series_trend]*
+				*new_series_cycle, new_series_trend*
 
 			:Parameters:
-		 	:return: :py:class:`list` of two :py:class:`fredpy.series` instances
+		 	:return: two :py:class:`fredpy.series` instances
 
 		.. py:function:: log()
 
@@ -125,76 +131,47 @@
 			:Parameters:
 		 	:return: :py:class:`fredpy.series`
 
+		.. py:function:: ma(length,center=False)
 
-		.. py:function:: ma1side(length)
+			Computes a moving average with window equal to :py:attr:`length`. If :py:attr:`center` is True, then the two-sided moving average is computed. Otherwise, the moving average will be one-sided.
 
-			Computes a one-sided moving average with window equal to :py:attr:`length`.
-
-			:param int length: :py:attr:`length` of the one-sided moving average.
+			:param int length: window length of the one-sided moving average.
+			:param bool center: False (default): one-sided MA. True: two-sided MA.
 		 	:return: :py:class:`fredpy.series`
 
+		.. py:function:: minus(object2)
 
-		.. py:function:: ma2side(length)
+			Subtracts the data from :py:attr:`object2` from the data from the current fredpy series.
 
-			Computes a two-sided moving average with window equal to 2 times :py:attr:`length`.
-
-			:param int length: half of :py:attr:`length` of the two-sided moving average. For example, if :py:attr:`length = 12`, then the moving average will contain 24 the 12 periods before and the 12 periods after each observation.
-		 	:return: :py:class:`fredpy.series`
-
-		.. py:function:: minus(series2)
-
-			Subtracts the data from :py:attr:`series2` from the data from the current fredpy series.
-
-			:param series2: A :py:class:`fredpy.series` instance.
-			:type series2: fredpy.series
+			:param object2: A :py:class:`fredpy.series` instance.
+			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
 			..
-
-		.. py:function:: monthtoannual(method='average')
-
-			Converts monthly data to annual data.
-
-			:param string method: If 'average', use the average values over each twelve month interval (default), if 'sum,' use the sum of the values over each twelve month interval, and if 'end' use the values at the end of each twelve month interval.
-		 	:return: :py:class:`fredpy.series`
-
-		.. py:function:: monthtoquarter(method='average')
-
-			Converts monthly data to quarterly data.
-
-			:param string method: If 'average', use the average values over each three month interval (default), if 'sum,' use the sum of the values over each three month interval, and if 'end' use the values at the end of each three month interval.
-		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: pc(log=True,method='backward',annualized=False)
 
 			Computes the percentage change in the data from the preceding period.
 
 			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-1})`. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-1} - 1\right)`.
-			:param string method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
-		 	:param bool annualized: If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is :math:`4\cdot 100\cdot\log(x_{t}/x_{t-1})`.
+			:param str method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
+		 	:param bool annualized: If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is :math:`12\cdot 100\cdot\log(x_{t}/x_{t-1})`.
 		 	:return: :py:class:`fredpy.series`
 
-		.. py:function:: percapita(total_pop=True)
+		.. py:function:: per_capita(total_pop=True)
 
 			Transforms the data into per capita terms (US) by dividing by one of two measures of the total population.
 
-			:param string total_pop: If ``total_pop == True``, then use the toal population (Default). Else, use Civilian noninstitutional population defined as persons 16 years of age and older.
+			:param str total_pop: If :py:attr:`total_pop` is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.
 		 	:return: :py:class:`fredpy.series`
 
-		.. py:function:: plus(series2)
+		.. py:function:: plus(object2)
 
-			Adds the data from the current fredpy series to the data from :py:attr:`series2`.
+			Adds the data from the current fredpy series to the data from :py:attr:`object2`.
 
-			:param series2: A :py:class:``fredpy.series`` instance.
-			:type series2: fredpy.series
+			:param object2: A :py:class:``fredpy.series`` instance.
+			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
-
-		.. py:function:: quartertoannual(method='average')
-
-			Converts quarterly data to annual data.
-
-			:param string method: If 'average', use the average values over each four quarter interval (default), if 'sum,' use the sum of the values over each four quarter interval, and if 'end' use the values at the end of each four quarter interval.
-		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: recent(N)
 
@@ -207,16 +184,16 @@
 
 			Creates recession bars for plots. Should be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.
 
-			:param string color: Color of the bars. Default: '0.5'.
+			:param str color: Color of the bars. Default: '0.5'.
 			:param float alpha: Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.
 		 	:return:
 
-		.. py:function:: times(series2)
+		.. py:function:: times(object2)
 
-			Multiplies the data from the current fredpy series with the data from :py:attr:`series2`.
+			Multiplies the data from the current fredpy series with the data from :py:attr:`object2`.
 
-			:param series2: A :py:class:`fredpy.series` instance.
-			:type series2: fredpy.series
+			:param object2: A :py:class:`fredpy.series` instance.
+			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
 		.. py:function:: window(win)
