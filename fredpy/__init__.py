@@ -166,15 +166,16 @@ class series:
             self.units_short = ''
 
     
-    def apc(self,log=True,method='backward'):
+    def apc(self,log=False,method='backward'):
 
         '''Computes the percentage change in the data over one year.
 
         Args:
-            log (bool):        If True (default), computes the percentage change as 100⋅log[x(t)/x(t-1)]. 
-                               If False, compute the percentage change as 100⋅[x(t)/x(t−1)−1].
-            method (string):   If ‘backward’ (default), compute percentage change from the previous period. 
-                               If ‘forward’, compute percentage change from current to subsequent period.
+            log (bool):         If True, computes the percentage change as 100⋅log[x(t)/x(t-k)], where k is
+                                    the number of observations per year.
+                                If False (default), compute the percentage change as 100⋅[x(t)/x(k−1)−1].
+            method (string):    If ‘backward’ (default), compute percentage change from the previous period. 
+                                If ‘forward’, compute percentage change from current to subsequent period.
 
         Returns:
             fredpy series
@@ -570,13 +571,13 @@ class series:
         return minus(self,object2)
 
 
-    def pc(self,log=True,method='backward',annualized=False):
+    def pc(self,log=False,method='backward',annualized=False):
 
         '''Computes the percentage change in the data from the preceding period.
 
         Args:
-            log (bool):        If True (default), computes the percentage change as 100⋅log[x(t)/x(t-1)]. 
-                               If False, compute the percentage change as 100⋅[x(t)/x(t−1)−1].
+            log (bool):        If True, computes the percentage change as 100⋅log[x(t)/x(t-1)]. 
+                               If False (default), compute the percentage change as 100⋅[x(t)/x(t−1)−1].
             method (string):   If ‘backward’ (default), compute percentage change from the previous period. 
                                If ‘forward’, compute percentage change from current to subsequent period.
             annualized (bool): If True (default), percentage change is annualized by multipying the simple 
@@ -779,7 +780,7 @@ class series:
         T = len(self.data)
         S = len(peaks)
 
-        date_num    = pylab.date2num([dateutil.parser.parse(s) for s in self.dates])
+        date_num    = pylab.date2num([dateutil.parser.parse(s) for s in self.data.index.strftime('%Y-%m-%d')])
         peaks_num   = pylab.date2num([dateutil.parser.parse(s) for s in peaks])
         troughs_num = pylab.date2num([dateutil.parser.parse(s) for s in troughs])
 
@@ -789,7 +790,7 @@ class series:
         peaksax = max(peaks_num)
         troughsmin=min(troughs_num)
         troughsmax=max(troughs_num)
-        
+
         if datesmin <= peaksmin:
             'Nothing to see here'
             min0 = 0
@@ -799,7 +800,7 @@ class series:
                 if datesmin <= peaks_num[k]:
                     min0 = k
                     break
-                                              
+
         if datesmax >= troughsmax:
             max0 = len(troughs)-1
         else:
@@ -817,7 +818,7 @@ class series:
                 troughs2 = troughs[min0:max0]
                 troughs2.append(self.dates[-1])
                 troughs2.insert(0,troughs[min0-1])
-            
+
                 peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
                 troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
 
@@ -826,19 +827,19 @@ class series:
                 peaks2.append(peaks[max0])
                 troughs2 = troughs[min0:max0]
                 troughs2.append(self.dates[-1])
-            
+
                 peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
                 troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
 
             elif peaks_num[max0]>datesmax and troughs_num[min0]>datesmin:
                 peaks2 = peaks[min0:max0]
                 peaks2.insert(0,self.dates[0])
-                
+
                 troughs2 = troughs[min0:max0]
                 troughs2.insert(0,troughs[min0-1])
-                
-                peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
-                troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
+
+                peaks2num  =  peaks2
+                troughs2num = troughs2
 
 
             else:
@@ -854,20 +855,18 @@ class series:
                 peaks2.insert(0,self.dates[0])
                 troughs2 = troughs[min0:max0]
                 troughs2.insert(0,troughs[min0+1])
-        
-                peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
-                troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
+
+                peaks2num  =  peaks2
+                troughs2num = troughs2
 
             else:
                 peaks2 = peaks[min0:max0+1]
                 troughs2 = troughs[min0:max0+1]
                 peaks2num  = peaks_num[min0:max0+1]
                 troughs2num= troughs_num[min0:max0+1]
-
-        self.pks = peaks2
-        self.trs = troughs2
-        self.recess_bars = pylab.plot()
-        self.peaks = peaks
+                
+        peaks2num  =  pd.to_datetime(peaks2)
+        troughs2num = pd.to_datetime(troughs2)
         
         for k in range(len(peaks2)):
             pylab.axvspan(peaks2num[k], troughs2num[k], edgecolor= color, facecolor=color, alpha=alpha)

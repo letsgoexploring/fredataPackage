@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
   name = 'fredpy',
   packages = ['fredpy'],
-  version = '3.1.1',
+  version = '3.1.3',
   description = 'A package for downloading and working with data from Federal Reserve Economic Data',
   author = 'Brian C. Jenkins',
   author_email = 'bcjenkin@uci.edu',

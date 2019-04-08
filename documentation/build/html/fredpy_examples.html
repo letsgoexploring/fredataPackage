@@ -11,7 +11,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -528,7 +529,7 @@ U.S. Bureau of Economic Analysis
 <h3>Methods<a class="headerlink" href="#Methods" title="Permalink to this headline">¶</a></h3>
 <p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance has 20 methods:</p>
 <ul class="simple">
-<li><strong>apc</strong>(log=True, method=’backward’)</li>
+<li><strong>apc</strong>(log=False, method=’backward’)</li>
 <li><strong>as_frequency</strong>(freq=None,method=’mean’)</li>
 <li><strong>bp_filter</strong>(low=6, high=32, K=12)</li>
 <li><strong>cf_filter</strong>(low=6, high=32)</li>
@@ -540,7 +541,7 @@ U.S. Bureau of Economic Analysis
 <li><strong>log</strong>()</li>
 <li><strong>ma</strong>(length,center=False)</li>
 <li><strong>minus</strong>(object2)</li>
-<li><strong>pc</strong>(log=True, method=’backward’, annualized=False)</li>
+<li><strong>pc</strong>(log=False, method=’backward’, annualized=False)</li>
 <li><strong>per_capita</strong>(total_pop=True)</li>
 <li><strong>plot</strong>(**kwargs)</li>
 <li><strong>plus</strong>(object2)</li>
@@ -1041,7 +1042,7 @@ Range: 1948-01-01 to 2018-10-01
     </p>
     <p>
         &copy; Copyright 2019, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
     </p>
   </div>
 </footer>

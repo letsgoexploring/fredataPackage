@@ -39,11 +39,11 @@
 	**Methods:**
 
 
-		.. py:function:: apc(log=True,method='backward')
+		.. py:function:: apc(log=False,method='backward')
 
 			Computes the percentage change in the data over one year.
 
-			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-1})`. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-1} - 1\right)`.
+			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-k})`, where :math:`k` is the number of observations per year. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-k} - 1\right)`.
 			:param str method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
 		 	:return: :py:class:`fredpy.series`
 
@@ -149,7 +149,7 @@
 
 			..
 
-		.. py:function:: pc(log=True,method='backward',annualized=False)
+		.. py:function:: pc(log=False,method='backward',annualized=False)
 
 			Computes the percentage change in the data from the preceding period.
 
