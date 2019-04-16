@@ -433,6 +433,23 @@ class series:
 
         return divide(self,object2)
 
+    def dropna(self):
+
+        '''Removes missing (NaN) values.
+
+        Args:
+
+        Returns:
+            fredpy series
+        '''
+
+        new_series = self.copy()
+        
+        new_series.data = new_series.data.dropna()
+        new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
+
+        return new_series
+
 
     def hp_filter(self,lamb=1600):
 
@@ -1309,7 +1326,7 @@ def to_fred_series(data,dates,frequency='',frequency_short='',last_updated='',no
     f.units = units
     f.units_short = units_short
     f.t = t
-    f.date_range = 'Range: '+f.dates[0]+' to '+f.dates[-1]
+    f.date_range = 'Range: '+str(f.data.index[0])[:10]+' to '+str(f.data.index[-1])[:10]
     return f
 
 def window_equalize(series_list):

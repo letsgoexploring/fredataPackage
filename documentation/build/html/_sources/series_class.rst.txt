@@ -106,6 +106,12 @@
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
+		.. py:function:: dropna()
+
+			Removes NaN values from frepy series.
+
+			:return: :py:class:`fredpy.series`
+
 		.. py:function:: hp_filter(lamb=1600)
 
 			Computes the Hodrick-Prescott filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
