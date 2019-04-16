@@ -433,7 +433,7 @@ class series:
 
         return divide(self,object2)
 
-    def dropna(self):
+    def drop_nan(self):
 
         '''Removes missing (NaN) values.
 

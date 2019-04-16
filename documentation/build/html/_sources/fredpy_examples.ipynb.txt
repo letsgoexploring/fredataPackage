@@ -273,7 +273,7 @@
     "* **copy**\\ ()\n",
     "* **diff_filter**\\ ()\n",
     "* **divide**\\ (object2)\n",
-    "* **dropna**\\ ()\n",
+    "* **dropn_nan**\\ ()\n",
     "* **hp_filter**\\ (lamb=1600)\n",
     "* **linear_filter**\\ ()\n",
     "* **log**\\ ()\n",

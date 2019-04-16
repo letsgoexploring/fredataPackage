@@ -106,7 +106,7 @@
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
-		.. py:function:: dropna()
+		.. py:function:: drop_nan()
 
 			Removes NaN values from fredpy series.
 
