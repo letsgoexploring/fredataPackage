@@ -19,7 +19,7 @@ Install ``fredpy`` from PyPI with the shell command::
 	pip install fredpy
 
 
-Or download the source here: https://github.com/letsgoexploring/fredpy-package/raw/gh-pages/dist/fredpy-3.1.3.tar.gz
+Or download the source here: https://github.com/letsgoexploring/fredpy-package/raw/gh-pages/dist/fredpy-3.1.5.tar.gz
 
 Contents:
 ==================
