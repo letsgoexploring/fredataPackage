@@ -108,7 +108,7 @@
 
 		.. py:function:: dropna()
 
-			Removes NaN values from frepy series.
+			Removes NaN values from fredpy series.
 
 			:return: :py:class:`fredpy.series`
 
