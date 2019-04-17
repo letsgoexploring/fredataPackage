@@ -831,9 +831,9 @@ class series:
             if peaks_num[max0]<datesmax and troughs_num[min0-1]>datesmin:
                 peaks2 = peaks[min0:max0]
                 peaks2.append(peaks[max0])
-                peaks2.insert(0,self.dates[0])
+                peaks2.insert(0,self.data.index[0])
                 troughs2 = troughs[min0:max0]
-                troughs2.append(self.dates[-1])
+                troughs2.append(self.data.index[-1])
                 troughs2.insert(0,troughs[min0-1])
 
                 peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
@@ -843,14 +843,14 @@ class series:
                 peaks2 = peaks[min0:max0]
                 peaks2.append(peaks[max0])
                 troughs2 = troughs[min0:max0]
-                troughs2.append(self.dates[-1])
+                troughs2.append(self.data.index[-1])
 
                 peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
                 troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
 
             elif peaks_num[max0]>datesmax and troughs_num[min0]>datesmin:
                 peaks2 = peaks[min0:max0]
-                peaks2.insert(0,self.dates[0])
+                peaks2.insert(0,self.data.index[0])
 
                 troughs2 = troughs[min0:max0]
                 troughs2.insert(0,troughs[min0-1])
@@ -869,7 +869,7 @@ class series:
         else:
             if peaks_num[max0]>datesmax and troughs_num[min0]>datesmin:
                 peaks2 = peaks[min0:max0]
-                peaks2.insert(0,self.dates[0])
+                peaks2.insert(0,self.data.index[0])
                 troughs2 = troughs[min0:max0]
                 troughs2.insert(0,troughs[min0+1])
 
