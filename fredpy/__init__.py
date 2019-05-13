@@ -561,7 +561,7 @@ class series:
 
         new_series = self.copy()
 
-        new_series.data = new_series.data.rolling(window=length).mean().dropna()
+        new_series.data = new_series.data.rolling(window=length,center=center).mean().dropna()
         new_series.date_range = 'Range: '+str(new_series.data.index[0])[:10]+' to '+str(new_series.data.index[-1])[:10]
         if center:
             new_series.title = self.title+' (: one-sided moving average)'
