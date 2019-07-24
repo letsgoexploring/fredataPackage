@@ -33,7 +33,7 @@ Additional ``fredpy`` Functions
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
 
-.. py:function:: recessions(color='0.5',alpha = 0.5)
+.. py:function:: fredpy.recessions(color='0.5',alpha = 0.5)
 
             Creates recession bars for plots. Should be used before either (1) a new plot is created or (2) a show command is issued.
 
