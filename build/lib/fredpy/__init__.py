@@ -1,10 +1,19 @@
-import requests,dateutil, pylab, datetime, os
+import requests,dateutil, datetime, os
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import warnings
 import statsmodels.api as sm
 import numbers
 tsa = sm.tsa
+
+# Read recession data data
+cycle_data = pd.read_csv('https://raw.githubusercontent.com/letsgoexploring/fredpy-package/gh-pages/business%20cycle%20dates/business_cycle_dates.csv')
+if pd.isna(cycle_data.troughs.iloc[-1]):
+    cycle_data.troughs.iloc[-1] = pd.to_datetime('today').strftime('%Y-%m-%d')
+    
+cycle_data['peaks'] = pd.to_datetime(cycle_data.peaks)
+cycle_data['troughs'] = pd.to_datetime(cycle_data.troughs)
 
 # API key attribute needs to be set
 
@@ -720,173 +729,29 @@ class series:
         Returns:
         '''
 
-        peaks =[
-        '1857-06-01',
-        '1860-10-01',
-        '1865-04-01',
-        '1869-06-01',
-        '1873-10-01',
-        '1882-03-01',
-        '1887-03-01',
-        '1890-07-01',
-        '1893-01-01',
-        '1895-12-01',
-        '1899-06-01',
-        '1902-09-01',
-        '1907-05-01',
-        '1910-01-01',
-        '1913-01-01',
-        '1918-08-01',
-        '1920-01-01',
-        '1923-05-01',
-        '1926-10-01',
-        '1929-08-01',
-        '1937-05-01',
-        '1945-02-01',
-        '1948-11-01',
-        '1953-07-01',
-        '1957-08-01',
-        '1960-04-01',
-        '1969-12-01',
-        '1973-11-01',
-        '1980-01-01',
-        '1981-07-01',
-        '1990-07-01',
-        '2001-03-01',
-        '2007-12-01']
+        series_peaks = []
+        series_troughs = []
 
-        troughs =[
-        '1858-12-01',
-        '1861-06-01',
-        '1867-12-01',
-        '1870-12-01',
-        '1879-03-01',
-        '1885-05-01',
-        '1888-04-01',
-        '1891-05-01',
-        '1894-06-01',
-        '1897-06-01',
-        '1900-12-01',
-        '1904-08-01',
-        '1908-06-01',
-        '1912-01-01',
-        '1914-12-01',
-        '1919-03-01',
-        '1921-07-01',
-        '1924-07-01',
-        '1927-11-01',
-        '1933-03-01',
-        '1938-06-01',
-        '1945-10-01',
-        '1949-10-01',
-        '1954-05-01',
-        '1958-04-01',
-        '1961-02-01',
-        '1970-11-01',
-        '1975-03-01',
-        '1980-07-01',
-        '1982-11-01',
-        '1991-03-01',
-        '2001-11-01',
-        '2009-06-01']
+        date_begin = self.data.index[0]
+        date_end = self.data.index[-1]
 
-        if len(troughs) < len(peaks):
-            today = datetime.date.today()
-            troughs.append(str(today))
-
-        T = len(self.data)
-        S = len(peaks)
-
-        date_num    = pylab.date2num([dateutil.parser.parse(s) for s in self.data.index.strftime('%Y-%m-%d')])
-        peaks_num   = pylab.date2num([dateutil.parser.parse(s) for s in peaks])
-        troughs_num = pylab.date2num([dateutil.parser.parse(s) for s in troughs])
-
-        datesmin = min(date_num)
-        datesmax = max(date_num)
-        peaksmin = min(peaks_num)
-        peaksax = max(peaks_num)
-        troughsmin=min(troughs_num)
-        troughsmax=max(troughs_num)
-
-        if datesmin <= peaksmin:
-            'Nothing to see here'
-            min0 = 0
-        else:
-            'Or here'
-            for k in range(S):
-                if datesmin <= peaks_num[k]:
-                    min0 = k
-                    break
-
-        if datesmax >= troughsmax:
-            max0 = len(troughs)-1
-        else:
-            'Or here'
-            for k in range(S):
-                if datesmax < troughs_num[k]:
-                    max0 = k
-                    break
-
-        if datesmax < troughsmax:
-            if peaks_num[max0]<datesmax and troughs_num[min0-1]>datesmin:
-                peaks2 = peaks[min0:max0]
-                peaks2.append(peaks[max0])
-                peaks2.insert(0,self.data.index[0].strftime('%Y-%m-%d'))
-                troughs2 = troughs[min0:max0]
-                troughs2.append(self.data.index[-1].strftime('%Y-%m-%d'))
-                troughs2.insert(0,troughs[min0-1])
-
-                peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
-                troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
-
-            elif peaks_num[max0]<datesmax and troughs_num[min0-1]<datesmin:
-                peaks2 = peaks[min0:max0]
-                peaks2.append(peaks[max0])
-                troughs2 = troughs[min0:max0]
-                troughs2.append(self.data.index[-1].strftime('%Y-%m-%d'))
-
-                peaks2num  = pylab.date2num([dateutil.parser.parse(s) for s in peaks2])
-                troughs2num = pylab.date2num([dateutil.parser.parse(s) for s in troughs2])
-
-            elif peaks_num[max0]>datesmax and troughs_num[min0]>datesmin:
-                peaks2 = peaks[min0:max0]
-                peaks2.insert(0,self.data.index[0].strftime('%Y-%m-%d'))
-
-                troughs2 = troughs[min0:max0]
-                troughs2.insert(0,troughs[min0-1])
-
-                peaks2num  =  peaks2
-                troughs2num = troughs2
-
-
-            else:
-                peaks2 = peaks[min0:max0+1]
-                troughs2 = troughs[min0:max0+1]
-                peaks2num  = peaks_num[min0:max0+1]
-                troughs2num= troughs_num[min0:max0+1]
-
-
-        else:
-            if peaks_num[max0]>datesmax and troughs_num[min0]>datesmin:
-                peaks2 = peaks[min0:max0]
-                peaks2.insert(0,self.data.index[0].strftime('%Y-%m-%d'))
-                troughs2 = troughs[min0:max0]
-                troughs2.insert(0,troughs[min0+1])
-
-                peaks2num  =  peaks2
-                troughs2num = troughs2
-
-            else:
-                peaks2 = peaks[min0:max0+1]
-                troughs2 = troughs[min0:max0+1]
-                peaks2num  = peaks_num[min0:max0+1]
-                troughs2num= troughs_num[min0:max0+1]
+        for k in range(len(cycle_data)):
+            
+            if cycle_data['peaks'].loc[k]<date_begin and date_begin < cycle_data['troughs'].loc[k]:
+                series_peaks.append(date_begin)
+                series_troughs.append(cycle_data['troughs'].loc[k])
+            
                 
-        peaks2num  =  pd.to_datetime(peaks2)
-        troughs2num = pd.to_datetime(troughs2)
-        
-        for k in range(len(peaks2)):
-            pylab.axvspan(peaks2num[k], troughs2num[k], edgecolor= color, facecolor=color, alpha=alpha)
+            elif date_begin < cycle_data['peaks'].loc[k] and date_end > cycle_data['troughs'].loc[k]:
+                series_peaks.append(cycle_data['peaks'].loc[k])
+                series_troughs.append(cycle_data['troughs'].loc[k])
+                
+            elif cycle_data['peaks'].loc[k]<date_end and cycle_data['troughs'].loc[k] > date_end:
+                series_peaks.append(cycle_data['peaks'].loc[k])
+                series_troughs.append(date_end)
+
+        for k in range(len(series_peaks)):
+            plt.axvspan(series_peaks[k], series_troughs[k], edgecolor= color, facecolor=color, alpha=alpha)
 
     
     def times(self,object2):
@@ -1171,6 +1036,21 @@ def plus(object1,object2):
 
             return new_series
 
+def recessions(color='0.5',alpha = 0.5):
+        
+    '''Creates recession bars for plots. Should be used before either (1) a new plot is created or 
+    (2) a show command is issued.
+
+    Args:
+        color (string): Color of the bars. Default: '0.5'
+        alpha (float):  Transparency of the recession bars. Must be between 0 and 1
+                        Default: 0.5
+
+    Returns:
+    '''
+
+    for k in range(len(cycle_data['peaks'])):
+        plt.axvspan(cycle_data['peaks'][k], cycle_data['troughs'][k], edgecolor= color, facecolor=color, alpha=alpha)
 
 def times(object1,object2):
 

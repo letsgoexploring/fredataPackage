@@ -11,7 +11,7 @@
 
 .. py:class:: fredpy.series(series_id=None)
 	
-	Creates an instance of a :py:class:`fredpy.series` instance that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
+	Creates an instance of :py:class:`fredpy.series` that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
 
 
 	:param str series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empty :py:class:`fredpy.series` instance is created.

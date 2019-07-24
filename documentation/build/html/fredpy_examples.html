@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fredpy Examples &#8212; fredpy 3.1.8 documentation</title>
+    <meta charset="utf-8" />
+    <title>fredpy Examples &#8212; fredpy 3.1.9 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -14,10 +13,6 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Additional fredpy Functions" href="additional_functions.html" />
@@ -25,6 +20,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -130,7 +129,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   
 <style>
@@ -423,21 +422,21 @@ div.rendered_html tbody tr:hover {
 <h3>Attributes<a class="headerlink" href="#Attributes" title="Permalink to this headline">¶</a></h3>
 <p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance stores information about a FRED series in 17 attribues:</p>
 <ul class="simple">
-<li><strong>data:</strong> (Pandas Series) - data values.</li>
-<li><strong>date_range:</strong> (string) - specifies the dates of the first and last observations.</li>
-<li><strong>frequency:</strong> (string) - data frequency. ‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, ‘Semiannual’, or ‘Annual’.</li>
-<li><strong>frequency_short:</strong> (string) - data frequency. Abbreviated. ‘D’, ‘W’, ‘M’, ‘Q’, ‘SA, or ‘A’.</li>
-<li><strong>last_updated:</strong> (string) - date series was last updated.</li>
-<li><strong>notes:</strong> (string) - details about series. Not available for all series.</li>
-<li><strong>release:</strong> (string) - statistical release containing data.</li>
-<li><strong>seasonal_adjustment:</strong> (string) - specifies whether the data has been seasonally adjusted.</li>
-<li><strong>seasonal_adjustment_short:</strong> (string) - specifies whether the data has been seasonally adjusted. Abbreviated.</li>
-<li><strong>series_id:</strong> (string) - unique FRED series ID code.</li>
-<li><strong>source:</strong> (string) - original source of the data.</li>
-<li><strong>t:</strong> (int) - number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.</li>
-<li><strong>title:</strong> (string) - title of the data series.</li>
-<li><strong>units:</strong> (string) - units of the data series.</li>
-<li><strong>units_short:</strong> (string) - units of the data series. Abbreviated.</li>
+<li><p><strong>data:</strong> (Pandas Series) - data values.</p></li>
+<li><p><strong>date_range:</strong> (string) - specifies the dates of the first and last observations.</p></li>
+<li><p><strong>frequency:</strong> (string) - data frequency. ‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, ‘Semiannual’, or ‘Annual’.</p></li>
+<li><p><strong>frequency_short:</strong> (string) - data frequency. Abbreviated. ‘D’, ‘W’, ‘M’, ‘Q’, ‘SA, or ‘A’.</p></li>
+<li><p><strong>last_updated:</strong> (string) - date series was last updated.</p></li>
+<li><p><strong>notes:</strong> (string) - details about series. Not available for all series.</p></li>
+<li><p><strong>release:</strong> (string) - statistical release containing data.</p></li>
+<li><p><strong>seasonal_adjustment:</strong> (string) - specifies whether the data has been seasonally adjusted.</p></li>
+<li><p><strong>seasonal_adjustment_short:</strong> (string) - specifies whether the data has been seasonally adjusted. Abbreviated.</p></li>
+<li><p><strong>series_id:</strong> (string) - unique FRED series ID code.</p></li>
+<li><p><strong>source:</strong> (string) - original source of the data.</p></li>
+<li><p><strong>t:</strong> (int) - number corresponding to frequency: 365 for daily, 52 for weekly, 12 for monthly, 4 for quarterly, and 1 for annual.</p></li>
+<li><p><strong>title:</strong> (string) - title of the data series.</p></li>
+<li><p><strong>units:</strong> (string) - units of the data series.</p></li>
+<li><p><strong>units_short:</strong> (string) - units of the data series. Abbreviated.</p></li>
 </ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -530,27 +529,27 @@ U.S. Bureau of Economic Analysis
 <h3>Methods<a class="headerlink" href="#Methods" title="Permalink to this headline">¶</a></h3>
 <p>A <a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance has 20 methods:</p>
 <ul class="simple">
-<li><strong>apc</strong>(log=False, method=’backward’)</li>
-<li><strong>as_frequency</strong>(freq=None,method=’mean’)</li>
-<li><strong>bp_filter</strong>(low=6, high=32, K=12)</li>
-<li><strong>cf_filter</strong>(low=6, high=32)</li>
-<li><strong>copy</strong>()</li>
-<li><strong>diff_filter</strong>()</li>
-<li><strong>divide</strong>(object2)</li>
-<li><strong>dropn_nan</strong>()</li>
-<li><strong>hp_filter</strong>(lamb=1600)</li>
-<li><strong>linear_filter</strong>()</li>
-<li><strong>log</strong>()</li>
-<li><strong>ma</strong>(length,center=False)</li>
-<li><strong>minus</strong>(object2)</li>
-<li><strong>pc</strong>(log=False, method=’backward’, annualized=False)</li>
-<li><strong>per_capita</strong>(total_pop=True)</li>
-<li><strong>plot</strong>(**kwargs)</li>
-<li><strong>plus</strong>(object2)</li>
-<li><strong>recent</strong>(N)</li>
-<li><strong>recessions</strong>(color=‘0.5’, alpha = 0.5)</li>
-<li><strong>times</strong>(object2)</li>
-<li><strong>window</strong>(win)</li>
+<li><p><strong>apc</strong>(log=False, method=’backward’)</p></li>
+<li><p><strong>as_frequency</strong>(freq=None,method=’mean’)</p></li>
+<li><p><strong>bp_filter</strong>(low=6, high=32, K=12)</p></li>
+<li><p><strong>cf_filter</strong>(low=6, high=32)</p></li>
+<li><p><strong>copy</strong>()</p></li>
+<li><p><strong>diff_filter</strong>()</p></li>
+<li><p><strong>divide</strong>(object2)</p></li>
+<li><p><strong>dropn_nan</strong>()</p></li>
+<li><p><strong>hp_filter</strong>(lamb=1600)</p></li>
+<li><p><strong>linear_filter</strong>()</p></li>
+<li><p><strong>log</strong>()</p></li>
+<li><p><strong>ma</strong>(length,center=False)</p></li>
+<li><p><strong>minus</strong>(object2)</p></li>
+<li><p><strong>pc</strong>(log=False, method=’backward’, annualized=False)</p></li>
+<li><p><strong>per_capita</strong>(total_pop=True)</p></li>
+<li><p><strong>plot</strong>(**kwargs)</p></li>
+<li><p><strong>plus</strong>(object2)</p></li>
+<li><p><strong>recent</strong>(N)</p></li>
+<li><p><strong>recessions</strong>(color=‘0.5’, alpha = 0.5)</p></li>
+<li><p><strong>times</strong>(object2)</p></li>
+<li><p><strong>window</strong>(win)</p></li>
 </ul>
 <p>The fredpy documentation has detailed explanations of the use of these methods: <a class="reference external" href="http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html">http://www.briancjenkins.com/fredpy-package/documentation/build/html/series_class.html</a>.</p>
 <div class="nbinput docutils container">
@@ -1044,7 +1043,7 @@ Range: 1948-01-01 to 2018-10-01
     </p>
     <p>
         &copy; Copyright 2019, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
     </p>
   </div>
 </footer>
