@@ -7,7 +7,7 @@ About ``fredpy``
 ================
 
 
-``fredpy`` is a Python package for retrieving and working with data from Federal Reserve Economic Data (FRED). The package makes it easy to download specific data series and provides a set of tools for transforming the data in order to construct plots and do statistical analysis. The ``fredpy`` package is useful for anyone doing empirical research using data from FRED and for anyone, e.g. economics teachers, students, and journalists, that will benefit from having an efficient and flexible way to access FRED with Python. ``fredpy`` is compatible with Python 2 and 3.
+``fredpy`` is a Python module for retrieving and working with data from Federal Reserve Economic Data (FRED). The module makes it easy to download specific data series and provides a set of tools for transforming the data in order to construct plots and do statistical analysis. ``fredpy`` is useful for anyone doing empirical research using data from FRED and for anyone, e.g. economics teachers, students, and journalists, that will benefit from having an efficient and flexible way to access FRED with Python. ``fredpy`` is compatible with Python 2 and 3.
 
 
 Installation
