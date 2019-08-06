@@ -1,0 +1,40 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter F
+  \item \spxentry{fredpy.date\_times()}\spxextra{built-in function}, \hyperpage{7}
+  \item \spxentry{fredpy.divide()}\spxextra{built-in function}, \hyperpage{7}
+  \item \spxentry{fredpy.minus()}\spxextra{built-in function}, \hyperpage{7}
+  \item \spxentry{fredpy.plus()}\spxextra{built-in function}, \hyperpage{7}
+  \item \spxentry{fredpy.quickplot()}\spxextra{built-in function}, \hyperpage{7}
+  \item \spxentry{fredpy.series}\spxextra{built-in class}, \hyperpage{3}
+  \item \spxentry{fredpy.series.apc()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.bpfilter()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.cffilter()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.copy()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.divide()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.firstdiff()}\spxextra{built-in function}, \hyperpage{4}
+  \item \spxentry{fredpy.series.hpfilter()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.lintrend()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.log()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.ma1side()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.ma2side()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.minus()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.monthtoannual()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.monthtoquarter()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.pc()}\spxextra{built-in function}, \hyperpage{5}
+  \item \spxentry{fredpy.series.percapita()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.plus()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.quartertoannual()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.recent()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.recessions()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.times()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.series.window()}\spxextra{built-in function}, \hyperpage{6}
+  \item \spxentry{fredpy.times()}\spxextra{built-in function}, \hyperpage{8}
+  \item \spxentry{fredpy.toFredSeries()}\spxextra{built-in function}, \hyperpage{8}
+  \item \spxentry{fredpy.window\_equalize()}\spxextra{built-in function}, \hyperpage{8}
+
+\end{sphinxtheindex}
