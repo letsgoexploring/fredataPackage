@@ -5,7 +5,7 @@ fredpy is a Python module for easily retrieving and manipulating data series fro
 
 ```pip install fredpy```
 
-Documentation for fredpy: https://www.briancjenkins.com/fredpy/documentation/build/html/
+Documentation for fredpy: https://www.briancjenkins.com/fredpy/docs/build/html/
 
 This repository contains:
 
