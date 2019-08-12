@@ -1,12 +1,18 @@
-fredpy
-======
+# ``fredpy``
 
-fredpy is a Python module for easily retrieving and manipulating data series from Federal Reserve Economic Data (FRED) maintained by the Federal Reserve Bank of St Louis. Install the module from PyPI with the shell command:
+fredpy is a Python module for easily retrieving and manipulating data series from Federal Reserve Economic Data (FRED). FRED is a repository of economic data maintained by the Federal Reserve Bank of St Louis. Install the module from PyPI with the shell command:
+
+## Installation
+Install the module from PyPI with the shell command:
 
 ```pip install fredpy```
 
+Or download the source here: https://github.com/letsgoexploring/fredpy/blob/gh-pages/dist/fredpy-3.1.9.tar.gz
+
+## Documentation
 Documentation for fredpy: https://www.briancjenkins.com/fredpy/docs/build/html/index.html
 
+## Resources
 This repository contains:
 
 1. **fredpy.py**: The module file
