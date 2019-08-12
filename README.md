@@ -29,4 +29,4 @@ This repository contains:
 
 Free use of this code is welcome. Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
 
-_Updated: August 6, 2019_
+_Updated: August 12, 2019_
