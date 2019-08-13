@@ -2,7 +2,7 @@
 
 fredpy is a Python module for easily retrieving and manipulating data series from Federal Reserve Economic Data (FRED). FRED is a repository of economic data maintained by the Federal Reserve Bank of St Louis.
 
-Free use of this software is welcome and subject to the terms of the [license](https://github.com/letsgoexploring/fredpy/blob/gh-pages/LICENSE.txt). Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
+Free use of this software is welcome and subject to the terms of the [license](https://github.com/letsgoexploring/fredpy/blob/gh-pages/LICENSE). Please send me comments, feedback, suggestions, etc. at [bcjenkin@uci.edu](mailto:bcjenkin@uci.edu).
 
 ## Installation
 Install the module from PyPI with the shell command:
