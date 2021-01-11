@@ -13,6 +13,14 @@ Additional ``fredpy`` Functions
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
 
+.. py:function:: fredpy.get_vintage_dates(series_id)
+
+            Returns vintage dates for series available from ALFRED.
+
+            :param str series_id: ID of FRED series.
+            :return: :py:class:`list`
+
+
 .. py:function:: fredpy.minus(object1,object2)
 
             Subtracts the data from :py:data:`object2` from the data from :py:data:`object1`.
