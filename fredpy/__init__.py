@@ -485,7 +485,10 @@ class series:
 
         Args:
             lamb (int): The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data,
-                        1600 for quarterly data (default), and 6.25 for annual data.
+                        1600 for quarterly data (default), 6.25 for annual data, or 104976000000
+                        for daily data.
+                        
+                        In general, set lambda to: 1600*[number of observations per quarter]**4
             
         Returns:
             two fredpy.series instances
