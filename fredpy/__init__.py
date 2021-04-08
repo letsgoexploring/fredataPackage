@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import warnings
 import statsmodels.api as sm
-import numbers
+import time
 tsa = sm.tsa
 
 # Read recession data data
@@ -90,6 +90,50 @@ class series:
             units_short:                (string) units of the data series. Abbreviated.
         '''
 
+        # fred_api_errors = {'400': 'FRED API error: Bad Request. Check series ID','404': 'FRED API error: Not Found','423':'FRED API error: Locked','500':'FRED API error: Internal Server Error','504':'FRED API error: API limit exceeded','429':'FRED API error: API limit exceeded'}
+
+
+        def fred_request(query,series_id,observation_date=None,release_id=None):
+
+            status_code = None
+            request_count = 0
+
+            while request_count <= 10:
+
+                if observation_date!=None:
+                    request_url = 'https://api.stlouisfed.org/fred/'+query+'?series_id='+series_id+'&realtime_start='+observation_date+'&realtime_end='+observation_date+'&api_key='+api_key+'&file_type=json'
+
+                else:
+                    request_url = 'https://api.stlouisfed.org/fred/'+query+'?release_id='+str(release_id)+'&api_key='+api_key+'&file_type=json'
+
+                r = requests.get(request_url)
+
+                status_code = r.status_code
+
+                if status_code == 200:
+                    break
+
+                elif status_code == 429:
+                    print('FRED API error: API limit exceeded in API query (status code: '+str(status_code)+'). Retry in '+str(5+request_count)+' seconds.')
+                    time.sleep(5+request_count)
+
+                elif status_code == 504:
+                    print('FRED API error: Gateway Time-out< in API query (status code: '+str(status_code)+'). Retry in '+str(5+request_count)+' seconds.')
+                    time.sleep(5+request_count)
+
+
+                else:
+                    r.raise_for_status()
+
+                request_count+=1
+
+            if request_count >10 and status_code != 200:
+
+                raise Exception('Unknown FRED API error. Status code: ',status_code)
+
+            return r
+
+
         if api_key is None:
             raise ValueError('fredpy.api_key value not assigned. You need to provide your key for the FRED API.')
 
@@ -103,8 +147,7 @@ class series:
 
         if type(series_id) == str:
 
-            request_url = 'https://api.stlouisfed.org/fred/series?series_id='+series_id+'&realtime_start='+observation_date+'&realtime_end='+observation_date+'&api_key='+api_key+'&file_type=json'
-            r = requests.get(request_url)
+            r = fred_request(query='series',series_id=series_id,observation_date=observation_date)
             results = r.json()
 
             self.series_id = series_id
@@ -130,8 +173,7 @@ class series:
                 self.t = np.nan
 
 
-            request_url = 'https://api.stlouisfed.org/fred/series/observations?series_id='+series_id+'&realtime_start='+observation_date+'&realtime_end='+observation_date+'&api_key='+api_key+'&file_type=json'
-            r = requests.get(request_url)
+            r = fred_request(query='series/observations',series_id=series_id,observation_date=observation_date)
             results = r.json()
 
             count = results['count']
@@ -159,15 +201,14 @@ class series:
             self.date_range = 'Range: '+str(self.data.index[0])[:10]+' to '+str(self.data.index[-1])[:10]
 
 
-            request_url =  'https://api.stlouisfed.org/fred/series/release?series_id='+series_id+'&realtime_start='+observation_date+'&realtime_end='+observation_date+'&api_key='+api_key+'&file_type=json'
-            r = requests.get(request_url)
+
+            r = fred_request(query='series/release',series_id=series_id,observation_date=observation_date)
             results = r.json()
             self.release = results['releases'][0]['name']
             release_id = results['releases'][0]['id']
 
 
-            request_url =  'https://api.stlouisfed.org/fred/release/sources?release_id='+str(release_id)+'&api_key='+api_key+'&file_type=json'
-            r = requests.get(request_url)
+            r = fred_request(query='release/sources',series_id=series_id,release_id=release_id)
             results = r.json()
             self.source = results['sources'][0]['name']
 
