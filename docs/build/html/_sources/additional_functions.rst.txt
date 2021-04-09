@@ -12,6 +12,16 @@ Additional ``fredpy`` Functions
             :param object2: A :py:class:`fredpy.series` object.
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
+            
+            
+.. py:function:: fredpy.fred_api_request(api_key,path,parameters)
+
+            Queries the FRED API. Returns a :py:class:`requests.models.Response` object if successful, otherwise will raise an error with a message that is hopefully helpful. Reference for API querries: https://fred.stlouisfed.org/docs/api/fred/
+
+            :param str api_key: Your 32-character FRED API Key.
+            :param str path: Path for FRED API.
+            :param dict parameters: Dictionary containing appropriate parameters and values for the API query
+            :return: :py:class:`requests.models.Response`
 
 .. py:function:: fredpy.get_vintage_dates(series_id)
 

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fredpy Examples &#8212; fredpy 3.2.1 documentation</title>
+    <title>fredpy Examples &#8212; fredpy 3.2.2 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -87,6 +87,7 @@
 <li><a class="reference internal" href="#Filtering-2:-Extracting-business-cycle-components-from-monthly-data">Filtering 2: Extracting business cycle components from monthly data</a></li>
 <li><a class="reference internal" href="#Vintage-Data">Vintage Data</a></li>
 <li><a class="reference internal" href="#Exporting-data-sets">Exporting data sets</a></li>
+<li><a class="reference internal" href="#Custom-API-querries">Custom API querries</a></li>
 </ul>
 </li>
 </ul>
@@ -511,7 +512,7 @@ div.rendered_html tbody tr:hover {
 Real Gross Domestic Product
 Billions of Chained 2012 Dollars
 Quarterly
-Range: 1947-01-01 to 2020-07-01
+Range: 1947-01-01 to 2020-10-01
 U.S. Bureau of Economic Analysis
 </pre></div></div>
 </div>
@@ -530,11 +531,12 @@ U.S. Bureau of Economic Analysis
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2019-10-01    19253.959
+date
 2020-01-01    19010.848
 2020-04-01    17302.511
 2020-07-01    18596.521
-dtype: float64
+2020-10-01    18794.426
+Name: value, dtype: float64
 
 </pre></div></div>
 </div>
@@ -688,7 +690,7 @@ Text(0, 0.5, &#39;Billions of Chained 2012 Dollars&#39;)
 <h3>Comparison of CPI and GDP deflator inflation<a class="headerlink" href="#Comparison-of-CPI-and-GDP-deflator-inflation" title="Permalink to this headline">¶</a></h3>
 <p>CPI data are released monthly by the BLS while GDP deflator data are released quarterly by the BEA. Here we’ll first convert the monthly CPI data to monthly frequency compute inflation as the percentage change in the respective index since on year prior.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -700,7 +702,7 @@ Text(0, 0.5, &#39;Billions of Chained 2012 Dollars&#39;)
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cpi</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.65</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">cpi</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">cpi</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">cpi</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
@@ -712,7 +714,7 @@ Text(0, 0.5, &#39;Billions of Chained 2012 Dollars&#39;)
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -770,8 +772,8 @@ Quarterly
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+Range: 1948-01-01 to 2021-01-01
 Range: 1948-01-01 to 2020-10-01
-Range: 1948-01-01 to 2020-07-01
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -830,11 +832,11 @@ Range: 1948-01-01 to 2020-07-01
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Range: 1948-01-01 to 2020-12-01
-Range: 1934-01-01 to 2020-12-01
+Range: 1948-01-01 to 2021-03-01
+Range: 1934-01-01 to 2021-03-01
 
-Range: 1948-01-01 to 2020-12-01
-Range: 1948-01-01 to 2020-12-01
+Range: 1948-01-01 to 2021-03-01
+Range: 1948-01-01 to 2021-03-01
 </pre></div></div>
 </div>
 </div>
@@ -1039,7 +1041,7 @@ Range: 1948-01-01 to 2020-12-01
 <h3>Vintage Data<a class="headerlink" href="#Vintage-Data" title="Permalink to this headline">¶</a></h3>
 <p>Data are updated and ALFRED, ArchivaL Federal Reserve Economic Data, stores historical data versions. Use <code class="docutils literal notranslate"><span class="pre">get_vintage_dates()</span></code> to find the avilable vintage dates for a FRED series. For example, let’s consider US GDP data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1057,14 +1059,14 @@ Range: 1948-01-01 to 2020-12-01
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of vintages available: 317
+Number of vintages available: 320
 Oldest vintage:               1991-12-04
 Most recent vintage:          1992-01-29
 </pre></div></div>
 </div>
 <p>From the available vintage dates, use the <code class="docutils literal notranslate"><span class="pre">observation_date</span></code> keyword in <code class="docutils literal notranslate"><span class="pre">series()</span></code> to download a desired vintage. For example, download and plot the oldest available and most recent US GDP data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1102,7 +1104,7 @@ Most recent vintage:          1992-01-29
 <h3>Exporting data sets<a class="headerlink" href="#Exporting-data-sets" title="Permalink to this headline">¶</a></h3>
 <p>Exporting data inported with <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> to csv files is easy with <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1123,12 +1125,70 @@ Most recent vintage:          1992-01-29
 <div class="output_area docutils container">
 <div class="highlight"><pre>
             inflation  unemployment
+date
 1954-01-01   0.300737           3.6
 1954-02-01  -0.665392           3.8
 1954-03-01   0.597944           4.1
 1954-04-01   0.523235           4.7
 1954-05-01  -0.591705           4.6
 </pre></div></div>
+</div>
+</div>
+<div class="section" id="Custom-API-querries">
+<h3>Custom API querries<a class="headerlink" href="#Custom-API-querries" title="Permalink to this headline">¶</a></h3>
+<p>The FRED API allows for more specific querries than what is available through the basic <code class="docutils literal notranslate"><span class="pre">fredpy</span></code> functionality. Read more about allowable querries to the API here: <a class="reference external" href="https://fred.stlouisfed.org/docs/api/fred/">https://fred.stlouisfed.org/docs/api/fred/</a></p>
+<p>In the cell below, I demonstrate how to manually retrieve unemployment data using the <a class="reference internal" href="additional_functions.html#fredpy.fred_api_request" title="fredpy.fred_api_request"><code class="xref py py-func docutils literal notranslate"><span class="pre">fredpy.fred_api_request()</span></code></a> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># Specify the API path</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;fred/series/observations&#39;</span>
+
+<span class="c1"># Set observation_date string as today&#39;s date</span>
+<span class="n">observation_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Specify desired parameter values for the API querry</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;series_id&#39;</span><span class="p">:</span><span class="s1">&#39;unrate&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;observation_date&#39;</span><span class="p">:</span><span class="n">observation_date</span><span class="p">,</span>
+  <span class="s1">&#39;file_type&#39;</span><span class="p">:</span><span class="s1">&#39;json&#39;</span>
+ <span class="p">}</span>
+
+<span class="c1"># API request</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">fred_api_request</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">api_key</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span><span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+
+<span class="c1"># Return results in JSON forma</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="c1"># Load data, deal with missing values, format dates in index, and set dtype</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;observations&#39;</span><span class="p">],</span><span class="n">columns</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="c1"># Plot the unemployment rate</span>
+<span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:xlabel=&#39;date&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/fredpy_examples_46_1.png" src="_images/fredpy_examples_46_1.png" />
+</div>
 </div>
 </div>
 </div>

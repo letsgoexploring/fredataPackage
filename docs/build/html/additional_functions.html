@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Additional fredpy Functions &#8212; fredpy 3.2.1 documentation</title>
+    <title>Additional fredpy Functions &#8212; fredpy 3.2.2 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -136,6 +136,24 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="series_class.html#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fredpy.fred_api_request">
+<code class="sig-prename descclassname">fredpy.</code><code class="sig-name descname">fred_api_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">api_key</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">parameters</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.fred_api_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries the FRED API. Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.models.Response</span></code> object if successful, otherwise will raise an error with a message that is hopefully helpful. Reference for API querries: <a class="reference external" href="https://fred.stlouisfed.org/docs/api/fred/">https://fred.stlouisfed.org/docs/api/fred/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Your 32-character FRED API Key.</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path for FRED API.</p></li>
+<li><p><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Dictionary containing appropriate parameters and values for the API query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.models.Response</span></code></p>
 </dd>
 </dl>
 </dd></dl>
