@@ -7,9 +7,9 @@ Additional ``fredpy`` Functions
 
             Divides the data from :py:data:`object1` by the data from :py:data:`object2`.
 
-            :param object1: A :py:class:`fredpy.series` object.
+            :param object1: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object1: int,float,Numpy.ndarray, or similar or fredpy.series
-            :param object2: A :py:class:`fredpy.series` object.
+            :param object2: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
             
@@ -35,9 +35,9 @@ Additional ``fredpy`` Functions
 
             Subtracts the data from :py:data:`object2` from the data from :py:data:`object1`.
 
-            :param object1: A :py:class:`fredpy.series` object.
+            :param object1: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object1: int,float,Numpy.ndarray, or similar or fredpy.series
-            :param object2: A :py:class:`fredpy.series` object.
+            :param object2: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
 
@@ -45,16 +45,21 @@ Additional ``fredpy`` Functions
 
             Adds the data from :py:data:`object1` to the data from :py:data:`object2`.
 
-            :param object1: A :py:class:`fredpy.series` object.
+            :param object1: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object1: int,float,Numpy.ndarray, or similar or fredpy.series
-            :param object2: A :py:class:`fredpy.series` object.
+            :param object2: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
 
-.. py:function:: fredpy.recessions(color='0.5',alpha = 0.5)
+.. py:function:: fredpy.recessions(start=None,end=None,ax=None,color='0.5',alpha=0.5):
 
-            Creates recession bars for plots. Should be used before either (1) a new plot is created or (2) a show command is issued.
+            Creates recession bars for time series plots.
 
+            :param start: Starting date. Default: None
+            :type start: str or Timestamp
+            :param end: Ending date. Default: None
+            :type end: str or Timestamp
+            :param matplotlib.axes._subplots.AxesSubplot ax: Matplotlib axis object to plot recession bars. Default: None
             :param str color: Color of the bars. Default: '0.5'.
             :param float alpha: Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.
             :return:
@@ -63,9 +68,9 @@ Additional ``fredpy`` Functions
 
             Multiplies the data from :py:data:`object1` with the data from :py:data:`object2`.
 
-            :param object1: A :py:class:`fredpy.series` object.
+            :param object1: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object1: int,float,Numpy.ndarray, or similar or fredpy.series
-            :param object2: A :py:class:`fredpy.series` object.
+            :param object2: A :py:class:`fredpy.series` object, number, array, or similar.
             :type object2: int,float,Numpy.ndarray, or similar or fredpy.series
             :return: :py:class:`fredpy.series`
 

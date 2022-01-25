@@ -3,18 +3,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>fredpy.series class &#8212; fredpy 3.2.2 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Additional fredpy Functions" href="additional_functions.html" />
@@ -23,9 +23,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head><body>
@@ -121,15 +121,15 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fredpy-series-class">
+  <section id="fredpy-series-class">
 <h1><code class="docutils literal notranslate"><span class="pre">fredpy.series</span></code> class<a class="headerlink" href="#fredpy-series-class" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="fredpy.series">
-<em class="property">class </em><code class="sig-prename descclassname">fredpy.</code><code class="sig-name descname">series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">series_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">observation_date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">fredpy.</span></span><span class="sig-name descname"><span class="pre">series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an instance of <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> that stores information about the specified data series from FRED with the unique series ID code given by <code class="xref py py-attr docutils literal notranslate"><span class="pre">series_id</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – unique FRED series ID. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">series_id</span></code> equals None, an empty <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance is created.</p>
+<dd class="field-odd"><p><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – unique FRED series ID. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">series_id</span></code> equals None, an empty <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance is created.</p>
 </dd>
 </dl>
 <p><strong>Attributes:</strong></p>
@@ -188,14 +188,14 @@
 <p><strong>Methods:</strong></p>
 <blockquote>
 <div><dl class="py function">
-<dt id="fredpy.series.apc">
-<code class="sig-name descname">apc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'backward'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.apc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.apc">
+<span class="sig-name descname"><span class="pre">apc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'backward'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.apc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the percentage change in the data over one year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-k})\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of observations per year. If False, compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-k} - 1\right)\)</span>.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – If ‘backward’, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
+<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-k})\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of observations per year. If False, compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-k} - 1\right)\)</span>.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – If ‘backward’, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -205,14 +205,14 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.as_frequency">
-<code class="sig-name descname">as_frequency</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'mean'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.as_frequency" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.as_frequency">
+<span class="sig-name descname"><span class="pre">as_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.as_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> to a lower frequency.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Abbreviation of desired frequency: ‘D’,’W’,’M’,’Q’,’A’.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – How to resample the data: ‘first’, ‘last’, ‘mean’ (default), ‘median’, ‘min’, ‘max’, ‘sum’</p></li>
+<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Abbreviation of desired frequency: ‘D’,’W’,’M’,’Q’,’A’.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – How to resample the data: ‘first’, ‘last’, ‘mean’ (default), ‘median’, ‘min’, ‘max’, ‘sum’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -222,8 +222,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.bp_filter">
-<code class="sig-name descname">bp_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">low</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">high</span><span class="o">=</span><span class="default_value">32</span></em>, <em class="sig-param"><span class="n">K</span><span class="o">=</span><span class="default_value">12</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.bp_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.bp_filter">
+<span class="sig-name descname"><span class="pre">bp_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.bp_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the bandpass (Baxter-King) filter of the data. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
@@ -231,9 +231,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.</p></li>
-<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.</p></li>
+<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.</p></li>
+<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -247,8 +247,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.cf_filter">
-<code class="sig-name descname">cf_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">low</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">high</span><span class="o">=</span><span class="default_value">32</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.cf_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.cf_filter">
+<span class="sig-name descname"><span class="pre">cf_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.cf_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the Christiano-Fitzgerald filter of the data. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
@@ -256,8 +256,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.</p></li>
+<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -267,8 +267,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.copy">
-<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,8 +281,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.diff_filter">
-<code class="sig-name descname">diff_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.diff_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.diff_filter">
+<span class="sig-name descname"><span class="pre">diff_filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.diff_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the first difference filter of original series. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
@@ -301,12 +301,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.divide">
-<code class="sig-name descname">divide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.divide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.divide">
+<span class="sig-name descname"><span class="pre">divide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.divide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Divides the data from the current fredpy series by the data from <code class="xref py py-attr docutils literal notranslate"><span class="pre">object2</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance.</p>
+<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance, number, array, or similar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -315,8 +315,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.drop_nan">
-<code class="sig-name descname">drop_nan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.drop_nan" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.drop_nan">
+<span class="sig-name descname"><span class="pre">drop_nan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.drop_nan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes NaN values from fredpy series.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -326,15 +326,15 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.hp_filter">
-<code class="sig-name descname">hp_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lamb</span><span class="o">=</span><span class="default_value">1600</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hp_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.hp_filter">
+<span class="sig-name descname"><span class="pre">hp_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lamb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1600</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hp_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the Hodrick-Prescott filter of the data. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lamb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.</p>
+<dd class="field-odd"><p><strong>lamb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances</p>
@@ -343,8 +343,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.linear_filter">
-<code class="sig-name descname">linear_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.linear_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.linear_filter">
+<span class="sig-name descname"><span class="pre">linear_filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.linear_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a simple linear filter of the data using OLS. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
@@ -359,8 +359,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.log">
-<code class="sig-name descname">log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.log" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the natural log of the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -372,14 +372,14 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.ma">
-<code class="sig-name descname">ma</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.ma" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.ma">
+<span class="sig-name descname"><span class="pre">ma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.ma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a moving average with window equal to <code class="xref py py-attr docutils literal notranslate"><span class="pre">length</span></code>. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">center</span></code> is True, then the two-sided moving average is computed. Otherwise, the moving average will be one-sided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – window length of the one-sided moving average.</p></li>
-<li><p><strong>center</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – False (default): one-sided MA. True: two-sided MA.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – window length of the one-sided moving average.</p></li>
+<li><p><strong>center</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – False (default): one-sided MA. True: two-sided MA.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -389,12 +389,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.minus">
-<code class="sig-name descname">minus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.minus" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.minus">
+<span class="sig-name descname"><span class="pre">minus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.minus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtracts the data from <code class="xref py py-attr docutils literal notranslate"><span class="pre">object2</span></code> from the data from the current fredpy series.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance.</p>
+<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance, number, array, or similar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -403,15 +403,15 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.pc">
-<code class="sig-name descname">pc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'backward'</span></em>, <em class="sig-param"><span class="n">annualized</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.pc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'backward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annualized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.pc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the percentage change in the data from the preceding period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False, compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – If ‘backward’, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
-<li><p><strong>annualized</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is <span class="math notranslate nohighlight">\(12\cdot 100\cdot\log(x_{t}/x_{t-1})\)</span>.</p></li>
+<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False, compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – If ‘backward’, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
+<li><p><strong>annualized</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is <span class="math notranslate nohighlight">\(12\cdot 100\cdot\log(x_{t}/x_{t-1})\)</span>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -421,12 +421,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.per_capita">
-<code class="sig-name descname">per_capita</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">total_pop</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.per_capita" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.per_capita">
+<span class="sig-name descname"><span class="pre">per_capita</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_pop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.per_capita" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the data into per capita terms (US) by dividing by one of two measures of the total population.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>total_pop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – If <code class="xref py py-attr docutils literal notranslate"><span class="pre">total_pop</span></code> is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.</p>
+<dd class="field-odd"><p><strong>total_pop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – If <code class="xref py py-attr docutils literal notranslate"><span class="pre">total_pop</span></code> is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -435,12 +435,18 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.plus">
-<code class="sig-name descname">plus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.plus" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to calling <code class="docutils literal notranslate"><span class="pre">.plot()</span></code> method on the <code class="docutils literal notranslate"><span class="pre">.data</span></code> attribute (which is a Pandas Series object). See <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.plot.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.plot.html</a> for documenation on usage.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fredpy.series.plus">
+<span class="sig-name descname"><span class="pre">plus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.plus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds the data from the current fredpy series to the data from <code class="xref py py-attr docutils literal notranslate"><span class="pre">object2</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A :py:class:<code class="docutils literal notranslate"><span class="pre">fredpy.series</span></code> instance.</p>
+<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A :py:class:<code class="docutils literal notranslate"><span class="pre">fredpy.series</span></code> instance, number, array, or similar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -449,12 +455,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.recent">
-<code class="sig-name descname">recent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.recent">
+<span class="sig-name descname"><span class="pre">recent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restrict the data to the most recent N observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of periods to include in the data window.</p>
+<dd class="field-odd"><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Number of periods to include in the data window.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -463,14 +469,15 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.recessions">
-<code class="sig-name descname">recessions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'0.5'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recessions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates recession bars for plots. Should be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.</p>
+<dt class="sig sig-object py" id="fredpy.series.recessions">
+<span class="sig-name descname"><span class="pre">recessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.recessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates recession bars for plots. Unless ‘ax’ is specified, be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Color of the bars. Default: ‘0.5’.</p></li>
-<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes._subplots.AxesSubplot subplot</em>) – Matplotlib axis object to plot recession bars. Default: None</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Color of the bars. Default: ‘0.5’.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -480,12 +487,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.times">
-<code class="sig-name descname">times</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.times" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.times">
+<span class="sig-name descname"><span class="pre">times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.times" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multiplies the data from the current fredpy series with the data from <code class="xref py py-attr docutils literal notranslate"><span class="pre">object2</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance.</p>
+<dd class="field-odd"><p><strong>object2</strong> (<a class="reference internal" href="#fredpy.series" title="fredpy.series"><em>fredpy.series</em></a>) – A <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance, number, array, or similar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -494,12 +501,12 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="fredpy.series.window">
-<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">win</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.window" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fredpy.series.window">
+<span class="sig-name descname"><span class="pre">window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restricts the data to the most recent N observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>win</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – is an ordered pair: <code class="docutils literal notranslate"><span class="pre">win</span> <span class="pre">=</span> <span class="pre">[win_min,</span> <span class="pre">win_max]</span></code> where <code class="docutils literal notranslate"><span class="pre">win_min</span></code> is the date of the minimum date desired and <code class="docutils literal notranslate"><span class="pre">win_max</span></code> is the date of the maximum date. Date strings must be entered in either YYYY-MM-DD or MM-DD-YYYY format.</p>
+<dd class="field-odd"><p><strong>win</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – is an ordered pair: <code class="docutils literal notranslate"><span class="pre">win</span> <span class="pre">=</span> <span class="pre">[win_min,</span> <span class="pre">win_max]</span></code> where <code class="docutils literal notranslate"><span class="pre">win_min</span></code> is the date of the minimum date desired and <code class="docutils literal notranslate"><span class="pre">win_max</span></code> is the date of the maximum date. Date strings must be entered in either YYYY-MM-DD or MM-DD-YYYY format.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -510,7 +517,7 @@
 </div></blockquote>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -525,7 +532,7 @@
     </p>
     <p>
         &copy; Copyright 2021, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
 </footer>

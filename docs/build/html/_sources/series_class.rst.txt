@@ -103,7 +103,7 @@
 
 			Divides the data from the current fredpy series by the data from :py:attr:`object2`.
 
-			:param object2: A :py:class:`fredpy.series` instance.
+			:param object2: A :py:class:`fredpy.series` instance, number, array, or similar.
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -150,7 +150,7 @@
 
 			Subtracts the data from :py:attr:`object2` from the data from the current fredpy series.
 
-			:param object2: A :py:class:`fredpy.series` instance.
+			:param object2: A :py:class:`fredpy.series` instance, number, array, or similar.
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -172,11 +172,15 @@
 			:param str total_pop: If :py:attr:`total_pop` is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.
 		 	:return: :py:class:`fredpy.series`
 
+		.. py:function:: plot(**kwargs)
+
+			Equivalent to calling ``.plot()`` method on the ``.data`` attribute (which is a Pandas Series object). See https://pandas.pydata.org/docs/reference/api/pandas.Series.plot.html for documenation on usage.
+
 		.. py:function:: plus(object2)
 
 			Adds the data from the current fredpy series to the data from :py:attr:`object2`.
 
-			:param object2: A :py:class:``fredpy.series`` instance.
+			:param object2: A :py:class:``fredpy.series`` instance, number, array, or similar.
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 
@@ -187,10 +191,12 @@
 			:param int N: Number of periods to include in the data window.
 		 	:return: :py:class:`fredpy.series`
 
-		.. py:function:: recessions(color='0.5',alpha = 0.5)
 
-			Creates recession bars for plots. Should be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.
+		.. py:function:: recessions(ax=None,color='0.5',alpha = 0.5)
 
+			Creates recession bars for plots. Unless 'ax' is specified, be used after a plot has been made but before either (1) a new plot is created or (2) a show command is issued.
+
+			:param matplotlib.axes._subplots.AxesSubplot subplot ax: Matplotlib axis object to plot recession bars. Default: None
 			:param str color: Color of the bars. Default: '0.5'.
 			:param float alpha: Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.
 		 	:return:
@@ -199,7 +205,7 @@
 
 			Multiplies the data from the current fredpy series with the data from :py:attr:`object2`.
 
-			:param object2: A :py:class:`fredpy.series` instance.
+			:param object2: A :py:class:`fredpy.series` instance, number, array, or similar.
 			:type object2: fredpy.series
 			:return: :py:class:`fredpy.series`
 

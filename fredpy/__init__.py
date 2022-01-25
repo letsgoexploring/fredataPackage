@@ -11,12 +11,15 @@ import time
 tsa = sm.tsa
 
 # Read recession data data
-cycle_data = pd.read_csv('https://raw.githubusercontent.com/letsgoexploring/fredpy-package/gh-pages/business%20cycle%20dates/business_cycle_dates.csv')
-if pd.isna(cycle_data.troughs.iloc[-1]):
-    cycle_data.troughs.iloc[-1] = pd.to_datetime('today').strftime('%Y-%m-%d')
-    
-cycle_data['peaks'] = pd.to_datetime(cycle_data.peaks)
-cycle_data['troughs'] = pd.to_datetime(cycle_data.troughs)
+try:
+    cycle_data = pd.read_csv('https://raw.githubusercontent.com/letsgoexploring/fredpy-package/gh-pages/business%20cycle%20dates/business_cycle_dates.csv')
+    if pd.isna(cycle_data.troughs.iloc[-1]):
+        cycle_data.troughs.iloc[-1] = pd.to_datetime('today').strftime('%Y-%m-%d')
+        
+    cycle_data['peaks'] = pd.to_datetime(cycle_data.peaks)
+    cycle_data['troughs'] = pd.to_datetime(cycle_data.troughs)
+except:
+    print('Internet connection required. Check connection.')
 
 # API key attribute needs to be set
 
@@ -715,6 +718,8 @@ class series:
     
     def plot(self,**kwargs):
 
+        '''Equivalent to calling .plot() method on the self.data Pandas Series object.'''
+
         self.data.plot(**kwargs)
 
 
@@ -754,15 +759,17 @@ class series:
         return new_series
 
     
-    def recessions(self,color='0.5',alpha = 0.5):
+    def recessions(self,ax=None,color='0.5',alpha=0.5):
         
-        '''Creates recession bars for plots. Should be used after a plot has been made but
-            before either (1) a new plot is created or (2) a show command is issued.
+        '''Creates recession bars for plots. Unless 'ax' is specified, be used after 
+        a plot has been made but before either (1) a new plot is created or (2) a 
+        show command is issued.
 
         Args:
-            color (string): Color of the bars. Default: '0.5'
-            alpha (float):  Transparency of the recession bars. Must be between 0 and 1
-                            Default: 0.5
+            ax (matplotlib.axes._subplots.AxesSubplot): Matplotlib axis object to plot recession bars. Default: None
+            color (string):                             Color of the bars. Default: '0.5'
+            alpha (float):                              Transparency of the recession bars. Must be between 0 and 1 
+                                                        Default: 0.5
 
         Returns:
         '''
@@ -770,26 +777,28 @@ class series:
         series_peaks = []
         series_troughs = []
 
-        date_begin = self.data.index[0]
-        date_end = self.data.index[-1]
+        start = self.data.index[0]
+        end = self.data.index[-1]
 
-        for k in range(len(cycle_data)):
+        recessions(start=start,end=end,ax=ax,color=color,alpha=alpha)
+
+        # for k in range(len(cycle_data)):
             
-            if cycle_data['peaks'].loc[k]<date_begin and date_begin < cycle_data['troughs'].loc[k]:
-                series_peaks.append(date_begin)
-                series_troughs.append(cycle_data['troughs'].loc[k])
+        #     if cycle_data['peaks'].loc[k]<date_begin and date_begin < cycle_data['troughs'].loc[k]:
+        #         series_peaks.append(date_begin)
+        #         series_troughs.append(cycle_data['troughs'].loc[k])
             
                 
-            elif date_begin < cycle_data['peaks'].loc[k] and date_end > cycle_data['troughs'].loc[k]:
-                series_peaks.append(cycle_data['peaks'].loc[k])
-                series_troughs.append(cycle_data['troughs'].loc[k])
+        #     elif date_begin < cycle_data['peaks'].loc[k] and date_end > cycle_data['troughs'].loc[k]:
+        #         series_peaks.append(cycle_data['peaks'].loc[k])
+        #         series_troughs.append(cycle_data['troughs'].loc[k])
                 
-            elif cycle_data['peaks'].loc[k]<date_end and cycle_data['troughs'].loc[k] > date_end:
-                series_peaks.append(cycle_data['peaks'].loc[k])
-                series_troughs.append(date_end)
+        #     elif cycle_data['peaks'].loc[k]<date_end and cycle_data['troughs'].loc[k] > date_end:
+        #         series_peaks.append(cycle_data['peaks'].loc[k])
+        #         series_troughs.append(date_end)
 
-        for k in range(len(series_peaks)):
-            plt.axvspan(series_peaks[k], series_troughs[k], edgecolor= color, facecolor=color, alpha=alpha)
+        # for k in range(len(series_peaks)):
+        #     plt.axvspan(series_peaks[k], series_troughs[k], edgecolor= color, facecolor=color, alpha=alpha)
 
     
     def times(self,object2):
@@ -1153,21 +1162,55 @@ def plus(object1,object2):
 
             return new_series
 
-def recessions(color='0.5',alpha = 0.5):
+def recessions(start=None,end=None,ax=None,color='0.5',alpha=0.5):
         
-    '''Creates recession bars for plots. Should be used before either (1) a new plot is created or 
-    (2) a show command is issued.
-
+    '''Creates recession bars for time series plots.
+    
     Args:
-        color (string): Color of the bars. Default: '0.5'
-        alpha (float):  Transparency of the recession bars. Must be between 0 and 1
-                        Default: 0.5
-
+        start (NoneType, string, or Timestamp):     Starting date. Default: None
+        end (NoneType, string, or Timestamp):       Ending date. Default: None
+        ax (matplotlib.axes._subplots.AxesSubplot): Matplotlib axis object to plot recession bars. Default: None
+        color (string):                             Color of the bars. Default: '0.5'
+        alpha (float):                              Transparency of the recession bars. Must be between 0 and 1 
+                                                        Default: 0.5
     Returns:
     '''
 
-    for k in range(len(cycle_data['peaks'])):
-        plt.axvspan(cycle_data['peaks'][k], cycle_data['troughs'][k], edgecolor= color, facecolor=color, alpha=alpha)
+    series_peaks = []
+    series_troughs = []
+
+    if start is None:
+        start = cycle_data.iloc[0]['peaks']
+        
+    elif type(start) == str:
+        start = pd.to_datetime(start)
+        
+    if end is None:
+        end = pd.to_datetime('today')
+        
+    elif type(end) == str:
+        end = pd.to_datetime(end)
+
+    for k in range(len(cycle_data)):
+
+        if cycle_data['peaks'].loc[k]<start and start < cycle_data['troughs'].loc[k]:
+            series_peaks.append(start)
+            series_troughs.append(cycle_data['troughs'].loc[k])
+
+
+        elif start < cycle_data['peaks'].loc[k] and end > cycle_data['troughs'].loc[k]:
+            series_peaks.append(cycle_data['peaks'].loc[k])
+            series_troughs.append(cycle_data['troughs'].loc[k])
+
+        elif cycle_data['peaks'].loc[k]<end and cycle_data['troughs'].loc[k] > end:
+            series_peaks.append(cycle_data['peaks'].loc[k])
+            series_troughs.append(end)
+
+    for k in range(len(series_peaks)):
+        if ax is None:
+            plt.axvspan(series_peaks[k], series_troughs[k], edgecolor= color, facecolor=color, alpha=alpha)
+        else:
+            ax.axvspan(series_peaks[k], series_troughs[k], edgecolor= color, facecolor=color, alpha=alpha)
 
 def times(object1,object2):
 
