@@ -643,7 +643,7 @@ class series:
             backward (bool):   If True (default), compute percentage change from the previous period. 
                                    If False, compute percentage change from current to next period.
             annualized (bool): Default: False: If True, percentage change is computed at an annual rate. 
-                                    E.g., if the data were monthly and log==False, then the annualized
+                                    E.g., if the data were monthly and log==True, then the annualized
                                     percentage change would be:
                                    
                                        100⋅12⋅log[x(t)/x(t−1)].
