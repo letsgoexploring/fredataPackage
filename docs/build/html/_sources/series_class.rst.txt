@@ -40,12 +40,12 @@
 	**Methods:**
 
 
-		.. py:function:: apc(log=False,method='backward')
+		.. py:function:: apc(log=False,backward=True)
 
 			Computes the percentage change in the data over one year.
 
-			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-k})`, where :math:`k` is the number of observations per year. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-k} - 1\right)`.
-			:param str method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
+			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-k})`, where :math:`k` is the number of observations per year. If False (default), compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-k} - 1\right)`.
+			:param str backward: If True (default), compute percentage change from the previous year. If False, compute percentage change from current to next year.
 		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: as_frequency(freq=None,method='mean')
@@ -156,18 +156,18 @@
 
 			..
 
-		.. py:function:: pc(log=False,method='backward',annualized=False)
+		.. py:function:: pc(log=False,backward=True,annualized=False)
 
 			Computes the percentage change in the data from the preceding period.
 
-			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-1})`. If False, compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-1} - 1\right)`.
-			:param str method: If 'backward', compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
-		 	:param bool annualized: If True, percentage change is annualized by multipying the simple percentage change by the number of data observations per year. E.g., if the data are monthly, then the annualized percentage change is :math:`12\cdot 100\cdot\log(x_{t}/x_{t-1})`.
+			:param bool log: If True, computes the percentage change as :math:`100\cdot\log(x_{t}/x_{t-1})`. If False (default), compute the percentage change as :math:`100\cdot\left( x_{t}/x_{t-1} - 1\right)`.
+			:param str backward: If True, compute percentage change from the previous period. If 'forward', compute percentage change from current to subsequent period.
+		 	:param bool annualized: Default: False: If True, percentage change is computed at an annual rate. E.g., if the data were monthly and log==False, then the annualized percentage change would be: :math:`100\cdot\left[ \left(x_{t}/x_{t-1}\right)^{12} - 1\right]`.
 		 	:return: :py:class:`fredpy.series`
 
 		.. py:function:: per_capita(total_pop=True)
 
-			Transforms the data into per capita terms (US) by dividing by one of two measures of the total population.
+			Transforms the data into per capita terms by dividing by a measure of the total population of the United States.
 
 			:param str total_pop: If :py:attr:`total_pop` is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.
 		 	:return: :py:class:`fredpy.series`

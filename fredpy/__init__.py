@@ -213,16 +213,16 @@ class series:
             self.units_short = ''
 
     
-    def apc(self,log=False,method='backward'):
+    def apc(self,log=False,backward=True):
 
         '''Computes the percentage change in the data over one year.
 
         Args:
-            log (bool):         If True, computes the percentage change as 100⋅log[x(t)/x(t-k)], where k is
-                                    the number of observations per year.
-                                If False (default), compute the percentage change as 100⋅[x(t)/x(k−1)−1].
-            method (string):    If ‘backward’ (default), compute percentage change from the previous period. 
-                                If ‘forward’, compute percentage change from current to subsequent period.
+            log (bool):      If True, computes the percentage change as 100⋅log[x(t)/x(t-k)], where k is
+                                 the number of observations per year.
+                             If False (default), compute the percentage change as 100⋅[(x(t)/x(k−1)−1].
+            backward (bool): If True (default), compute percentage change from the previous year. 
+                                 If False, compute percentage change from current to next year.
 
         Returns:
             fredpy series
@@ -231,22 +231,17 @@ class series:
         new_series = self.copy()
         
         T = len(self.data)
-        t = self.t
-
-        if log==True:
-            if method=='backward':
-                new_series.data = 100*np.log(self.data/self.data.shift(t)).dropna()
-            else:
-                new_series.data = 100*np.log(self.data.shift(-t)/self.data).dropna()
         
-
+        if backward==True:
+            ratio = self.data/self.data.shift(self.t)
         else:
-            if method=='backward':
-                new_series.data = 100*(self.data/self.data.shift(t)-1).dropna()
-            else:
-                new_series.data = 100*(self.data.shift(-t)/self.data-1).dropna()
-
-
+            ratio = self.data.shift(-self.t)/self.data
+            
+        if log==True:
+            new_series.data = 100*np.log(ratio).dropna()
+        else:
+            new_series.data = 100*(ratio-1).dropna()
+                               
         new_series.units = 'Percent'
         new_series.units_short = '%'
         new_series.title = 'Annual Percentage Change in '+self.title
@@ -638,18 +633,20 @@ class series:
         return minus(self,object2)
 
 
-    def pc(self,log=False,method='backward',annualized=False):
+    def pc(self,log=False,backward=True,annualized=False):
 
         '''Computes the percentage change in the data from the preceding period.
 
         Args:
             log (bool):        If True, computes the percentage change as 100⋅log[x(t)/x(t-1)]. 
-                               If False (default), compute the percentage change as 100⋅[x(t)/x(t−1)−1].
-            method (string):   If ‘backward’ (default), compute percentage change from the previous period. 
-                               If ‘forward’, compute percentage change from current to subsequent period.
-            annualized (bool): If True (default), percentage change is annualized by multipying the simple 
-                               percentage change by the number of data observations per year. E.g., if the
-                               data are monthly, then the annualized percentage change is 12⋅100⋅log[x(t)/x(t−1)].
+                                   If False (default), compute the percentage change as 100⋅[x(t)/x(t−1)−1].
+            backward (bool):   If True (default), compute percentage change from the previous period. 
+                                   If False, compute percentage change from current to next period.
+            annualized (bool): Default: False: If True, percentage change is computed at an annual rate. 
+                                    E.g., if the data were monthly and log==False, then the annualized
+                                    percentage change would be:
+                                   
+                                       100⋅12⋅log[x(t)/x(t−1)].
 
         Returns:
             fredpy series
@@ -658,23 +655,20 @@ class series:
         new_series = self.copy()
         
         T = len(self.data)
-        t = self.t
-
-        if log==True:
-            if method=='backward':
-                new_series.data = 100*np.log(self.data/self.data.shift(1)).dropna()
-            else:
-                new_series.data = 100*np.log(self.data.shift(-1)/self.data).dropna()
-        
-
-        else:
-            if method=='backward':
-                new_series.data = 100*(self.data/self.data.shift(1)-1).dropna()
-            else:
-                new_series.data = 100*(self.data.shift(-1)/self.data-1).dropna()
-
         if annualized:
-            new_series.data = t*new_series.data
+            t = self.t
+        else:
+            t = 1
+        
+        if backward==True:
+            ratio = self.data/self.data.shift(1)
+        else:
+            ratio = self.data.shift(-1)/self.data
+            
+        if log==True:
+            new_series.data = 100*t*np.log(ratio).dropna()
+        else:
+            new_series.data = 100*(ratio**t-1).dropna()
 
         new_series.units = 'Percent'
         new_series.units_short = '%'
@@ -686,7 +680,8 @@ class series:
     
     def per_capita(self,civ_pop = True):
 
-        '''Transforms the data into per capita terms (US) by dividing by a measure of the total population:
+        '''Transforms the data into per capita terms by dividing by a measure of the
+            total population of the United States:
 
         Args:
             civ_pop (string): If civ_pop == True, use Civilian noninstitutional population defined as 
