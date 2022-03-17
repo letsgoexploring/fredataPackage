@@ -13,8 +13,8 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Additional fredpy Functions" href="additional_functions.html" />
@@ -529,8 +529,8 @@ date
 2021-01-01    19055.655
 2021-04-01    19368.310
 2021-07-01    19478.893
-2021-10-01    19805.962
-Name: value, dtype: float64
+2021-10-01    19810.572
+Freq: QS-OCT, Name: value, dtype: float64
 
 </pre></div></div>
 </div>
@@ -759,7 +759,7 @@ Quarterly
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Range: 1948-01-01 to 2021-10-01
+Range: 1948-01-01 to 2022-01-01
 Range: 1948-01-01 to 2021-10-01
 </pre></div></div>
 </div>
@@ -817,11 +817,11 @@ Range: 1948-01-01 to 2021-10-01
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Range: 1948-01-01 to 2021-12-01
-Range: 1934-01-01 to 2021-12-01
+Range: 1948-01-01 to 2022-02-01
+Range: 1934-01-01 to 2022-02-01
 
-Range: 1948-01-01 to 2021-12-01
-Range: 1948-01-01 to 2021-12-01
+Range: 1948-01-01 to 2022-02-01
+Range: 1948-01-01 to 2022-02-01
 </pre></div></div>
 </div>
 </section>
@@ -971,11 +971,15 @@ Range: 1948-01-01 to 2021-12-01
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">p_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">p_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;unemployment rate (%)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;inflation rate (%)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Inflation and unemployment: BP-filtered data&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cbar</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()])</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="n">p_bpcycle</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%b %Y&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cbar</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 </pre></div>
 </div>
 </div>
@@ -998,11 +1002,15 @@ Range: 1948-01-01 to 2021-12-01
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">p_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">p_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;unemployment rate (%)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;inflation rate (%)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Inflation and unemployment: HP-filtered data&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cbar</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()])</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="n">p_hpcycle</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%b %Y&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cbar</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 </pre></div>
 </div>
 </div>
@@ -1036,7 +1044,7 @@ Range: 1948-01-01 to 2021-12-01
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of vintages available: 330
+Number of vintages available: 331
 Oldest vintage:               1991-12-04
 Most recent vintage:          1992-01-29
 </pre></div></div>
@@ -1174,7 +1182,7 @@ date
     </p>
     <p>
         &copy; Copyright 2021, Brian C. Jenkins.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
 </footer>
