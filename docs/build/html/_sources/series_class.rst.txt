@@ -9,12 +9,14 @@
 
 
 
-.. py:class:: fredpy.series(series_id=None,observation_date=None)
+.. py:class:: fredpy.series(series_id=None,observation_date=None,cache=True)
 	
 	Creates an instance of :py:class:`fredpy.series` that stores information about the specified data series from FRED with the unique series ID code given by :py:attr:`series_id`.
 
 
-	:param str series_id: unique FRED series ID. If :py:attr:`series_id` equals None, an empty :py:class:`fredpy.series` instance is created.
+	:param str series_id: unique FRED series ID. If :py:attr:`series_id` equals :py:attr:`None`, an empty :py:class:`fredpy.series` instance is created.
+	:param str observation_date: Desired date at which data are observed. Either YYYY-MM-DD or MM-DD-YYYY format. If :py:attr:`observation_date` is :py:attr:`None`, today's date is used.
+	:param bool cache: Whether to store a copy of the downloaded data in memory to avoid repeating calls to the FRED API. Default: :py:attr:`True`.
 
 	**Attributes:**
     
@@ -56,27 +58,39 @@
 			:param str method: How to resample the data: 'first', 'last', 'mean' (default), 'median', 'min', 'max', 'sum'
 		 	:return: :py:class:`fredpy.series`
 
-		.. py:function:: bp_filter(low=6,high=32,K=12)
+		.. py:function:: bp_filter(low=None,high=None,K=None)
 
 			Computes the bandpass (Baxter-King) filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
 				*new_series_cycle, new_series_trend*
 
-			:param int low: Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly data (default), and 3 for annual data.
-			:param int high: Maximum period for oscillations. Select 84 for monthly data, 32 for quarterly data (default), and 8 for annual data.
-			:param int K: Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly data (default), and 1.5 for annual data.
+			Recommendations:
+
+			* Monthly data: low=24, high=84, K=84
+			* Quarterly data: low=6, high=32, K=12
+			* Annual data: low=1.5, high=8, K=3
+
+			:param int low: Minimum period for oscillations. Default :py:attr:`None`, recommended value used.
+			:param int high: Maximum period for oscillations. Default :py:attr:`None`, recommended value used.
+			:param int K: Lead-lag length of the filter. Default :py:attr:`None`, recommended value used.
 		 	:return: two :py:class:`fredpy.series` instances
 
 			.. Note:: In computing the bandpass filter, K observations are lost from each end of the original series so the attributes *dates*, *datetimes*, and *data* are 2K elements shorter than their counterparts in the original series.
 
-		.. py:function:: cf_filter(low=6,high=32)
+		.. py:function:: cf_filter(low=None,high=None)
 
 			Computes the Christiano-Fitzgerald filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
 				*new_series_cycle, new_series_trend*
 
-			:param int low: Minimum period for oscillations. Select 6 for quarterly data (default) and 1.5 for annual data.
-			:param int high: Maximum period for oscillations. Select 32 for quarterly data (default) and 8 for annual data.
+			Recommendations:
+
+			* Monthly data: low=18, high=96
+			* Quarterly data: low=6, high=32
+			* Annual data: low=2, high=8
+
+			:param int low: Minimum period for oscillations. Default :py:attr:`None`, recommended value used.
+			:param int high: Maximum period for oscillations. Default :py:attr:`None`, recommended value used.
 		 	:return: two :py:class:`fredpy.series` instances
 
 		.. py:function:: copy()
@@ -113,13 +127,20 @@
 
 			:return: :py:class:`fredpy.series`
 
-		.. py:function:: hp_filter(lamb=1600)
+		.. py:function:: hp_filter(lamb=None)
 
 			Computes the Hodrick-Prescott filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
 				*new_series_cycle, new_series_trend*
 
-			:param int lamb: The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data, 1600 for quarterly data (default), and 6.25 for annual data.
+			Recommendations:
+
+			* Daily data: lamb= 104976000000
+			* Monthly data: lamb=129600
+			* Quarterly data: lamb=1600
+			* Annual data: lamb=6.25
+
+			:param int lamb: Default :py:attr:`None`, recommended value used.
 		 	:return: two :py:class:`fredpy.series` instances
 
 		.. py:function:: linear_filter()

@@ -9,9 +9,9 @@ Install the module from PyPI with the shell command:
 
 ```pip install fredpy```
 
-Or download the source here: https://github.com/letsgoexploring/fredpy/blob/gh-pages/dist/fredpy-3.2.5.tar.gz
+Or download the source here: https://github.com/letsgoexploring/fredpy/blob/gh-pages/dist/fredpy-3.2.6.tar.gz
 
 ## Documentation
 Documentation for fredpy: https://www.briancjenkins.com/fredpy/docs/build/html/
 
-_Updated: January 28, 2022_
+_Updated: March 17, 2022_

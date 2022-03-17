@@ -10,16 +10,48 @@ import statsmodels.api as sm
 import time
 tsa = sm.tsa
 
-# Read recession data data
+# Read recession data. First try to parse html table at nber.org
 try:
-    cycle_data = pd.read_csv('https://raw.githubusercontent.com/letsgoexploring/fredpy-package/gh-pages/business%20cycle%20dates/business_cycle_dates.csv')
-    if pd.isna(cycle_data.troughs.iloc[-1]):
-        cycle_data.troughs.iloc[-1] = pd.to_datetime('today').strftime('%Y-%m-%d')
+    # Read HTML table at nber.org
+    tables = pd.read_html('https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions')
+
+    # Remove the first row because there is no starting peak
+    cycle_dates = tables[0]
+
+    # Remove the first row that has not peak date
+    cycle_dates = cycle_dates.drop(0).reset_index(drop=True)
+
+    # Is a recession currently underway? Set today as the trough
+    if not cycle_dates['Business Cycle Reference Dates','Trough Year'].iloc[-1].isdigit():
         
-    cycle_data['peaks'] = pd.to_datetime(cycle_data.peaks)
-    cycle_data['troughs'] = pd.to_datetime(cycle_data.troughs)
+        today = pd.to_datetime('today').date()
+        
+        cycle_dates.loc[cycle_dates.index[-1],('Business Cycle Reference Dates','Trough Year')] = str(today.year)
+        cycle_dates.loc[cycle_dates.index[-1],('Business Cycle Reference Dates','Trough Month')] = str(today.month_name())
+
+    # Join month and year columns to produce datetime columns for peak and trough dates
+    cycle_dates['peaks'] = pd.to_datetime(cycle_dates['Business Cycle Reference Dates','Peak Year'].astype(str).astype(str).str.replace('*','',regex=False) + '-' + cycle_dates['Business Cycle Reference Dates','Peak Month'].astype(str).str.replace('*','',regex=False))
+    cycle_dates['troughs'] = pd.to_datetime(cycle_dates['Business Cycle Reference Dates','Trough Year'].astype(str).astype(str).str.replace('*','',regex=False) + '-' + cycle_dates['Business Cycle Reference Dates','Trough Month'].astype(str).str.replace('*','',regex=False))
+
+    # Drop unnecessary columns
+    cycle_dates = cycle_dates[['peaks','troughs']]
+
 except:
-    print('Internet connection required. Check connection.')
+
+    try:
+        # Read table of NBER peak/trough dates on my GitHub page
+        cycle_dates = pd.read_csv('https://raw.githubusercontent.com/letsgoexploring/fredpy-package/gh-pages/business%20cycle%20dates/business_cycle_dates.csv')
+
+        # Is a recession currently underway? Set today as the trough
+        if pd.isna(cycle_dates.troughs.iloc[-1]):
+            cycle_dates.troughs.iloc[-1] = pd.to_datetime('today').strftime('%Y-%m-%d')
+        
+        # Overwrite  original columns with datetime values
+        cycle_dates['peaks'] = pd.to_datetime(cycle_dates.peaks)
+        cycle_dates['troughs'] = pd.to_datetime(cycle_dates.troughs)
+
+    except:
+        print('Internet connection required. Check connection.')
 
 # API key attribute needs to be set
 
@@ -55,6 +87,10 @@ def load_api_key(path):
                 return api_key_file.readline()
 
 
+# Initialize cache dictionary
+series_cache = {}
+
+
 ######################################################################################################
 # The series class and methods
 
@@ -62,17 +98,18 @@ class series:
 
     '''Defines a class for downloading, storing, and manipulating data from FRED.'''
 
-    def __init__(self,series_id=None,observation_date=None):
+    def __init__(self,series_id=None,observation_date=None,cache=True):
 
         '''Initializes an instance of the series class.
 
         Args:
-            series_id (string):     unique FRED series ID. If series_id equals None, an empty series 
-                                        object is created.
-            realtime_end (string):  YYYY-MM-DD formatted state string. Indicates the final date at
-                                        which the series is observed. I.e., excludes revisions made
-                                        after realtime_end. If only YYYY string is provided, month 
-                                        and day are assumed to be December 31.
+            series_id (string):         unique FRED series ID. If series_id equals None, an empty series 
+                                            object is created.
+            observation_date (string):  MM-DD-YYYY or YYYY-MM-DD formatted state string. Indicates the final 
+                                            date at which the series is observed. I.e., excludes revisions made
+                                            after observation_date.
+            cache (bool):               Whether to store a copy of the series for the current session to reduce 
+                                            queries to the FRED API. Default: True
 
         Returns:
             None
@@ -84,7 +121,7 @@ class series:
             frequency_short:            (string) data frequency. Abbreviated. 'D', 'W', 'M', 'Q', 'SA, or 'A'.
             last_updated:               (string) date series was last updated.
             notes:                      (string) details about series. Not available for all series.
-            observation_date:           (string) vintage date at which data are observed.
+            observation_date:           (string) vintage date at which data are observed. YYYY-MM-DD
             release:                    (string) statistical release containing data.
             seasonal_adjustment:        (string) specifies whether the data has been seasonally adjusted.
             seasonal_adjustment_short:  (string) specifies whether the data has been seasonally adjusted. Abbreviated.
@@ -96,102 +133,142 @@ class series:
             units_short:                (string) units of the data series. Abbreviated.
         '''
 
+        # Verify API key is stored
         if api_key is None:
             raise ValueError('fredpy.api_key value not assigned. You need to provide your key for the FRED API.')
 
+        # Observation date for request
         if observation_date is None:
 
             observation_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
-        if len(observation_date) == 4:
+        else:
 
-            observation_date = observation_date+'-12-31'
+            observation_date = pd.to_datetime(observation_date).strftime('%Y-%m-%d')
 
         if type(series_id) == str:
 
-
-            path = 'fred/series'
-
-            parameters = {'series_id':series_id,
-              'realtime_start':observation_date,
-              'realtime_end':observation_date,
-              'file_type':'json'
-             }
-
-            r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
-            results = r.json()
-
-            self.series_id = series_id
-            self.title = results['seriess'][0]['title']
-            self.frequency = results['seriess'][0]['frequency']
-            self.frequency_short = results['seriess'][0]['frequency_short']
-            self.observation_date = datetime.datetime.strptime(observation_date,"%Y-%m-%d").strftime('%B %d, %Y')
-            self.units = results['seriess'][0]['units']
-            self.units_short = results['seriess'][0]['units_short']
-            self.seasonal_adjustment = results['seriess'][0]['seasonal_adjustment']
-            self.seasonal_adjustment_short = results['seriess'][0]['seasonal_adjustment_short']
-            self.last_updated = results['seriess'][0]['last_updated']
-            
-            try:
-                self.notes = results['seriess'][0]['notes']
-            except:
-                self.notes = ''
-
-            obs_per_year = {'D':365,'W':52,'M':12,'Q':4,'SA':2,'A':1}
-            try:
-                self.t = obs_per_year[self.frequency_short]
-            except:
-                self.t = np.nan
-
-
-            path = 'fred/series/observations'
-
-            parameters = {'series_id':series_id,
-              'realtime_start':observation_date,
-              'realtime_end':observation_date,
-              'file_type':'json'
-             }
-
-            r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
-            results = r.json()
-
-            data = pd.DataFrame(results['observations'],columns =['date','value'])
-            data = data.replace('.', np.nan)
-            data['date'] = pd.to_datetime(data['date'])
-            
-            data = data.set_index('date')['value'].astype(float)
-
-            self.data = data
-            self.date_range = 'Range: '+str(self.data.index[0])[:10]+' to '+str(self.data.index[-1])[:10]
+            if series_id+'_'+observation_date in series_cache.keys() and cache:
 
 
 
-            path = 'fred/series/release'
+                # self = series_cache[series_id+'_'+observation_date].copy()
 
-            parameters = {'series_id':series_id,
-              'realtime_start':observation_date,
-              'realtime_end':observation_date,
-              'file_type':'json'
-             }
+                cached = series_cache[series_id+'_'+observation_date].copy()
 
-            r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
-            results = r.json()
+                self.date_range = cached.date_range
+                self.data = cached.data
+                self.frequency = cached.frequency
+                self.frequency_short = cached.frequency_short
+                self.last_updated = cached.last_updated
+                self.notes = cached.notes
+                self.observation_date = cached.observation_date
+                self.release = cached.release
+                self.seasonal_adjustment = cached.seasonal_adjustment
+                self.seasonal_adjustment_short = cached.seasonal_adjustment_short
+                self.series_id = cached.series_id
+                self.source = cached.source
+                self.t = cached.t
+                self.title = cached.title
+                self.units = cached.units
+                self.units_short = cached.units_short
 
-            self.release = results['releases'][0]['name']
-            release_id = results['releases'][0]['id']
+
+            else:
 
 
-            path = 'fred/release/sources'
+                path = 'fred/series'
 
-            parameters = {'series_id':series_id,
-              'release_id':release_id,
-              'file_type':'json'
-             }
+                parameters = {'series_id':series_id,
+                  'realtime_start':observation_date,
+                  'realtime_end':observation_date,
+                  'file_type':'json'
+                 }
 
-            r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
-            results = r.json()
+                r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
+                results = r.json()
 
-            self.source = results['sources'][0]['name']
+                self.series_id = series_id
+                self.title = results['seriess'][0]['title']
+                self.frequency = results['seriess'][0]['frequency']
+                self.frequency_short = results['seriess'][0]['frequency_short']
+                self.observation_date = datetime.datetime.strptime(observation_date,"%Y-%m-%d").strftime('%B %d, %Y')
+                self.units = results['seriess'][0]['units']
+                self.units_short = results['seriess'][0]['units_short']
+                self.seasonal_adjustment = results['seriess'][0]['seasonal_adjustment']
+                self.seasonal_adjustment_short = results['seriess'][0]['seasonal_adjustment_short']
+                self.last_updated = results['seriess'][0]['last_updated']
+                
+                try:
+                    self.notes = results['seriess'][0]['notes']
+                except:
+                    self.notes = ''
+
+                obs_per_year = {'D':365,'W':52,'M':12,'Q':4,'SA':2,'A':1}
+                try:
+                    self.t = obs_per_year[self.frequency_short]
+                except:
+                    self.t = np.nan
+
+
+                path = 'fred/series/observations'
+
+                parameters = {'series_id':series_id,
+                  'realtime_start':observation_date,
+                  'realtime_end':observation_date,
+                  'file_type':'json'
+                 }
+
+                r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
+                results = r.json()
+
+                data = pd.DataFrame(results['observations'],columns =['date','value'])
+                data = data.replace('.', np.nan)
+                data['date'] = pd.to_datetime(data['date'])
+                
+                data = data.set_index('date')['value'].astype(float)
+
+                # Try to infer frequency:
+                try:
+                    data = data.asfreq(pd.infer_freq(data.index))
+                except:
+                    pass
+
+                self.data = data
+                self.date_range = 'Range: '+str(self.data.index[0])[:10]+' to '+str(self.data.index[-1])[:10]
+
+
+
+                path = 'fred/series/release'
+
+                parameters = {'series_id':series_id,
+                  'realtime_start':observation_date,
+                  'realtime_end':observation_date,
+                  'file_type':'json'
+                 }
+
+                r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
+                results = r.json()
+
+                self.release = results['releases'][0]['name']
+                release_id = results['releases'][0]['id']
+
+
+                path = 'fred/release/sources'
+
+                parameters = {'series_id':series_id,
+                  'release_id':release_id,
+                  'file_type':'json'
+                 }
+
+                r = fred_api_request(api_key=api_key,path=path,parameters=parameters)
+                results = r.json()
+
+                self.source = results['sources'][0]['name']
+
+                if cache:
+
+                    series_cache[series_id+'_'+observation_date] = self.copy()
 
         else:
 
@@ -314,7 +391,7 @@ class series:
         return new_series
 
     
-    def bp_filter(self,low=6,high=32,K=12):
+    def bp_filter(self,low=None,high=None,K=None):
 
         '''Computes the bandpass (Baxter-King) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -326,12 +403,15 @@ class series:
             original series to the data are 2K elements shorter than in the original series.
 
         Args:
-            low (int):  Minimum period for oscillations. Select 24 for monthly data, 6 for quarterly 
-                        data (default), and 3 for annual data.
-            high (int): Maximum period for oscillations.  Select 84 for monthly data, 32 for quarterly 
-                        data (default), and 8 for annual data.
-            K (int):    Lead-lag length of the filter. Select, 84 for monthly data, 12 for for quarterly
-                        data (default), and 1.5 for annual data.
+            low (int):  Minimum period for oscillations. Default: None, recommendation used.
+            high (int): Maximum period for oscillations. Default: None, recommendation used.
+            K (int):    Lead-lag length of the filter. Default: None, recommendation used.
+
+        Recommendations:
+
+            Monthly data:   low=24, high=84, K=84
+            Quarterly data: low=6, high=32, K=12
+            Annual data:    low=1.5, high=8, K=3
 
         Returns:
             two fredpy.series instances
@@ -340,10 +420,27 @@ class series:
         new_series_cycle = self.copy()
         new_series_trend = self.copy()
 
-        if low==6 and high==32 and K==12 and self.t !=4:
-            print('Warning: data frequency is not quarterly!')
-        elif low==3 and high==8 and K==1.5 and self.t !=1:
-            print('Warning: data frequency is not annual!')
+        if all(v is None for v in [low, high, K]) and self.frequency_short=='M':
+            low=24
+            high=84
+            K=84
+
+        elif all(v is None for v in [low, high, K]) and self.frequency_short=='Q':
+            low=6
+            high=32
+            K=12
+
+        elif all(v is None for v in [low, high, K]) and self.frequency_short=='A':
+            low=1.5
+            high=8
+            K=3
+
+
+
+        # if low==6 and high==32 and K==12 and self.t !=4:
+        #     print('Warning: data frequency is not quarterly!')
+        # elif low==3 and high==8 and K==1.5 and self.t !=1:
+        #     print('Warning: data frequency is not annual!')
             
         cycle = tsa.filters.bkfilter(self.data,low=low,high=high,K=K)
         actual = self.data.iloc[K:-K]
@@ -362,12 +459,24 @@ class series:
         return new_series_cycle,new_series_trend
 
 
-    def cf_filter(self,low=6,high=32):
+    def cf_filter(self,low=None,high=None):
 
         '''Computes the Christiano-Fitzgerald (CF) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
 
             new_series_cycle,new_series_trend
+
+        Args:
+            low (int):  Minimum period for oscillations. Default: None. 18 for monthly data, 6 for quarterly 
+                        data, and 2 for annual data.
+            high (int): Maximum period for oscillations. Default: None. 96 for monthly data, 32 for quarterly 
+                        data, and 8 for annual data.
+
+        Recommendations:
+
+            Monthly data:   low=18, high=96
+            Quarterly data: low=6, high=32
+            Annual data:    low=2, high=8
 
         Returns:
             two fredpy.series instances
@@ -376,10 +485,22 @@ class series:
         new_series_cycle = self.copy()
         new_series_trend = self.copy()
 
-        if low==6 and high==32 and self.t !=4:
-            print('Warning: data frequency is not quarterly!')
-        elif low==1.5 and high==8 and self.t !=4:
-            print('Warning: data frequency is not quarterly!')
+        if all(v is None for v in [low, high]) and self.frequency_short=='M':
+            low=18
+            high=96
+
+        elif all(v is None for v in [low, high]) and self.frequency_short=='Q':
+            low=6
+            high=32
+
+        elif all(v is None for v in [low, high]) and self.frequency_short=='A':
+            low=2
+            high=8
+
+        # if low==6 and high==32 and self.t !=4:
+        #     print('Warning: data frequency is not quarterly!')
+        # elif low==1.5 and high==8 and self.t !=4:
+        #     print('Warning: data frequency is not quarterly!')
 
         actual = self.data
         cycle, trend = tsa.filters.cffilter(self.data,low=low, high=high, drift=False)
@@ -493,7 +614,7 @@ class series:
         return new_series
 
 
-    def hp_filter(self,lamb=1600):
+    def hp_filter(self,lamb=None):
 
         '''Computes the Hodrick-Prescott (HP) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -501,9 +622,12 @@ class series:
             new_series_cycle,new_series_trend
 
         Args:
-            lamb (int): The Hodrick-Prescott smoothing parameter. Select 129600 for monthly data,
-                        1600 for quarterly data (default), 6.25 for annual data, or 104976000000
-                        for daily data.
+            lamb (int): The Hodrick-Prescott smoothing parameter. Default: None. Recommendations: 
+
+                            104976000000 for daily data.
+                            129600 for monthly data,
+                            1600 for quarterly data,
+                            6.25 for annual data,
                         
                         In general, set lambda to: 1600*[number of observations per quarter]**4
             
@@ -514,12 +638,25 @@ class series:
         new_series_cycle = self.copy()
         new_series_trend = self.copy()
 
-        if lamb==1600 and self.t !=4:
-            print('Warning: data frequency is not quarterly!')
-        elif lamb==129600 and self.t !=12:
-            print('Warning: data frequency is not monthly!')
-        elif lamb==6.25 and self.t !=1:
-            print('Warning: data frequency is not annual!')
+
+        if lamb is None and self.frequency_short=='M':
+            lamb = 129600
+
+        elif lamb is None and self.frequency_short=='Q':
+            lamb = 1600
+
+        elif lamb is None and self.frequency_short=='A':
+            lamb = 6.25
+
+        elif lamb is None and self.frequency_short=='D':
+            lamb = 104976000000
+
+        # if lamb==1600 and self.t !=4:
+        #     print('Warning: data frequency is not quarterly!')
+        # elif lamb==129600 and self.t !=12:
+        #     print('Warning: data frequency is not monthly!')
+        # elif lamb==6.25 and self.t !=1:
+        #     print('Warning: data frequency is not annual!')
             
         cycle, trend = tsa.filters.hpfilter(self.data,lamb=lamb)
 
@@ -777,19 +914,19 @@ class series:
 
         recessions(start=start,end=end,ax=ax,color=color,alpha=alpha)
 
-        # for k in range(len(cycle_data)):
+        # for k in range(len(cycle_dates)):
             
-        #     if cycle_data['peaks'].loc[k]<date_begin and date_begin < cycle_data['troughs'].loc[k]:
+        #     if cycle_dates['peaks'].loc[k]<date_begin and date_begin < cycle_dates['troughs'].loc[k]:
         #         series_peaks.append(date_begin)
-        #         series_troughs.append(cycle_data['troughs'].loc[k])
+        #         series_troughs.append(cycle_dates['troughs'].loc[k])
             
                 
-        #     elif date_begin < cycle_data['peaks'].loc[k] and date_end > cycle_data['troughs'].loc[k]:
-        #         series_peaks.append(cycle_data['peaks'].loc[k])
-        #         series_troughs.append(cycle_data['troughs'].loc[k])
+        #     elif date_begin < cycle_dates['peaks'].loc[k] and date_end > cycle_dates['troughs'].loc[k]:
+        #         series_peaks.append(cycle_dates['peaks'].loc[k])
+        #         series_troughs.append(cycle_dates['troughs'].loc[k])
                 
-        #     elif cycle_data['peaks'].loc[k]<date_end and cycle_data['troughs'].loc[k] > date_end:
-        #         series_peaks.append(cycle_data['peaks'].loc[k])
+        #     elif cycle_dates['peaks'].loc[k]<date_end and cycle_dates['troughs'].loc[k] > date_end:
+        #         series_peaks.append(cycle_dates['peaks'].loc[k])
         #         series_troughs.append(date_end)
 
         # for k in range(len(series_peaks)):
@@ -1175,7 +1312,7 @@ def recessions(start=None,end=None,ax=None,color='0.5',alpha=0.5):
     series_troughs = []
 
     if start is None:
-        start = cycle_data.iloc[0]['peaks']
+        start = cycle_dates.iloc[0]['peaks']
         
     elif type(start) == str:
         start = pd.to_datetime(start)
@@ -1186,19 +1323,19 @@ def recessions(start=None,end=None,ax=None,color='0.5',alpha=0.5):
     elif type(end) == str:
         end = pd.to_datetime(end)
 
-    for k in range(len(cycle_data)):
+    for k in range(len(cycle_dates)):
 
-        if cycle_data['peaks'].loc[k]<start and start < cycle_data['troughs'].loc[k]:
+        if cycle_dates['peaks'].loc[k]<start and start < cycle_dates['troughs'].loc[k]:
             series_peaks.append(start)
-            series_troughs.append(cycle_data['troughs'].loc[k])
+            series_troughs.append(cycle_dates['troughs'].loc[k])
 
 
-        elif start < cycle_data['peaks'].loc[k] and end > cycle_data['troughs'].loc[k]:
-            series_peaks.append(cycle_data['peaks'].loc[k])
-            series_troughs.append(cycle_data['troughs'].loc[k])
+        elif start < cycle_dates['peaks'].loc[k] and end > cycle_dates['troughs'].loc[k]:
+            series_peaks.append(cycle_dates['peaks'].loc[k])
+            series_troughs.append(cycle_dates['troughs'].loc[k])
 
-        elif cycle_data['peaks'].loc[k]<end and cycle_data['troughs'].loc[k] > end:
-            series_peaks.append(cycle_data['peaks'].loc[k])
+        elif cycle_dates['peaks'].loc[k]<end and cycle_dates['troughs'].loc[k] > end:
+            series_peaks.append(cycle_dates['peaks'].loc[k])
             series_troughs.append(end)
 
     for k in range(len(series_peaks)):
