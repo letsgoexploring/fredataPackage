@@ -273,7 +273,7 @@ class series:
         else:
 
             self.date_range = ''
-            self.data = pd.Series([],pd.to_datetime([]))
+            self.data = pd.Series([],pd.to_datetime([]),dtype=np.float64)
             self.frequency = ''
             self.frequency_short = ''
             self.last_updated = ''
