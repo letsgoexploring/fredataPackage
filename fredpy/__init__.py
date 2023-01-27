@@ -529,7 +529,7 @@ class series:
         new_series = series()
 
 
-        new_series.data = self.data
+        new_series.data = self.data.copy()
         new_series.date_range = self.date_range
         new_series.frequency = self.frequency
         new_series.frequency_short = self.frequency_short
