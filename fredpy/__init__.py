@@ -614,7 +614,7 @@ class series:
         return new_series
 
 
-    def hp_filter(self,lamb=None):
+    def hp_filter(self,lamb=None,two_sided=True):
 
         '''Computes the Hodrick-Prescott (HP) filter of the data. Returns two fredpy.series
         instances containing the cyclical and trend components of the data:
@@ -630,6 +630,8 @@ class series:
                             6.25 for annual data,
                         
                         In general, set lambda to: 1600*[number of observations per quarter]**4
+            two_sided (bool)    Whether to compute the two-sided HP filter or the one-sided filter 
+                                used in STock and Watson (1999).
             
         Returns:
             two fredpy.series instances
@@ -658,7 +660,24 @@ class series:
         # elif lamb==6.25 and self.t !=1:
         #     print('Warning: data frequency is not annual!')
             
-        cycle, trend = tsa.filters.hpfilter(self.data,lamb=lamb)
+        
+        if two_sided:
+            cycle, trend = tsa.filters.hpfilter(self.data,lamb=lamb)
+        else:
+
+            n_obs = len(self.data)
+
+            cycle = self.data.copy()
+            cycle.iloc[:2] = 0
+            trend = self.data.copy()
+
+            trend[:2] = self.data.iloc[:2]
+
+            for i in range(n_obs-2):
+                iter_cycle, iter_trend = tsa.filters.hpfilter(self.data[:2+1+i],lamb=lamb)
+                cycle.iloc[2+i] = iter_cycle.iloc[-1]
+                trend.iloc[2+i] = iter_trend.iloc[-1]
+
 
         new_series_cycle.data = cycle
         new_series_cycle.units = 'Deviation relative to trend'

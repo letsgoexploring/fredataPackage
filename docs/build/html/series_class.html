@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>fredpy.series class &#8212; fredpy 3.2.8 documentation</title>
+    <title>fredpy.series class &#8212; fredpy 3.2.9 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -131,9 +131,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – unique FRED series ID. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">series_id</span></code> equals <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, an empty <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance is created.</p></li>
-<li><p><strong>observation_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Desired date at which data are observed. Either YYYY-MM-DD or MM-DD-YYYY format. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_date</span></code> is <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, today’s date is used.</p></li>
-<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether to store a copy of the downloaded data in memory to avoid repeating calls to the FRED API. Default: <code class="xref py py-attr docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>series_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – unique FRED series ID. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">series_id</span></code> equals <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, an empty <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instance is created.</p></li>
+<li><p><strong>observation_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Desired date at which data are observed. Either YYYY-MM-DD or MM-DD-YYYY format. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_date</span></code> is <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, today’s date is used.</p></li>
+<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether to store a copy of the downloaded data in memory to avoid repeating calls to the FRED API. Default: <code class="xref py py-attr docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -199,8 +199,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-k})\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of observations per year. If False (default), compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-k} - 1\right)\)</span>.</p></li>
-<li><p><strong>backward</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – If True (default), compute percentage change from the previous year. If False, compute percentage change from current to next year.</p></li>
+<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-k})\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of observations per year. If False (default), compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-k} - 1\right)\)</span>.</p></li>
+<li><p><strong>backward</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – If True (default), compute percentage change from the previous year. If False, compute percentage change from current to next year.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -216,8 +216,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Abbreviation of desired frequency: ‘D’,’W’,’M’,’Q’,’A’.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – How to resample the data: ‘first’, ‘last’, ‘mean’ (default), ‘median’, ‘min’, ‘max’, ‘sum’</p></li>
+<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Abbreviation of desired frequency: ‘D’,’W’,’M’,’Q’,’A’.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – How to resample the data: ‘first’, ‘last’, ‘mean’ (default), ‘median’, ‘min’, ‘max’, ‘sum’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -242,9 +242,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Minimum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Maximum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
-<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Lead-lag length of the filter. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Minimum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Maximum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Lead-lag length of the filter. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -273,8 +273,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Minimum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Maximum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Minimum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Maximum period for oscillations. Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -344,7 +344,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fredpy.series.hp_filter">
-<span class="sig-name descname"><span class="pre">hp_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lamb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hp_filter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hp_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lamb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">two_sided</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fredpy.series.hp_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the Hodrick-Prescott filter of the data. Returns two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances containing the cyclical and trend components of the data:</p>
 <blockquote>
 <div><p><em>new_series_cycle, new_series_trend</em></p>
@@ -358,7 +358,10 @@
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lamb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lamb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Default <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>, recommended value used.</p></li>
+<li><p><strong>two_sided</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – True (default): Whether to use the two-sided filter or the one-sided version described in Stock and Watson (1999).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>two <a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a> instances</p>
@@ -402,8 +405,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – window length of the one-sided moving average.</p></li>
-<li><p><strong>center</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – False (default): one-sided MA. True: two-sided MA.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – window length of the one-sided moving average.</p></li>
+<li><p><strong>center</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – False (default): one-sided MA. True: two-sided MA.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -433,9 +436,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False (default), compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</p></li>
-<li><p><strong>backward</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – If True, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
-<li><p><strong>annualized</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Default: False: If True, percentage change is computed at an annual rate. E.g., if the data were monthly and log==False, then the annualized percentage change would be: <span class="math notranslate nohighlight">\(100\cdot\left[ \left(x_{t}/x_{t-1}\right)^{12} - 1\right]\)</span>.</p></li>
+<li><p><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If True, computes the percentage change as <span class="math notranslate nohighlight">\(100\cdot\log(x_{t}/x_{t-1})\)</span>. If False (default), compute the percentage change as <span class="math notranslate nohighlight">\(100\cdot\left( x_{t}/x_{t-1} - 1\right)\)</span>.</p></li>
+<li><p><strong>backward</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – If True, compute percentage change from the previous period. If ‘forward’, compute percentage change from current to subsequent period.</p></li>
+<li><p><strong>annualized</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Default: False: If True, percentage change is computed at an annual rate. E.g., if the data were monthly and log==False, then the annualized percentage change would be: <span class="math notranslate nohighlight">\(100\cdot\left[ \left(x_{t}/x_{t-1}\right)^{12} - 1\right]\)</span>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -450,7 +453,7 @@
 <dd><p>Transforms the data into per capita terms by dividing by a measure of the total population of the United States.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>total_pop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – If <code class="xref py py-attr docutils literal notranslate"><span class="pre">total_pop</span></code> is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.</p>
+<dd class="field-odd"><p><strong>total_pop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – If <code class="xref py py-attr docutils literal notranslate"><span class="pre">total_pop</span></code> is True, then use the toal population (Default). Else, use civilian noninstitutional population defined as persons 16 years of age and older.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -484,7 +487,7 @@
 <dd><p>Restrict the data to the most recent N observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Number of periods to include in the data window.</p>
+<dd class="field-odd"><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Number of periods to include in the data window.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -500,8 +503,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ax</strong> (<em>matplotlib.axes._subplots.AxesSubplot subplot</em>) – Matplotlib axis object to plot recession bars. Default: None</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Color of the bars. Default: ‘0.5’.</p></li>
-<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Color of the bars. Default: ‘0.5’.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Transparency of the recession bars. Must be between 0 and 1. Default: 0.5.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -530,7 +533,7 @@
 <dd><p>Restricts the data to the most recent N observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>win</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – is an ordered pair: <code class="docutils literal notranslate"><span class="pre">win</span> <span class="pre">=</span> <span class="pre">[win_min,</span> <span class="pre">win_max]</span></code> where <code class="docutils literal notranslate"><span class="pre">win_min</span></code> is the date of the minimum date desired and <code class="docutils literal notranslate"><span class="pre">win_max</span></code> is the date of the maximum date. Date strings must be entered in either YYYY-MM-DD or MM-DD-YYYY format.</p>
+<dd class="field-odd"><p><strong>win</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – is an ordered pair: <code class="docutils literal notranslate"><span class="pre">win</span> <span class="pre">=</span> <span class="pre">[win_min,</span> <span class="pre">win_max]</span></code> where <code class="docutils literal notranslate"><span class="pre">win_min</span></code> is the date of the minimum date desired and <code class="docutils literal notranslate"><span class="pre">win_max</span></code> is the date of the maximum date. Date strings must be entered in either YYYY-MM-DD or MM-DD-YYYY format.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#fredpy.series" title="fredpy.series"><code class="xref py py-class docutils literal notranslate"><span class="pre">fredpy.series</span></code></a></p>
@@ -555,7 +558,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2023, Brian C. Jenkins.<br/>
+        &copy; Copyright 2024, Brian C. Jenkins.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br/>
     </p>
   </div>

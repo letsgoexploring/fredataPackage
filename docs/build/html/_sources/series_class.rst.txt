@@ -127,7 +127,7 @@
 
 			:return: :py:class:`fredpy.series`
 
-		.. py:function:: hp_filter(lamb=None)
+		.. py:function:: hp_filter(lamb=None,two_sided=True)
 
 			Computes the Hodrick-Prescott filter of the data. Returns two :py:class:`fredpy.series` instances containing the cyclical and trend components of the data: 
 
@@ -141,6 +141,7 @@
 			* Annual data: lamb=6.25
 
 			:param int lamb: Default :py:attr:`None`, recommended value used.
+			:param bool two_sided: True (default): Whether to use the two-sided filter or the one-sided version described in Stock and Watson (1999).
 		 	:return: two :py:class:`fredpy.series` instances
 
 		.. py:function:: linear_filter()
