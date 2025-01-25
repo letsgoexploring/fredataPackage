@@ -22,7 +22,7 @@ Install ``fredpy`` from PyPI with the shell command::
 Or download the source here: https://github.com/letsgoexploring/fredpy/blob/gh-pages/dist/fredpy-3.2.9.tar.gz
 
 Contents:
-==================
+---------
 
 .. toctree::
    :maxdepth: 1
@@ -32,8 +32,8 @@ Contents:
    fredpy_examples.ipynb
 
 
-Indices and tables
-==================
+.. Indices and tables
+.. ==================
 
-* :ref:`genindex`
-* :ref:`search`
+.. * :ref:`genindex`
+.. * :ref:`search`
