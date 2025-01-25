@@ -108,7 +108,7 @@ html_theme = 'bootstrap'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_static_path = ['_static']
-
+# html_static_path = []
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -199,4 +199,7 @@ epub_exclude_files = ['search.html']
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+}
+
